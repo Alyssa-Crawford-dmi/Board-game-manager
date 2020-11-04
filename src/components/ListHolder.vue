@@ -1,6 +1,4 @@
 <template>
-  <p>List holder</p>
-  <button @click="showModal = true">Show modal</button>
   <ListView v-if="showAsList" />
   <TableView v-else />
   <Modal
