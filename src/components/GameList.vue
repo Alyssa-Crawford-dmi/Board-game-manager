@@ -1,5 +1,5 @@
 <template>
-  <Game />
+  <Game v-for="game in games" :key="game" />
 </template>
 
 <script>
@@ -10,5 +10,6 @@ export default {
   components: {
     Game,
   },
+  props: ["games"],
 };
 </script>
