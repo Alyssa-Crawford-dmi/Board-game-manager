@@ -1,6 +1,10 @@
 <template>
-  <ListView v-if="showAsList" />
-  <TableView v-else />
+  <div v-if="showAsList">
+    <ListItem v-for="game in gamesList" :key="game" />
+  </div>
+  <div v-else>
+    <GridItem v-for="game in gamesList" :key="game" />
+  </div>
   <Modal
     v-if="showModal"
     @cancel-delete="cancelDelete"
@@ -8,20 +12,21 @@
   />
 </template>
 <script>
-import ListView from "./ListView.vue";
-import TableView from "./TableView.vue";
+import ListItem from "./ListItem.vue";
+import GridItem from "./GridItem.vue";
 import Modal from "./Modal.vue";
 
 export default {
   name: "ListHolder",
   components: {
-    ListView,
-    TableView,
+    ListItem,
+    GridItem,
     Modal,
   },
   data: () => {
     return {
-      showModal: true,
+      showModal: false,
+      gamesList: ["game1", "game2", "game3"],
     };
   },
   props: ["showAsList"],

@@ -1,21 +1,34 @@
 import { mount } from '@vue/test-utils'
 import ListHolder from '@/components/ListHolder.vue'
-import ListView from '@/components/ListView.vue'
-import TableView from '@/components/TableView.vue'
+import ListItem from '@/components/ListItem.vue'
+import GridItem from '@/components/GridItem.vue'
 import Modal from '@/components/Modal.vue'
 
 describe('App.vue', () => {
-  it('Has a ListView componet when showAsList prop is true', () => {
+  it('Has a ListItem componet when showAsList prop is true', () => {
       const wrapper = mount(ListHolder, {props: {showAsList:true}})
-      const listView = wrapper.findComponent(ListView)
-    expect(listView.exists()).toBe(true)
+      const listItem = wrapper.findComponent(ListItem)
+    expect(listItem.exists()).toBe(true)
   })
     
-    it('Has a TableView componet when showAsList prop is false', () => {
+    it('Has a GridItem componet when showAsList prop is false', () => {
       const wrapper = mount(ListHolder, {props: {showAsList:false}})
-      const tableView = wrapper.findComponent(TableView)
-    expect(tableView.exists()).toBe(true)
+      const gridItem = wrapper.findComponent(GridItem)
+    expect(gridItem.exists()).toBe(true)
     })
+
+    it('Has as many ListItem componets as length of gamesList', () => {
+      const wrapper = mount(ListHolder, {props: {showAsList:true}})
+      const listItems = wrapper.findAllComponents(ListItem)
+    expect(listItems).toHaveLength(3)
+  })
+    
+    it('Has as many GridItem componets as length of gamesList', () => {
+      const wrapper = mount(ListHolder, {props: {showAsList:false}})
+      const gridItems = wrapper.findAllComponents(GridItem)
+    expect(gridItems).toHaveLength(3)
+    })
+
 
     it('Has a modal componet', async() => {
         const wrapper = mount(ListHolder)
