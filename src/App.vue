@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <List-holder />
+  <List-holder :showAsList="showAsList" />
 </template>
 
 <script>
@@ -12,6 +12,11 @@ export default {
   components: {
     Header,
     ListHolder,
+  },
+  data: () => {
+    return {
+      showAsList: false,
+    };
   },
 };
 </script>
