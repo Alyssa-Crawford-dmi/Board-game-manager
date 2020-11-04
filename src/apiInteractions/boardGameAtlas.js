@@ -9,6 +9,4 @@ const getGameByName = async (name) => {
     return result
 }
 
-// const getAuth
-
 export {getGameByName, }

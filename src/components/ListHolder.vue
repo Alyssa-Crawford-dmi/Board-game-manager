@@ -1,3 +1,3 @@
 <template>
-  <p>Game</p>
+  <p>List holder</p>
 </template>
