@@ -6,7 +6,7 @@
         <button class="Button Neutral" @click="(e) => cancelDelete(e)">
           Cancel
         </button>
-        <button class="Button Danger" @click="(e) => deleteConfirmed(e)">
+        <button class="Button Danger remove" @click="(e) => deleteConfirmed(e)">
           Remove
         </button>
       </div>

@@ -1,8 +1,21 @@
 <template>
-  <p>List view</p>
+  <div @click="itemClicked">
+    <p>List view</p>
+  </div>
 </template>
 <script>
 export default {
-  name: "ListItem",
+  name: "GridItem",
+  methods: {
+    itemClicked() {
+      this.$emit("item-clicked", this.index);
+    },
+  },
+  props: ["index"],
 };
 </script>
+<style scoped>
+div {
+  background-color: darkseagreen;
+}
+</style>

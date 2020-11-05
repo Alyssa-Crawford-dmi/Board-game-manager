@@ -1,9 +1,19 @@
 <template>
   <div v-if="showAsList">
-    <ListItem v-for="game in gamesList" :key="game" />
+    <ListItem
+      v-for="(game, index) in gamesList"
+      :key="game"
+      @item-clicked="(gameIndex) => openModal(gameIndex)"
+      :index="index"
+    />
   </div>
   <div v-else>
-    <GridItem v-for="game in gamesList" :key="game" />
+    <GridItem
+      v-for="(game, index) in gamesList"
+      :key="game"
+      @item-clicked="(gameIndex) => openModal(gameIndex)"
+      :index="index"
+    />
   </div>
   <Modal
     v-if="showModal"
@@ -27,17 +37,23 @@ export default {
     return {
       showModal: false,
       gamesList: ["game1", "game2", "game3"],
+      indexToRemove: -1,
     };
   },
   props: ["showAsList"],
   methods: {
     cancelDelete() {
-      console.log("Canceling");
       this.showModal = !this.showModal;
+      console.log("Canceling delete");
     },
     deleteItem() {
       this.showModal = !this.showModal;
-      console.log("Deleting");
+      this.gamesList.splice(this.indexToRemove, 1);
+      console.log("deleted ", this.gamesList);
+    },
+    openModal(clickedIndex) {
+      this.showModal = true;
+      this.indexToRemove = clickedIndex;
     },
   },
 };
