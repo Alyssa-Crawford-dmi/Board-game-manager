@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import ListHolder from '@/components/ListHolder.vue'
 import ListItem from '@/components/ListItem.vue'
 import GridItem from '@/components/GridItem.vue'
-import Modal from '@/components/Modal.vue'
+import Modal from '@/components/Modals/BaseModal.vue'
 
 describe('App.vue', () => {
 

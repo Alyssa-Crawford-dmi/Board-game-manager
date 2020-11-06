@@ -15,16 +15,15 @@
       :index="index"
     />
   </div>
-  <Modal
-    v-if="showModal"
-    @cancel-delete="cancelDelete"
-    @delete-confirmed="deleteItem"
-  />
+  <Modal v-if="showModal" @close-modal="closeModal"
+    ><DeleteModal @close-modal="closeModal" @delete-confirmed="deleteItem"
+  /></Modal>
 </template>
 <script>
 import ListItem from "./ListItem.vue";
 import GridItem from "./GridItem.vue";
-import Modal from "./Modal.vue";
+import Modal from "./Modals/BaseModal.vue";
+import DeleteModal from "./Modals/DeleteModal.vue";
 
 export default {
   name: "ListHolder",
@@ -32,6 +31,7 @@ export default {
     ListItem,
     GridItem,
     Modal,
+    DeleteModal,
   },
   data: () => {
     return {
@@ -42,14 +42,12 @@ export default {
   },
   props: ["showAsList"],
   methods: {
-    cancelDelete() {
+    closeModal() {
       this.showModal = !this.showModal;
-      console.log("Canceling delete");
     },
     deleteItem() {
       this.showModal = !this.showModal;
       this.gamesList.splice(this.indexToRemove, 1);
-      console.log("deleted ", this.gamesList);
     },
     openModal(clickedIndex) {
       this.showModal = true;

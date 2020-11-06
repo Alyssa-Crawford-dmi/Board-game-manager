@@ -1,15 +1,7 @@
 <template >
-  <div class="Backdrop" @click="(e) => cancelDelete(e)">
+  <div class="Backdrop" @click="(e) => closeModal(e)">
     <div class="Modal">
-      <h4>Are you sure you like like to remove this item from the list?</h4>
-      <div class="buttons">
-        <button class="Button Neutral" @click="(e) => cancelDelete(e)">
-          Cancel
-        </button>
-        <button class="Button Danger remove" @click="(e) => deleteConfirmed(e)">
-          Remove
-        </button>
-      </div>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -17,14 +9,10 @@
 <script>
 export default {
   name: "Modal",
+  emits: ["close-modal"],
   methods: {
-    cancelDelete(e) {
-      e.stopPropagation();
-      this.$emit("cancel-delete");
-    },
-    deleteConfirmed(e) {
-      e.stopPropagation();
-      this.$emit("delete-confirmed");
+    closeModal() {
+      this.$emit("close-modal");
     },
   },
 };
@@ -60,9 +48,5 @@ export default {
     width: 500px;
     left: calc(50% - 250px);
   }
-}
-.buttons {
-  margin: 0 auto;
-  width: fit-content;
 }
 </style>
