@@ -1,5 +1,5 @@
 <template>
-  <Header />
+  <Header @toggle-clicked="showAsList = !showAsList" />
   <List-holder :showAsList="showAsList" />
 </template>
 

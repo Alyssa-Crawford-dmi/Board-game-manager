@@ -36,7 +36,7 @@ export default {
   data: () => {
     return {
       showModal: false,
-      gamesList: [],
+      gamesList: ["game1", "game2", "game3"],
       indexToRemove: -1,
     };
   },

@@ -11,8 +11,8 @@ describe('App.vue', () => {
     beforeEach(() => {
         gridWrapper = mount(ListHolder, { props: { showAsList: false } })
         listWrapper = mount(ListHolder, { props: { showAsList: true } })
-        gridWrapper.setData({ gamesList: ["game1", "game2", "game3"] })
-        listWrapper.setData({gamesList: ["game1", "game2", "game3"]})
+        // gridWrapper.setData({ gamesList: ["game1", "game2", "game3"] })
+        // listWrapper.setData({gamesList: ["game1", "game2", "game3"]})
     })
 
     //Basic componets
