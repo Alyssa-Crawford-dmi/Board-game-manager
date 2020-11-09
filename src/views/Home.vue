@@ -1,6 +1,8 @@
 <template>
+<div>
   <Header @toggle-clicked="showAsList = !showAsList" />
   <List-holder :showAsList="showAsList" />
+</div>
 </template>
 
 <script>
