@@ -1,8 +1,11 @@
 <template>
-<div>
-  <Header @toggle-clicked="showAsList = !showAsList" />
-  <List-holder :showAsList="showAsList" />
-</div>
+  <div>
+    <Header
+      @toggle-clicked="showAsList = !showAsList"
+      :showAsList="showAsList"
+    />
+    <List-holder :showAsList="showAsList" />
+  </div>
 </template>
 
 <script>
