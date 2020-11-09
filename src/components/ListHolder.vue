@@ -5,6 +5,7 @@
       :key="game"
       @item-clicked="(gameIndex) => openModal(gameIndex)"
       :index="index"
+      :gameInfo="game"
     />
   </div>
   <div v-else>
@@ -13,6 +14,7 @@
       :key="game"
       @item-clicked="(gameIndex) => openModal(gameIndex)"
       :index="index"
+      :gameInfo="game"
     />
   </div>
   <Modal v-if="showModal" @close-modal="closeModal"
@@ -24,6 +26,7 @@ import ListItem from "./ListItem.vue";
 import GridItem from "./GridItem.vue";
 import Modal from "./Modals/BaseModal.vue";
 import DeleteModal from "./Modals/DeleteModal.vue";
+import { getGamesFromIds } from "../apiInteractions/boardGameAtlas";
 
 export default {
   name: "ListHolder",
@@ -36,11 +39,17 @@ export default {
   data: () => {
     return {
       showModal: false,
-      gamesList: ["game1", "game2", "game3"],
+      gamesList: [],
       indexToRemove: -1,
     };
   },
   props: ["showAsList"],
+  mounted() {
+    const gameIds = ["AuBvbISHR6", "GJ94Cl7cz5", "XZ9BeWAgCu", "GGwRDABj7L"];
+    getGamesFromIds(gameIds).then((res) => {
+      this.gamesList = res;
+    });
+  },
   methods: {
     closeModal() {
       this.showModal = !this.showModal;

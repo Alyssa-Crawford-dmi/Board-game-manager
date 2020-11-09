@@ -1,6 +1,6 @@
 <template>
   <div @click="itemClicked">
-    <p>Table view</p>
+    <p>Table view {{ gameInfo.name }}</p>
   </div>
 </template>
 <script>
@@ -11,7 +11,7 @@ export default {
       this.$emit("item-clicked", this.index);
     },
   },
-  props: ["index"],
+  props: ["index", "gameInfo"],
 };
 </script>
 <style scoped>
