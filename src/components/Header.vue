@@ -6,7 +6,6 @@
       color="medium"
       fill="solid"
       size="small"
-      icon-only
     >
       <span class="material-icons" v-if="showAsList" title="Grid view">
         grid_on
