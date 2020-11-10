@@ -1,26 +1,29 @@
 <template>
   <div>
     <h1>This is a header</h1>
-    <IonButton
+    <Button
       @click="() => toggleClicked()"
-      color="medium"
-      fill="solid"
-      size="small"
-      icon-only
+      :icon="iconVal"
+      class="p-button-rounded p-button-secondary p-button-outlined"
+      :title="showAsList ? 'Grid view' : 'Table view'"
     >
-      <span class="material-icons" v-if="showAsList" title="Grid view">
-        grid_on
-      </span>
-      <span class="material-icons" v-else title="List view"> list </span>
-    </IonButton>
+    </Button>
   </div>
 </template>
 
 <script>
-import { IonButton } from "@ionic/vue";
+import Button from "primevue/button";
 export default {
   props: ["showAsList"],
-  components: { IonButton },
+  components: { Button },
+  computed: {
+    iconVal: function () {
+      if (this.showAsList) {
+        return "pi pi-bookmark";
+      }
+      return "pi pi-check";
+    },
+  },
   methods: {
     toggleClicked() {
       this.$emit("toggle-clicked");

@@ -1,8 +1,8 @@
 module.exports = {
   preset: "@vue/cli-plugin-unit-jest",
   transform: {
-    "^.+\\.vue$": "vue-jest",
+    "^.+vue$": "vue-jest",
   },
-  transformIgnorePatterns: ["node_modules/(?!(ion|@ionic))"],
+  transformIgnorePatterns: ["node_modules/(?!(.+vue$))"],
   setupFilesAfterEnv: ["./jest.setup.js"],
 };

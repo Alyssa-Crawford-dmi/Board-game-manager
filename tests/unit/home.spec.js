@@ -2,7 +2,7 @@ import { mount } from "@vue/test-utils";
 import Header from "@/components/Header.vue";
 import ListHolder from "@/components/ListHolder.vue";
 import Home from "@/views/Home.vue";
-import { IonButton } from "@ionic/vue";
+import Button from "primevue/button";
 
 describe("App.vue", () => {
   let wrapper;
@@ -23,12 +23,12 @@ describe("App.vue", () => {
     const intialValue = listHolder.props("showAsList");
     await wrapper
       .findComponent(Header)
-      .findComponent(IonButton)
+      .findComponent(Button)
       .trigger("click");
     const oneClick = listHolder.props("showAsList");
     await wrapper
       .findComponent(Header)
-      .findComponent(IonButton)
+      .findComponent(Button)
       .trigger("click");
     const twoClicks = listHolder.props("showAsList");
 
