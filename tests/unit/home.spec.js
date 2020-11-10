@@ -2,6 +2,7 @@ import { mount } from "@vue/test-utils";
 import Header from "@/components/Header.vue";
 import ListHolder from "@/components/ListHolder.vue";
 import Home from "@/views/Home.vue";
+import { IonButton } from "@ionic/vue";
 
 describe("App.vue", () => {
   let wrapper;
@@ -22,12 +23,12 @@ describe("App.vue", () => {
     const intialValue = listHolder.props("showAsList");
     await wrapper
       .findComponent(Header)
-      .find("button.toggleView")
+      .findComponent(IonButton)
       .trigger("click");
     const oneClick = listHolder.props("showAsList");
     await wrapper
       .findComponent(Header)
-      .find("button.toggleView")
+      .findComponent(IonButton)
       .trigger("click");
     const twoClicks = listHolder.props("showAsList");
 

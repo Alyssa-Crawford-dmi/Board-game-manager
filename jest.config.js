@@ -3,5 +3,6 @@ module.exports = {
   transform: {
     "^.+\\.vue$": "vue-jest",
   },
+  transformIgnorePatterns: ["node_modules/(?!(ion|@ionic))"],
   setupFilesAfterEnv: ["./jest.setup.js"],
 };
