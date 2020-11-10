@@ -19,9 +19,9 @@ export default {
   computed: {
     iconVal: function () {
       if (this.showAsList) {
-        return "pi pi-bookmark";
+        return "pi pi-table";
       }
-      return "pi pi-check";
+      return "pi pi-list";
     },
   },
   methods: {
