@@ -19,12 +19,7 @@
             <div class="product-name">{{ slotProps.data.name }}</div>
           </div>
         </div>
-        <Button
-          @click="() => deleteItem(slotProps.index)"
-          icon="pi pi-times"
-          class="p-button-rounded p-button-secondary p-button-outlined"
-          title="Delete Item"
-        />
+        <DeleteButtonIcon @delete-item="() => deleteItem(slotProps.index)" />
       </div>
     </template>
 
@@ -36,12 +31,7 @@
             <div class="product-name">{{ slotProps.data.name }}</div>
           </div>
         </div>
-        <Button
-          @click="() => deleteItem(slotProps.index)"
-          icon="pi pi-times"
-          class="p-button-rounded p-button-secondary p-button-outlined"
-          title="Delete Item"
-        />
+        <DeleteButtonIcon @delete-item="() => deleteItem(slotProps.index)" />
       </div>
     </template>
   </DataView>
@@ -50,14 +40,14 @@
 <script>
 import DataView from "primevue/dataview";
 import DataViewLayoutOptions from "primevue/dataviewlayoutoptions";
-import Button from "primevue/button";
+import DeleteButtonIcon from "./UI/DeleteButtonIcon.vue";
 
 export default {
   name: "ListHolder",
   components: {
     DataView,
     DataViewLayoutOptions,
-    Button,
+    DeleteButtonIcon,
   },
   props: ["gamesList"],
   data() {
@@ -67,7 +57,7 @@ export default {
   },
   methods: {
     deleteItem(index) {
-      this.$emit("delete-clicked", index);
+      this.$emit("delete-item", index);
     },
   },
 };

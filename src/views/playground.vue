@@ -1,7 +1,7 @@
 <template>
   <GamesList
     :gamesList="gamesList"
-    @delete-clicked="(gameIndex) => openModal(gameIndex)"
+    @delete-item="(gameIndex) => openModal(gameIndex)"
   />
   <Modal v-if="showModal" @close-modal="closeModal"
     ><DeleteModal @close-modal="closeModal" @delete-confirmed="deleteItem"

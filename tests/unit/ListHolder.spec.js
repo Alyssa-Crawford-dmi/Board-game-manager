@@ -5,6 +5,7 @@ import GridItem from "@/components/GridItem.vue";
 import Modal from "@/components/Modals/BaseModal.vue";
 import flushPromises from "flush-promises";
 import axios from "axios";
+import Button from "primevue/button";
 
 const fakeResult = {
   data: {
@@ -63,7 +64,7 @@ describe("App.vue", () => {
     await listWrapper.setData({ showModal: true });
     await listWrapper
       .findComponent(Modal)
-      .find("button")
+      .findComponent(Button)
       .trigger("click");
     const modal = listWrapper.findComponent(Modal);
     expect(modal.exists()).toBe(false);
@@ -72,7 +73,7 @@ describe("App.vue", () => {
     await listWrapper.setData({ showModal: true });
     await listWrapper
       .findComponent(Modal)
-      .find("button.remove")
+      .findAllComponents(Button)[1]
       .trigger("click");
     const modal = listWrapper.findComponent(Modal);
     expect(modal.exists()).toBe(false);
@@ -117,7 +118,7 @@ describe("App.vue", () => {
     await listWrapper.setData({ showModal: true, indexToRemove: clickIndex });
     await listWrapper
       .findComponent(Modal)
-      .find("button.remove")
+      .findAllComponents(Button)[1]
       .trigger("click");
     expect(listWrapper.vm.gamesList).toHaveLength(numGames - 1);
     expect(listWrapper.vm.gamesList[clickIndex] === replacingElm).toBe(true);

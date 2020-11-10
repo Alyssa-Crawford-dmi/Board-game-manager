@@ -2,19 +2,29 @@
   <div>
     <h4>Are you sure you like like to remove this item from the list?</h4>
     <div class="buttons">
-      <button class="Button Neutral" @click="(e) => closeModal(e)">
-        Cancel
-      </button>
-      <button class="Button Danger remove" @click="(e) => deleteConfirmed(e)">
-        Remove
-      </button>
+      <Button
+        label="Cancel"
+        class="p-button-raised p-button-secondary p-button-text"
+        @click="(e) => closeModal(e)"
+        style="margin-right: 30px"
+      />
+      <Button
+        label="Remove"
+        class="p-button-raised p-button-danger p-button-text"
+        @click="(e) => deleteConfirmed(e)"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import Button from "primevue/button";
+
 export default {
   emits: ["delete-confirmed", "close-modal"],
+  components: {
+    Button,
+  },
   methods: {
     deleteConfirmed(e) {
       e.stopPropagation();
