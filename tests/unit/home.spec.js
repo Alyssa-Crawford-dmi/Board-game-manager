@@ -34,6 +34,6 @@ describe("App.vue", () => {
 
     expect(intialValue !== oneClick).toBe(true);
     expect(intialValue === twoClicks).toBe(true);
-    expect(oneClick !== twoClicks).toBe(false);
+    expect(oneClick !== twoClicks).toBe(true);
   });
 });
