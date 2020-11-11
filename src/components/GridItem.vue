@@ -36,6 +36,7 @@ export default {
 .game-grid-item {
   margin: 0.5rem;
   border: 1px solid #dee2e6;
+  background-color: var(--very-light-grey);
 }
 img {
   height: 100%;

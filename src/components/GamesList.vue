@@ -2,12 +2,12 @@
   <div class="card">
     <DataView :value="gamesList" :layout="layout" :paginator="true" :rows="9">
       <template #header>
-        <div class="p-grid p-nogutter data-header">
+        <div class="p-grid p-nogutter">
           <div class="p-col-6" style="text-align: left">
             <h2>Games List</h2>
           </div>
           <div class="p-col-6" style="text-align: right">
-            <DataViewLayoutOptions v-model="layout" />
+            <ModifiedDataViewLayoutOptions v-model="layout" />
           </div>
         </div>
       </template>
@@ -30,7 +30,7 @@
 
 <script>
 import DataView from "primevue/dataview";
-import DataViewLayoutOptions from "primevue/dataviewlayoutoptions";
+import ModifiedDataViewLayoutOptions from "./modifiedPrimeVue/ModifiedDataViewLayoutOptions.vue";
 import GridItem from "./GridItem.vue";
 import ListItem from "./ListItem.vue";
 
@@ -38,7 +38,7 @@ export default {
   name: "ListHolder",
   components: {
     DataView,
-    DataViewLayoutOptions,
+    ModifiedDataViewLayoutOptions,
 
     GridItem,
     ListItem,
@@ -59,9 +59,5 @@ export default {
 <style scoped>
 h2 {
   font-weight: 650;
-}
-.data-header {
-  background-clip: border-box;
-  background-color: var(--light-purple-gray);
 }
 </style>
