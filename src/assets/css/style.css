@@ -1,32 +1,7 @@
-.Button {
-  background-color: transparent;
-  border: none;
-  color: white;
-  outline: none;
-  cursor: pointer;
-  font: inherit;
-  padding: 5px 30px;
-  margin: 10px;
-  font-weight: bold;
-}
-
-.Button:first-of-type {
-  margin-left: 0;
-  padding-left: 0;
-}
-
-.Success {
-  color: #5c9210;
-}
-
-.Danger {
-  color: #944317;
-}
-
-.Button:disabled {
-  color: #ccc;
-  cursor: not-allowed;
-}
-.Neutral {
-  color: rgb(143, 140, 140);
+.card{
+  background: var(--surface-e);
+  padding:1rem 2rem;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+    border-radius: 4px;
+    margin-bottom: 2rem;
 }

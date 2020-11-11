@@ -1,16 +1,59 @@
 <template>
-  <div>
-    <p>Table view {{ gameInfo.name }}</p>
+  <div class="p-col-12 p-md-4">
+    <div class="game-grid-item card">
+      <div class="game-grid-centered">
+        <img :src="gameData.thumb_url" :alt="gameData.name" />
+      </div>
+      <h2>{{ gameData.name }}</h2>
+      <div class="game-grid-details">
+        <p>{{ gameData.min_players }} - {{ gameData.max_players }} players</p>
+        <p>{{ gameData.min_playtime }} - {{ gameData.max_playtime }} mins</p>
+        <p>{{ gameData.min_age }}+</p>
+      </div>
+      <div class="game-grid-centered">
+        <RemoveGameButton @delete-item="deleteItem" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import RemoveGameButton from "./UI/RemoveGameButton.vue";
+
 export default {
   name: "GridItem",
-  props: ["gameInfo"],
+  props: ["gameData"],
+  components: {
+    RemoveGameButton,
+  },
+  methods: {
+    deleteItem() {
+      this.$emit("delete-item");
+    },
+  },
 };
 </script>
 <style scoped>
-div {
-  background-color: darkseagreen;
+.game-grid-item {
+  margin: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+img {
+  height: 100%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  margin: 1rem 0;
+  max-height: 20rem;
+}
+h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+.game-grid-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.game-grid-centered {
+  text-align: center;
 }
 </style>

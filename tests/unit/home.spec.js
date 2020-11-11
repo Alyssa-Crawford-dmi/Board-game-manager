@@ -7,7 +7,11 @@ import axios from "axios";
 
 const fakeResult = {
   data: {
-    games: [{ name: "game1" }, { name: "game2" }, { name: "game3" }],
+    games: [
+      { name: "game1", images: [] },
+      { name: "game2", images: [] },
+      { name: "game3", images: [] },
+    ],
   },
 };
 const numGames = fakeResult.data.games.length;

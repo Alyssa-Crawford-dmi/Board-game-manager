@@ -28,7 +28,7 @@ const getGamesFromIds = async (ids) => {
           min_playtime: fullGame.min_playtime,
           max_playtime: fullGame.max_playtime,
           min_age: fullGame.min_age,
-          thumb_url: fullGame.thumb_url,
+          thumb_url: fullGame.images.small,
         };
       });
     });

@@ -1,53 +1,47 @@
 <template>
-  <DataView :value="gamesList" :layout="layout" :paginator="true" :rows="9">
-    <template #header>
-      <div class="p-grid p-nogutter">
-        <div class="p-col-6" style="text-align: left">
-          <h2>Games List</h2>
-        </div>
-        <div class="p-col-6" style="text-align: right">
-          <DataViewLayoutOptions v-model="layout" />
-        </div>
-      </div>
-    </template>
-
-    <template #list="slotProps">
-      <div class="p-col-12">
-        <div class="product-list-item">
-          <img :src="slotProps.data.thumb_url" :alt="slotProps.data.name" />
-          <div class="product-list-detail">
-            <div class="product-name">{{ slotProps.data.name }}</div>
+  <div class="card">
+    <DataView :value="gamesList" :layout="layout" :paginator="true" :rows="9">
+      <template #header>
+        <div class="p-grid p-nogutter">
+          <div class="p-col-6" style="text-align: left">
+            <h2>Games List</h2>
+          </div>
+          <div class="p-col-6" style="text-align: right">
+            <DataViewLayoutOptions v-model="layout" />
           </div>
         </div>
-        <DeleteButtonIcon @delete-item="() => deleteItem(slotProps.index)" />
-      </div>
-    </template>
+      </template>
 
-    <template #grid="slotProps">
-      <div class="p-col-12">
-        <div class="product-list-item">
-          <!-- <img :src="slotProps.data.thumb_url" :alt="slotProps.data.name" /> -->
-          <div class="product-list-detail">
-            <div class="product-name">{{ slotProps.data.name }}</div>
-          </div>
-        </div>
-        <DeleteButtonIcon @delete-item="() => deleteItem(slotProps.index)" />
-      </div>
-    </template>
-  </DataView>
+      <template #list="slotProps">
+        <ListItem
+          :gameData="slotProps.data"
+          @delete-item="() => deleteItem(slotProps.index)"
+        />
+      </template>
+      <template #grid="slotProps">
+        <GridItem
+          :gameData="slotProps.data"
+          @delete-item="() => deleteItem(slotProps.index)"
+        />
+      </template>
+    </DataView>
+  </div>
 </template>
 
 <script>
 import DataView from "primevue/dataview";
 import DataViewLayoutOptions from "primevue/dataviewlayoutoptions";
-import DeleteButtonIcon from "./UI/DeleteButtonIcon.vue";
+import GridItem from "./GridItem.vue";
+import ListItem from "./ListItem.vue";
 
 export default {
   name: "ListHolder",
   components: {
     DataView,
     DataViewLayoutOptions,
-    DeleteButtonIcon,
+
+    GridItem,
+    ListItem,
   },
   props: ["gamesList"],
   data() {
