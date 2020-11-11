@@ -4,7 +4,7 @@
       <div class="game-grid-centered">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
       </div>
-      <h2>{{ gameData.name }}</h2>
+      <h3>{{ gameData.name }}</h3>
       <div class="game-grid-details">
         <p>{{ gameData.min_players }} - {{ gameData.max_players }} players</p>
         <p>{{ gameData.min_playtime }} - {{ gameData.max_playtime }} mins</p>
@@ -43,9 +43,9 @@ img {
   margin: 1rem 0;
   max-height: 20rem;
 }
-h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
+h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
   margin: 0;
 }
 .game-grid-details {
