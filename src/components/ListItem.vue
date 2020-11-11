@@ -1,17 +1,12 @@
 <template>
-  <div @click="itemClicked">
+  <div>
     <p>List view {{ gameInfo.name }}</p>
   </div>
 </template>
 <script>
 export default {
   name: "GridItem",
-  methods: {
-    itemClicked() {
-      this.$emit("item-clicked", this.index);
-    },
-  },
-  props: ["index", "gameInfo"],
+  props: ["gameInfo"],
 };
 </script>
 <style scoped>
