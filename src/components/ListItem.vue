@@ -1,16 +1,29 @@
 <template>
-  <div class="p-col-12 p-md-4">
-    <div class="game-grid-item card">
-      <div class="game-grid-centered">
+  <div class="p-col-12">
+    <div class="game-list-item">
+      <div class="game-list-centered">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
       </div>
-      <h3>{{ gameData.name }}</h3>
-      <div class="game-grid-details">
-        <p>{{ gameData.min_players }} - {{ gameData.max_players }} players</p>
-        <p>{{ gameData.min_playtime }} - {{ gameData.max_playtime }} mins</p>
-        <p>{{ gameData.min_age }}+</p>
+      <div class="game-list-details">
+        <h3>{{ gameData.name }}</h3>
+        <p>
+          Number of players:
+          <strong
+            >{{ gameData.min_players }} - {{ gameData.max_players }}
+          </strong>
+        </p>
+        <p>
+          Time:
+          <strong
+            >{{ gameData.min_playtime }} -
+            {{ gameData.max_playtime }} mins</strong
+          >
+        </p>
+        <p>
+          Age: <strong>{{ gameData.min_age }}+</strong>
+        </p>
       </div>
-      <div class="game-grid-centered">
+      <div class="game-list-centered">
         <RemoveGameButton @delete-item="deleteItem" />
       </div>
     </div>
@@ -20,7 +33,7 @@
 import RemoveGameButton from "./UI/RemoveGameButton.vue";
 
 export default {
-  name: "GridItem",
+  name: "listItem",
   props: ["gameData"],
   components: {
     RemoveGameButton,
@@ -33,28 +46,40 @@ export default {
 };
 </script>
 <style scoped>
-.game-grid-item {
-  margin: 0.5rem;
-  border: 1px solid #dee2e6;
+p {
+  font-weight: 300;
+}
+strong {
+  font-weight: 400;
+}
+.game-list-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
   background-color: var(--very-light-grey);
 }
 img {
   height: 100%;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  margin: 1rem 0;
-  max-height: 20rem;
+  margin: 0 2rem;
+  max-height: 15rem;
 }
 h3 {
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0;
 }
-.game-grid-details {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.game-list-details {
+  flex: 1 1 0;
 }
-.game-grid-centered {
-  text-align: center;
+@media screen and (max-width: 650px) {
+  .game-list-item {
+    flex-direction: column;
+    align-items: center;
+  }
+  .game-list-detail {
+    text-align: center;
+  }
 }
 </style>
