@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h4>Are you sure you like like to remove this item from the list?</h4>
+    <h4>
+      Are you sure you like like to remove "{{ gameName }}" from the list?
+    </h4>
     <div class="buttons">
       <Button
         label="Cancel"
@@ -24,6 +26,12 @@ export default {
   emits: ["delete-confirmed", "close-modal"],
   components: {
     Button,
+  },
+  props: {
+    gameName: {
+      type: String,
+      default: "",
+    },
   },
   methods: {
     deleteConfirmed(e) {

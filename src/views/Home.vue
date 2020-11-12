@@ -4,7 +4,10 @@
     @delete-item="(gameIndex) => openModal(gameIndex)"
   />
   <Modal v-if="showModal" @close-modal="closeModal"
-    ><DeleteModal @close-modal="closeModal" @delete-confirmed="deleteItem"
+    ><DeleteModal
+      @close-modal="closeModal"
+      @delete-confirmed="deleteItem"
+      :gameName="gamesList[indexToRemove] ? gamesList[indexToRemove].name : ''"
   /></Modal>
 </template>
 <script>

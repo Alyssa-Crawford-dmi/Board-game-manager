@@ -90,4 +90,15 @@ describe("Home.vue", () => {
   it("Loading listHolder causes an api call to be made which updates the state", async () => {
     expect(wrapper.vm.gamesList).toHaveLength(numGames);
   });
+
+  it("The modal contains the name of the game to remove", async () => {
+    await wrapper.setData({ showModal: true, indexToRemove: clickIndex });
+    const modalText = await wrapper
+      .findComponent(Modal)
+      .find("h4")
+      .text();
+    expect(modalText.includes(fakeResult.data.games[clickIndex].name)).toBe(
+      true
+    );
+  });
 });
