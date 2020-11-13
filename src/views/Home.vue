@@ -4,8 +4,11 @@
     @delete-item="(gameIndex) => openDeleteModal(gameIndex)"
     @add-games="openAddGamesModal"
   />
-  <Modal v-if="showModal" @close-modal="closeModal"
-    ><DeleteModal
+  <Modal v-if="showModal" @close-modal="closeModal">
+    <template v-slot:title>{{
+      deleteModal ? "Remove game" : "Add games"
+    }}</template>
+    <DeleteModal
       v-if="deleteModal"
       @delete-confirmed="deleteItem"
       :gameName="gamesList[indexToRemove] ? gamesList[indexToRemove].name : ''"
