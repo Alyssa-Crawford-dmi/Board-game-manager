@@ -40,8 +40,12 @@ export default {
       this.showModal = !this.showModal;
     },
     deleteItem() {
+      if (this.indexToRemove === -1) {
+        return;
+      }
       this.showModal = !this.showModal;
       this.gamesList.splice(this.indexToRemove, 1);
+      this.indexToRemove = -1;
     },
     openModal(clickedIndex) {
       this.showModal = true;

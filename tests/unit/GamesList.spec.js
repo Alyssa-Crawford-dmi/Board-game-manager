@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import GamesList from "@/components/GamesList.vue";
 import DataView from "primevue/dataview";
+import Button from "primevue/button";
 
 const games = [
   { name: "game1", images: [] },
@@ -22,5 +23,9 @@ describe("GamesList.vue", () => {
     const expectedEmittedPayload = [clickIndex];
     wrapper.vm.deleteItem(clickIndex);
     expect(wrapper.emitted("delete-item")[0]).toEqual(expectedEmittedPayload);
+  });
+  it("Emits add-games when add games button pressed", async () => {
+    await wrapper.findComponent(Button).trigger("click");
+    expect(wrapper.emitted("add-games")).toBeTruthy();
   });
 });

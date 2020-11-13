@@ -53,7 +53,7 @@ describe("Home.vue", () => {
     expect(modal.exists()).toBe(false);
   });
   it("The second button in the modal causes the modal to be removed from the DOM", async () => {
-    await wrapper.setData({ showModal: true });
+    await wrapper.setData({ showModal: true, indexToRemove: clickIndex });
     await wrapper
       .findComponent(Modal)
       .findAllComponents(Button)[1]
@@ -84,6 +84,17 @@ describe("Home.vue", () => {
       .trigger("click");
     expect(wrapper.vm.gamesList).toHaveLength(numGames - 1);
     expect(wrapper.vm.gamesList[clickIndex] === replacingElm).toBe(true);
+  });
+
+  it("Does not remove any elements if indexToRemove is -1", async () => {
+    await wrapper.setData({
+      showModal: true,
+    });
+    await wrapper
+      .findComponent(Modal)
+      .findAllComponents(Button)[1]
+      .trigger("click");
+    expect(wrapper.vm.gamesList).toHaveLength(numGames);
   });
 
   //Game list updated on load
