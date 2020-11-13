@@ -12,7 +12,11 @@
       v-if="deleteModal"
       @delete-confirmed="deleteItem"
       :gameName="gamesList[indexToRemove] ? gamesList[indexToRemove].name : ''"
-    /><AddModal v-else @add-game="(game) => addGame(game)" />
+    /><AddModal
+      v-else
+      @add-game="(game) => addGame(game)"
+      :addStatus="addStatus"
+    />
   </Modal>
 </template>
 <script>
@@ -35,6 +39,7 @@ export default {
       deleteModal: true,
       gamesList: [],
       indexToRemove: -1,
+      addStatus: {},
     };
   },
   mounted() {
@@ -46,6 +51,7 @@ export default {
   methods: {
     closeModal() {
       this.showModal = !this.showModal;
+      this.addStatus = {};
     },
     deleteItem() {
       if (this.indexToRemove === -1) {
@@ -65,8 +71,14 @@ export default {
       this.showModal = true;
       this.deleteModal = false;
     },
-    addGame(game) {
-      this.gamesList.push(game);
+    addGame(newGame) {
+      const duplicate = this.gamesList.some((game) => game.id === newGame.id);
+      if (duplicate) {
+        this.addStatus = { error: true, msg: "Game already in list" };
+      } else {
+        this.addStatus = { error: false, msg: "Game added successfuly" };
+        this.gamesList.push(newGame);
+      }
     },
   },
 };

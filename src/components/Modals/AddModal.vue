@@ -17,6 +17,11 @@
         title="Search"
       />
     </div>
+    <Message
+      v-if="showStatus"
+      :messageInfo="addStatus"
+      @dismiss-message="showStatus = false"
+    />
     <SearchListItem
       v-for="game in gamesList"
       :key="game.id"
@@ -30,6 +35,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
+import Message from "../UI/message";
 
 export default {
   name: "AddModal",
@@ -38,16 +44,20 @@ export default {
     InputText,
     Button,
     SearchListItem,
+    Message,
   },
+  props: ["addStatus"],
   data: () => {
-    return { searchTerm: "", gamesList: [] };
+    return { searchTerm: "tic", gamesList: [], showStatus: false };
   },
   methods: {
     async search() {
       this.gamesList = await getGamesByName(this.searchTerm);
+      this.showStatus = false;
     },
     addGame(game) {
       this.$emit("add-game", game);
+      this.showStatus = true;
     },
   },
 };
