@@ -5,12 +5,6 @@
     </h4>
     <div class="buttons">
       <Button
-        label="Cancel"
-        class="p-button-raised p-button-secondary p-button-text"
-        @click="(e) => closeModal(e)"
-        style="margin-right: 30px"
-      />
-      <Button
         label="Remove"
         class="p-button-raised p-button-danger p-button-text"
         @click="(e) => deleteConfirmed(e)"
@@ -23,7 +17,7 @@
 import Button from "primevue/button";
 
 export default {
-  emits: ["delete-confirmed", "close-modal"],
+  emits: ["delete-confirmed"],
   components: {
     Button,
   },
@@ -34,13 +28,8 @@ export default {
     },
   },
   methods: {
-    deleteConfirmed(e) {
-      e.stopPropagation();
+    deleteConfirmed() {
       this.$emit("delete-confirmed");
-    },
-    closeModal(e) {
-      e.stopPropagation();
-      this.$emit("close-modal");
     },
   },
 };

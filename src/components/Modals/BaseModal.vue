@@ -1,14 +1,26 @@
 <template >
-  <div class="Backdrop" @click="(e) => closeModal(e)">
+  <div>
+    <div class="Backdrop" @click="(e) => closeModal(e)"></div>
     <div class="Modal">
+      <Button
+        @click="closeModal"
+        icon="pi pi-times"
+        class="p-button-rounded p-button-plain p-button-outlined"
+        title="Delete Item"
+      />
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
+import Button from "primevue/button";
+
 export default {
   name: "Modal",
+  components: {
+    Button,
+  },
   emits: ["close-modal"],
   methods: {
     closeModal() {
