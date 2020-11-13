@@ -1,13 +1,24 @@
 const axios = require("axios").default;
 
-const getGameByName = async (name) => {
+const getGamesByName = async (name) => {
   var result;
   await axios
     .get(
-      `https://api.boardgameatlas.com/api/search?name=${name}&client_id=9RLKyOd9MR`
+      `https://api.boardgameatlas.com/api/search?name=${name}&client_id=9RLKyOd9MR&limit=8`
     )
     .then((response) => {
-      result = response.data;
+      result = response.data.games.map((fullGame) => {
+        return {
+          id: fullGame.id,
+          name: fullGame.name,
+          min_players: fullGame.min_players,
+          max_players: fullGame.max_players,
+          min_playtime: fullGame.min_playtime,
+          max_playtime: fullGame.max_playtime,
+          min_age: fullGame.min_age,
+          thumb_url: fullGame.images.thumb,
+        };
+      });
     });
   return result;
 };
@@ -35,4 +46,4 @@ const getGamesFromIds = async (ids) => {
   return result;
 };
 
-export { getGameByName, getGamesFromIds };
+export { getGamesByName, getGamesFromIds };

@@ -24,24 +24,29 @@
         </p>
       </div>
       <div class="game-list-centered">
-        <RemoveGameButton @delete-item="deleteItem" />
+        <Button
+          @click="addItem"
+          icon="pi pi-plus"
+          class="p-button-rounded"
+          title="Add game"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
-import RemoveGameButton from "./UI/RemoveGameButton.vue";
+import Button from "primevue/button";
 
 export default {
   name: "listItem",
   props: ["gameData"],
-  emits: ["delete-item"],
+  emits: ["add-game"],
   components: {
-    RemoveGameButton,
+    Button,
   },
   methods: {
-    deleteItem() {
-      this.$emit("delete-item");
+    addItem() {
+      this.$emit("add-game");
     },
   },
 };

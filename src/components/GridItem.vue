@@ -22,6 +22,7 @@ import RemoveGameButton from "./UI/RemoveGameButton.vue";
 export default {
   name: "GridItem",
   props: ["gameData"],
+  emits: ["delete-item"],
   components: {
     RemoveGameButton,
   },

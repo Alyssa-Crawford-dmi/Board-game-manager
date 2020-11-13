@@ -14,6 +14,7 @@ export default {
   components: {
     Button,
   },
+  emits: ["delete-item"],
   methods: {
     deleteItem() {
       this.$emit("delete-item");

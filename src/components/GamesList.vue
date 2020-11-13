@@ -52,6 +52,7 @@ export default {
     GridItem,
     ListItem,
   },
+  emits: ["add-games", "delete-item"],
   props: ["gamesList"],
   data() {
     return {

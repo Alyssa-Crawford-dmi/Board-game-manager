@@ -12,7 +12,7 @@
       v-if="deleteModal"
       @delete-confirmed="deleteItem"
       :gameName="gamesList[indexToRemove] ? gamesList[indexToRemove].name : ''"
-    /><AddModal v-else @close-modal="closeModal" />
+    /><AddModal v-else @add-game="(game) => addGame(game)" />
   </Modal>
 </template>
 <script>
@@ -64,6 +64,9 @@ export default {
     openAddGamesModal() {
       this.showModal = true;
       this.deleteModal = false;
+    },
+    addGame(game) {
+      this.gamesList.push(game);
     },
   },
 };
