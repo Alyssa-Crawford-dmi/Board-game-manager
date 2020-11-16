@@ -69,12 +69,13 @@ export default {
   margin-left: 1rem;
 }
 .search-bar {
-  margin-top: 20px;
+  margin-top: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 .modal-contents {
   padding: 0;
   margin: 0;
   width: 100%;
-  background-color: cadetblue;
 }
 </style>

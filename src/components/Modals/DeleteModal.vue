@@ -1,9 +1,7 @@
 <template>
   <div>
-    <h4>
-      Are you sure you like like to remove "{{ gameName }}" from the list?
-    </h4>
-    <div class="buttons">
+    <p>Are you sure you like like to remove "{{ gameName }}" from the list?</p>
+    <div class="button">
       <Button
         label="Remove"
         class="p-button-raised p-button-danger p-button-text"
@@ -36,7 +34,7 @@ export default {
 </script>
 
 <style scoped>
-.buttons {
+.button {
   margin: 0 auto;
   width: fit-content;
 }

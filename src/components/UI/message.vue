@@ -1,27 +1,28 @@
 <template>
-  <div
-    :class="{
-      error: messageInfo.error,
-      success: !messageInfo.error,
-      'p-grid': true,
-      'p-ai-center': true,
-      'vertical-container': true,
-      container: true,
-    }"
-  >
-    <div class="p-col-2" style="text-align: center">
-      <span :class="iconClass"></span>
-    </div>
-    <div class="p-col-8" style="text-align: center">
-      {{ messageInfo.msg }}
-    </div>
-    <div class="p-col-2" style="text-align: right">
-      <Button
-        @click="() => dismissMessage()"
-        icon="pi pi-times"
-        class="p-button-rounded p-button-text p-button-plain"
-        title="Close alert"
-      />
+  <div class="p-col-12">
+    <div
+      :class="{
+        error: messageInfo.error,
+        success: !messageInfo.error,
+        'p-ai-center': true,
+        'vertical-container': true,
+        container: true,
+      }"
+    >
+      <div class="p-col-2" style="text-align: center">
+        <span :class="iconClass"></span>
+      </div>
+      <div class="p-col-8" style="text-align: center">
+        {{ messageInfo.msg }}
+      </div>
+      <div class="p-col-2" style="text-align: right">
+        <Button
+          @click="() => dismissMessage()"
+          icon="pi pi-times"
+          class="p-button-rounded p-button-text p-button-plain"
+          title="Close alert"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -63,12 +64,16 @@ export default {
   border: solid rgb(220, 53, 70) 2px;
 }
 .container {
-  margin-top: 0.5rem;
-  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
   width: 100%;
+  font-size: 1.2rem;
+  height: min-content;
 }
 div {
   height: fit-content;
-  padding: 0rem;
+  padding-top: 0rem;
+  padding-bottom: 0rem;
 }
 </style>

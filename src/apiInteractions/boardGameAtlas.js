@@ -16,7 +16,7 @@ const getGamesByName = async (name) => {
           min_playtime: fullGame.min_playtime,
           max_playtime: fullGame.max_playtime,
           min_age: fullGame.min_age,
-          thumb_url: fullGame.images.thumb,
+          thumb_url: fullGame.images.small,
         };
       });
     });

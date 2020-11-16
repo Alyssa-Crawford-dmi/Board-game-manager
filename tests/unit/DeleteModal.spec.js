@@ -18,7 +18,7 @@ describe("BaseModal.vue", () => {
     await wrapper.setProps({
       gameName,
     });
-    const modalText = await wrapper.find("h4").text();
+    const modalText = await wrapper.find("p").text();
     expect(modalText.includes(gameName)).toBe(true);
   });
 });
