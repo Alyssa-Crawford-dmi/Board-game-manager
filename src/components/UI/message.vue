@@ -4,6 +4,9 @@
       error: messageInfo.error,
       success: !messageInfo.error,
       'p-grid': true,
+      'p-ai-center': true,
+      'vertical-container': true,
+      container: true,
     }"
   >
     <div class="p-col-2" style="text-align: center">
@@ -59,10 +62,13 @@ export default {
   background-color: rgba(220, 53, 70, 50%);
   border: solid rgb(220, 53, 70) 2px;
 }
-div {
+.container {
   margin-top: 0.5rem;
-  padding: 0.5rem;
   font-size: 1.2rem;
+  width: 100%;
+}
+div {
   height: fit-content;
+  padding: 0rem;
 }
 </style>

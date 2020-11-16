@@ -22,7 +22,7 @@ describe("AddModal.vue", () => {
   axios.get.mockResolvedValue(fakeResult);
 
   beforeEach(() => {
-    wrapper = mount(AddModal);
+    wrapper = mount(AddModal, { props: { addStatus: { msg: "", error: "" } } });
   });
 
   //Basic components
