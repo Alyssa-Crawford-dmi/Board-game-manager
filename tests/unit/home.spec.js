@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import Home from "@/views/Home.vue";
 import GamesList from "@/components/GamesList.vue";
-import Modal from "@/components/Modals/BaseModal.vue";
+import Dialog from "primevue/dialog";
 import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import AddModal from "@/components/Modals/AddModal.vue";
 import axios from "axios";
@@ -31,22 +31,13 @@ describe("Home.vue", () => {
     const gamesList = wrapper.findComponent(GamesList);
     expect(gamesList.exists()).toBe(true);
   });
-  it("Has a Modal", async () => {
+  it("Has a dialog", async () => {
     await wrapper.setData({ showModal: true });
-    const modal = wrapper.findComponent(Modal);
-    expect(modal.exists()).toBe(true);
+    const dialog = wrapper.findComponent(Dialog);
+    expect(dialog.exists()).toBe(true);
   });
 
-  //Handle events emitted by modals
-  it("On close-modal the modal is no longer shown", async () => {
-    await wrapper.setData({
-      showModal: true,
-    });
-    const modal = wrapper.findComponent(Modal);
-    await modal.vm.$emit("close-modal");
-    const modalNew = wrapper.findComponent(Modal);
-    expect(modalNew.exists()).toBe(false);
-  });
+  //Handle events emitted by dialogs
 
   it("On delete-confirmed the modal is no longer shown", async () => {
     await wrapper.setData({
@@ -59,11 +50,11 @@ describe("Home.vue", () => {
   });
 
   //Handling events emitted by gamesList
-  it("On delete-item opens a modal and sets indexToRemove", async () => {
+  it("On delete-item opens a dialog and sets indexToRemove", async () => {
     const gamesList = wrapper.findComponent(GamesList);
     await gamesList.vm.$emit("delete-item", clickIndex);
-    const modal = wrapper.findComponent(Modal);
-    expect(modal.exists()).toBe(true);
+    const dialog = wrapper.findComponent(Dialog);
+    expect(dialog.exists()).toBe(true);
     expect(wrapper.vm.indexToRemove).toBe(clickIndex);
   });
 
@@ -109,8 +100,8 @@ describe("Home.vue", () => {
       indexToRemove: clickIndex,
       deleteModal: true,
     });
-    const modal = wrapper.findComponent(DeleteModal);
-    expect(modal.props("gameName")).toBe(
+    const dialog = wrapper.findComponent(DeleteModal);
+    expect(dialog.props("gameName")).toBe(
       fakeResult.data.games[clickIndex].name
     );
   });

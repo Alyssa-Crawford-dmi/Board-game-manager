@@ -4,10 +4,12 @@
     @delete-item="(gameIndex) => openDeleteModal(gameIndex)"
     @add-games="openAddGamesModal"
   />
-  <Modal v-if="showModal" @close-modal="closeModal">
-    <template v-slot:title>{{
-      deleteModal ? "Remove game" : "Add games"
-    }}</template>
+  <Dialog
+    :header="deleteModal ? 'Remove game' : 'Add games'"
+    v-model:visible="showModal"
+    :style="{ width: deleteModal ? '50vw' : '75vw' }"
+    :modal="true"
+  >
     <DeleteModal
       v-if="deleteModal"
       @delete-confirmed="deleteItem"
@@ -17,21 +19,21 @@
       @add-game="(game) => addGame(game)"
       :addStatus="addStatus"
     />
-  </Modal>
+  </Dialog>
 </template>
 <script>
 import { getGamesFromIds } from "../apiInteractions/boardGameAtlas";
 import GamesList from "../components/GamesList";
-import Modal from "../components/Modals/BaseModal.vue";
+import Dialog from "primevue/dialog";
 import DeleteModal from "../components/Modals/DeleteModal.vue";
 import AddModal from "../components/Modals/AddModal.vue";
 
 export default {
   components: {
     GamesList,
-    Modal,
     DeleteModal,
     AddModal,
+    Dialog,
   },
   data: () => {
     return {

@@ -17,17 +17,19 @@
         title="Search"
       />
     </div>
-    <Message
-      v-if="showStatus"
-      :messageInfo="addStatus"
-      @dismiss-message="showStatus = false"
-    />
-    <SearchListItem
-      v-for="game in gamesList"
-      :key="game.id"
-      :gameData="game"
-      @addGame="() => addGame(game)"
-    />
+    <div class="modal-contents">
+      <Message
+        v-if="showStatus"
+        :messageInfo="addStatus"
+        @dismiss-message="showStatus = false"
+      />
+      <SearchListItem
+        v-for="game in gamesList"
+        :key="game.id"
+        :gameData="game"
+        @addGame="() => addGame(game)"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -68,5 +70,11 @@ export default {
 }
 .search-bar {
   margin-top: 20px;
+}
+.modal-contents {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  background-color: cadetblue;
 }
 </style>
