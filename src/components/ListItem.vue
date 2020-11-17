@@ -8,19 +8,14 @@
         <h3>{{ gameData.name }}</h3>
         <p>
           Number of players:
-          <strong
-            >{{ gameData.min_players }} - {{ gameData.max_players }}
-          </strong>
+          <strong>{{ players }} </strong>
         </p>
         <p>
           Time:
-          <strong
-            >{{ gameData.min_playtime }} -
-            {{ gameData.max_playtime }} mins</strong
-          >
+          <strong>{{ playtime }}</strong>
         </p>
         <p>
-          Age: <strong>{{ gameData.min_age }}+</strong>
+          Age: <strong>{{ age }}</strong>
         </p>
       </div>
       <div class="game-list-centered">
@@ -31,6 +26,7 @@
 </template>
 <script>
 import RemoveGameButton from "./UI/RemoveGameButton.vue";
+import { rangeString, ageString } from "../utils/rangeString";
 
 export default {
   name: "listItem",
@@ -38,6 +34,21 @@ export default {
   emits: ["delete-item"],
   components: {
     RemoveGameButton,
+  },
+  computed: {
+    playtime() {
+      return rangeString(
+        this.gameData.min_playtime,
+        this.gameData.max_playtime,
+        "mins"
+      );
+    },
+    players() {
+      return rangeString(this.gameData.min_players, this.gameData.max_players);
+    },
+    age() {
+      return ageString(this.gameData.min_age);
+    },
   },
   methods: {
     deleteItem() {

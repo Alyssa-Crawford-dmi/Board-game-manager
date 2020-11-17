@@ -9,19 +9,14 @@
         <div class="game-details">
           <p>
             Number of players:
-            <strong
-              >{{ gameData.min_players }} - {{ gameData.max_players }}
-            </strong>
+            <strong>{{ players }} </strong>
           </p>
           <p>
             Time:
-            <strong
-              >{{ gameData.min_playtime }} -
-              {{ gameData.max_playtime }} mins</strong
-            >
+            <strong>{{ playtime }}</strong>
           </p>
           <p>
-            Age: <strong>{{ gameData.min_age }}+</strong>
+            Age: <strong>{{ age }}</strong>
           </p>
         </div>
       </div>
@@ -32,9 +27,25 @@
   </div>
 </template>
 <script>
+import { rangeString, ageString } from "../utils/rangeString";
 export default {
   name: "listItem",
   props: { gameData: { required: true, type: Object } },
+  computed: {
+    playtime() {
+      return rangeString(
+        this.gameData.min_playtime,
+        this.gameData.max_playtime,
+        "mins"
+      );
+    },
+    players() {
+      return rangeString(this.gameData.min_players, this.gameData.max_players);
+    },
+    age() {
+      return ageString(this.gameData.min_age);
+    },
+  },
 };
 </script>
 <style scoped>

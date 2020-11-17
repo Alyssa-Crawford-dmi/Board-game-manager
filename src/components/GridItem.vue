@@ -6,9 +6,15 @@
       </div>
       <h3>{{ gameData.name }}</h3>
       <div class="game-grid-details">
-        <p>{{ gameData.min_players }} - {{ gameData.max_players }} players</p>
-        <p>{{ gameData.min_playtime }} - {{ gameData.max_playtime }} mins</p>
-        <p>{{ gameData.min_age }}+</p>
+        <p>
+          <strong>{{ players }}</strong> players
+        </p>
+        <p>
+          <strong>{{ playtime }}</strong> mins
+        </p>
+        <p>
+          <strong>{{ age }}</strong>
+        </p>
       </div>
       <div class="game-grid-centered">
         <RemoveGameButton @delete-item="deleteItem" />
@@ -18,6 +24,7 @@
 </template>
 <script>
 import RemoveGameButton from "./UI/RemoveGameButton.vue";
+import { rangeString, ageString } from "../utils/rangeString";
 
 export default {
   name: "GridItem",
@@ -25,6 +32,20 @@ export default {
   emits: ["delete-item"],
   components: {
     RemoveGameButton,
+  },
+  computed: {
+    playtime() {
+      return rangeString(
+        this.gameData.min_playtime,
+        this.gameData.max_playtime
+      );
+    },
+    players() {
+      return rangeString(this.gameData.min_players, this.gameData.max_players);
+    },
+    age() {
+      return ageString(this.gameData.min_age);
+    },
   },
   methods: {
     deleteItem() {
@@ -57,5 +78,8 @@ h3 {
 }
 .game-grid-centered {
   text-align: center;
+}
+strong {
+  font-weight: 500;
 }
 </style>
