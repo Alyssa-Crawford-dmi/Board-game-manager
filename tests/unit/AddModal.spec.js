@@ -5,6 +5,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { nextTick } from "vue";
 import SearchListItem from "@/components/SearchListItem.vue";
+import Message from "@/components/UI/message.vue";
 
 const fakeResult = {
   data: {
@@ -27,7 +28,7 @@ describe("AddModal.vue", () => {
     });
   });
 
-  //Basic components
+  //Components
   it("Has an inputText bound to searchTerm", async () => {
     const input = wrapper.findComponent(InputText);
     const search = "Ticket";
@@ -35,12 +36,24 @@ describe("AddModal.vue", () => {
     expect(input.exists()).toBe(true);
     expect(wrapper.vm.searchTerm === search).toBe(true);
   });
+  it("Has an icon if searchResults contains a game that is in gamesList", async () => {
+    await wrapper.setData({ searchResults: fakeResult.data.games });
+    await wrapper.setProps({ gamesList: fakeResult.data.games });
+    const icon = wrapper.find("i");
+    expect(icon.exists()).toBe(true);
+  });
 
+  //Searching
   it("Makes a call to axios when search pressed", async () => {
     await wrapper.findComponent(Button).trigger("click");
     expect(axios.get).toHaveBeenCalled();
   });
-
+  it("Makes a call to axios when searchTerm changed", async () => {
+    const input = wrapper.findComponent(InputText);
+    const search = "Ticket";
+    await input.setValue(search);
+    expect(axios.get).toHaveBeenCalled();
+  });
   it("Saves the returned games list to searchResults", async () => {
     await wrapper.vm.search();
     await nextTick();
@@ -48,15 +61,21 @@ describe("AddModal.vue", () => {
       expect(game.name).toEqual(wrapper.vm.searchResults[index].name);
     });
   });
-
   it("Creates one SearchListItem per game in searchResults", async () => {
     await wrapper.setData({ searchResults: fakeResult.data.games });
     const listItems = wrapper.findAllComponents(SearchListItem);
     expect(listItems).toHaveLength(numGames);
   });
 
+  //Adding games
   it("Calling addGame emits the add-game event", async () => {
     wrapper.vm.addGame(fakeResult.data.games[0]);
     expect(wrapper.emitted("add-game")[0][0]).toEqual(fakeResult.data.games[0]);
+  });
+  it("Has a message component after addGame is called", async () => {
+    wrapper.vm.addGame(fakeResult.data.games[0]);
+    await nextTick();
+    const message = wrapper.findComponent(Message);
+    expect(message.exists()).toBe(true);
   });
 });

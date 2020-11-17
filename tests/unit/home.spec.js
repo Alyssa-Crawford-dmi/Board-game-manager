@@ -9,9 +9,9 @@ import axios from "axios";
 const fakeResult = {
   data: {
     games: [
-      { name: "game1", images: [] },
-      { name: "game2", images: [] },
-      { name: "game3", images: [] },
+      { id: "1", name: "game1", images: [] },
+      { id: "2", name: "game2", images: [] },
+      { id: "3", name: "game3", images: [] },
     ],
   },
 };
@@ -38,7 +38,6 @@ describe("Home.vue", () => {
   });
 
   //Handle events emitted by dialogs
-
   it("On delete-confirmed the modal is no longer shown", async () => {
     await wrapper.setData({
       showModal: true,
@@ -47,6 +46,23 @@ describe("Home.vue", () => {
     const modal = wrapper.findComponent(DeleteModal);
     await modal.vm.$emit("delete-confirmed");
     expect(wrapper.vm.showModal).toBe(false);
+  });
+  it("On add-game a new game is added to the list unless it was already in the list", async () => {
+    const oldLength = wrapper.vm.gamesList.length;
+    await wrapper.setData({
+      showModal: true,
+      deleteModal: false,
+    });
+    const modal = wrapper.findComponent(AddModal);
+    await modal.vm.$emit("add-game", { id: "3", name: "game3", images: [] });
+    await modal.vm.$emit("add-game", { id: "4", name: "game4", images: [] });
+    expect(wrapper.vm.gamesList.length).toBe(oldLength + 1);
+    expect(
+      wrapper.vm.gamesList.some((gameInList) => gameInList.id === "4")
+    ).toBe(true);
+    expect(
+      wrapper.vm.gamesList.some((gameInList) => gameInList.id === "3")
+    ).toBe(true);
   });
 
   //Handling events emitted by gamesList

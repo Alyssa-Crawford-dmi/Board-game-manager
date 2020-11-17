@@ -34,7 +34,7 @@ import RemoveGameButton from "./UI/RemoveGameButton.vue";
 
 export default {
   name: "listItem",
-  props: ["gameData"],
+  props: { gameData: { required: true, type: Object } },
   emits: ["delete-item"],
   components: {
     RemoveGameButton,

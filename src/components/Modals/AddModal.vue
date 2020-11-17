@@ -52,7 +52,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
-import Message from "../UI/message";
+import Message from "../UI/Message";
 
 export default {
   name: "AddModal",
@@ -63,9 +63,9 @@ export default {
     SearchListItem,
     Message,
   },
-  props: ["addStatus", "gamesList"],
+  props: { addStatus: Object, gamesList: { required: true, type: Array } },
   data: () => {
-    return { searchTerm: "ticket", searchResults: [], showStatus: false };
+    return { searchTerm: "", searchResults: [], showStatus: false };
   },
   watch: {
     searchTerm: function () {

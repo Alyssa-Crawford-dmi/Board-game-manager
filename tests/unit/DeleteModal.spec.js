@@ -2,7 +2,7 @@ import { mount } from "@vue/test-utils";
 import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import Button from "primevue/button";
 
-describe("BaseModal.vue", () => {
+describe("DeleteModal.vue", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mount(DeleteModal);

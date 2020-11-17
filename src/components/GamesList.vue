@@ -53,7 +53,7 @@ export default {
     ListItem,
   },
   emits: ["add-games", "delete-item"],
-  props: ["gamesList"],
+  props: { gamesList: { required: true, type: Array } },
   data() {
     return {
       layout: "grid",

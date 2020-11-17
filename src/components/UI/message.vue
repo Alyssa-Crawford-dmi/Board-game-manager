@@ -31,7 +31,14 @@ import Button from "primevue/button";
 
 export default {
   name: "message",
-  props: ["messageInfo"],
+  props: {
+    messageInfo: {
+      type: Object,
+      default: function () {
+        return { msg: "", error: false };
+      },
+    },
+  },
   emits: ["dismiss-message"],
   components: {
     Button,

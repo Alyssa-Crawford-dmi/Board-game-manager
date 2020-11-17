@@ -34,7 +34,7 @@
 <script>
 export default {
   name: "listItem",
-  props: ["gameData"],
+  props: { gameData: { required: true, type: Object } },
 };
 </script>
 <style scoped>
