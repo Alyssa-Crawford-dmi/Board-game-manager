@@ -23,12 +23,27 @@
         :messageInfo="addStatus"
         @dismiss-message="showStatus = false"
       />
+      <p v-if="searchResults.length === 0 && searchTerm !== ''">
+        No games found. Please try a different search
+      </p>
       <SearchListItem
-        v-for="game in gamesList"
+        v-for="game in searchResults"
         :key="game.id"
         :gameData="game"
-        @addGame="() => addGame(game)"
-      />
+      >
+        <i
+          v-if="gamesListContains(game)"
+          class="pi pi-check green"
+          title="Game already in list"
+        />
+        <Button
+          v-else
+          @click="() => addGame(game)"
+          icon="pi pi-plus"
+          class="p-button-rounded"
+          title="Add game"
+        />
+      </SearchListItem>
     </div>
   </div>
 </template>
@@ -48,18 +63,26 @@ export default {
     SearchListItem,
     Message,
   },
-  props: ["addStatus"],
+  props: ["addStatus", "gamesList"],
   data: () => {
-    return { searchTerm: "tic", gamesList: [], showStatus: false };
+    return { searchTerm: "ticket", searchResults: [], showStatus: false };
+  },
+  watch: {
+    searchTerm: function () {
+      this.search();
+    },
   },
   methods: {
     async search() {
-      this.gamesList = await getGamesByName(this.searchTerm);
+      this.searchResults = await getGamesByName(this.searchTerm);
       this.showStatus = false;
     },
     addGame(game) {
       this.$emit("add-game", game);
       this.showStatus = true;
+    },
+    gamesListContains(game) {
+      return this.gamesList.some((gameInList) => game.id === gameInList.id);
     },
   },
 };
@@ -77,5 +100,13 @@ export default {
   padding: 0;
   margin: 0;
   width: 100%;
+}
+p {
+  text-align: center;
+  font-size: large;
+}
+.green {
+  color: forestgreen;
+  font-size: large;
 }
 </style>

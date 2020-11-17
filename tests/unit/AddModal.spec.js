@@ -22,7 +22,9 @@ describe("AddModal.vue", () => {
   axios.get.mockResolvedValue(fakeResult);
 
   beforeEach(() => {
-    wrapper = mount(AddModal, { props: { addStatus: { msg: "", error: "" } } });
+    wrapper = mount(AddModal, {
+      props: { addStatus: { msg: "", error: "" }, gamesList: [] },
+    });
   });
 
   //Basic components
@@ -39,16 +41,16 @@ describe("AddModal.vue", () => {
     expect(axios.get).toHaveBeenCalled();
   });
 
-  it("Saves the returned games list to gamesList", async () => {
+  it("Saves the returned games list to searchResults", async () => {
     await wrapper.vm.search();
     await nextTick();
     fakeResult.data.games.map((game, index) => {
-      expect(game.name).toEqual(wrapper.vm.gamesList[index].name);
+      expect(game.name).toEqual(wrapper.vm.searchResults[index].name);
     });
   });
 
-  it("Creates one SearchListItem per game in gamesList", async () => {
-    await wrapper.setData({ gamesList: fakeResult.data.games });
+  it("Creates one SearchListItem per game in searchResults", async () => {
+    await wrapper.setData({ searchResults: fakeResult.data.games });
     const listItems = wrapper.findAllComponents(SearchListItem);
     expect(listItems).toHaveLength(numGames);
   });

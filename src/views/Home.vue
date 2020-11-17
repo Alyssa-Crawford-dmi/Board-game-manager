@@ -18,6 +18,7 @@
       v-else
       @add-game="(game) => addGame(game)"
       :addStatus="addStatus"
+      :gamesList="gamesList"
     />
   </Dialog>
 </template>

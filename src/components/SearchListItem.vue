@@ -26,31 +26,15 @@
         </div>
       </div>
       <div>
-        <Button
-          @click="addItem"
-          icon="pi pi-plus"
-          class="p-button-rounded"
-          title="Add game"
-        />
+        <slot></slot>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Button from "primevue/button";
-
 export default {
   name: "listItem",
   props: ["gameData"],
-  emits: ["add-game"],
-  components: {
-    Button,
-  },
-  methods: {
-    addItem() {
-      this.$emit("add-game");
-    },
-  },
 };
 </script>
 <style scoped>
