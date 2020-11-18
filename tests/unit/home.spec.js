@@ -4,7 +4,7 @@ import GamesList from "@/components/GamesList.vue";
 import Dialog from "primevue/dialog";
 import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import AddModal from "@/components/Modals/AddModal.vue";
-import DetailModal from "@/components/Modals/DetailModal.vue";
+import DetailModal from "@/components/Modals/DetailModalWrapper.vue";
 import axios from "axios";
 import { modalTypes } from "../../src/utils/modalTypes.js";
 import { nextTick } from "vue";

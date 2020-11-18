@@ -32,7 +32,7 @@ import GamesList from "../components/GamesList";
 import Dialog from "primevue/dialog";
 import DeleteModal from "../components/Modals/DeleteModal.vue";
 import AddModal from "../components/Modals/AddModal.vue";
-import DetailModal from "../components/Modals/DetailModal.vue";
+import DetailModal from "../components/Modals/DetailModalWrapper.vue";
 import { modalTypes } from "../utils/modalTypes.js";
 
 export default {
@@ -83,10 +83,7 @@ export default {
   watch: {
     showModal: function () {
       if (!this.showModal) {
-        if (
-          this.selectedModalType === modalTypes.DETAIL &&
-          this.lastSearch !== ""
-        ) {
+        if (this.selectedModalType === modalTypes.DETAIL && this.lastSearch) {
           this.showModal = true;
           this.selectedModalType = modalTypes.ADD;
           return;

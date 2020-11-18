@@ -45,5 +45,16 @@ const getGamesFromIds = async (ids) => {
     });
   return result;
 };
+const getGameDetailsFromId = async (id) => {
+  var result;
+  await axios
+    .get(
+      `https://api.boardgameatlas.com/api/search?ids=${id}&client_id=9RLKyOd9MR`
+    )
+    .then((response) => {
+      result = response.data.games[0];
+    });
+  return result;
+};
 
-export { getGamesByName, getGamesFromIds };
+export { getGamesByName, getGamesFromIds, getGameDetailsFromId };
