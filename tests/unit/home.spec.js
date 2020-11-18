@@ -12,9 +12,33 @@ import { nextTick } from "vue";
 const fakeResult = {
   data: {
     games: [
-      { id: "1", name: "game1", images: [] },
-      { id: "2", name: "game2", images: [] },
-      { id: "3", name: "game3", images: [] },
+      {
+        id: "1",
+        name: "game1",
+        images: [],
+        artists: ["Julien Delval", "Cyrille Daujean"],
+        average_user_rating: 3.440842183244887,
+        primary_publisher: {},
+        primary_designer: {},
+      },
+      {
+        id: "2",
+        name: "game2",
+        images: [],
+        artists: ["Julien Delval", "Cyrille Daujean"],
+        average_user_rating: 3.440842183244887,
+        primary_publisher: {},
+        primary_designer: {},
+      },
+      {
+        id: "3",
+        name: "game3",
+        images: [],
+        artists: ["Julien Delval", "Cyrille Daujean"],
+        average_user_rating: 3.440842183244887,
+        primary_publisher: {},
+        primary_designer: {},
+      },
     ],
   },
 };
