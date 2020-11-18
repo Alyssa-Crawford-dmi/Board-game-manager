@@ -3,6 +3,7 @@
     :gamesList="gamesList"
     @delete-item="(gameIndex) => openDeleteModal(gameIndex)"
     @add-games="openAddGamesModal"
+    @game-detail="(gameId) => openDetailModal(gameId)"
   />
   <Dialog
     :header="header"
@@ -15,11 +16,14 @@
       @delete-confirmed="deleteItem"
       :gameName="gamesList[indexToRemove] ? gamesList[indexToRemove].name : ''"
     /><AddModal
-      v-else
+      v-else-if="selectedModalType === 'ADD'"
       @add-game="(game) => addGame(game)"
       :addStatus="addStatus"
       :gamesList="gamesList"
+      @game-detail="(gameId, search) => openDetailModal(gameId, search)"
+      :lastSearch="lastSearch"
     />
+    <DetailModal v-else :gameId="detailGameId" />
   </Dialog>
 </template>
 <script>
@@ -28,6 +32,7 @@ import GamesList from "../components/GamesList";
 import Dialog from "primevue/dialog";
 import DeleteModal from "../components/Modals/DeleteModal.vue";
 import AddModal from "../components/Modals/AddModal.vue";
+import DetailModal from "../components/Modals/DetailModal.vue";
 import { modalTypes } from "../utils/modalTypes.js";
 
 export default {
@@ -35,6 +40,7 @@ export default {
     GamesList,
     DeleteModal,
     AddModal,
+    DetailModal,
     Dialog,
   },
   data: () => {
@@ -44,6 +50,8 @@ export default {
       gamesList: [],
       indexToRemove: -1,
       addStatus: {},
+      detailGameId: "",
+      lastSearch: "",
     };
   },
   computed: {
@@ -72,17 +80,29 @@ export default {
       this.gamesList = res;
     });
   },
-  methods: {
-    closeModal() {
-      this.showModal = !this.showModal;
-      this.addStatus = {};
+  watch: {
+    showModal: function () {
+      if (!this.showModal) {
+        if (
+          this.selectedModalType === modalTypes.DETAIL &&
+          this.lastSearch !== ""
+        ) {
+          this.showModal = true;
+          this.selectedModalType = modalTypes.ADD;
+          return;
+        }
+        if (this.selectedModalType === modalTypes.ADD) {
+          this.lastSearch = "";
+        }
+      }
     },
+  },
+  methods: {
     deleteItem() {
+      this.showModal = false;
       if (this.indexToRemove === -1) {
-        this.showModal = !this.showModal;
         return;
       }
-      this.showModal = !this.showModal;
       this.gamesList.splice(this.indexToRemove, 1);
       this.indexToRemove = -1;
     },
@@ -94,6 +114,12 @@ export default {
     openAddGamesModal() {
       this.showModal = true;
       this.selectedModalType = modalTypes.ADD;
+    },
+    openDetailModal(gameId, search) {
+      this.detailGameId = gameId;
+      this.showModal = true;
+      this.selectedModalType = modalTypes.DETAIL;
+      this.lastSearch = search;
     },
     addGame(newGame) {
       const duplicate = this.gamesList.some((game) => game.id === newGame.id);

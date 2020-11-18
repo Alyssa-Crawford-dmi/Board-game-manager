@@ -46,6 +46,11 @@ describe("GamesList.vue", () => {
     wrapper.vm.deleteItem(clickIndex);
     expect(wrapper.emitted("delete-item")[0]).toEqual(expectedEmittedPayload);
   });
+  it("Emits game-detail with the value passed when detail is called", async () => {
+    const fakeId = "1234";
+    wrapper.vm.detail(fakeId);
+    expect(wrapper.emitted("game-detail")[0][0]).toEqual(fakeId);
+  });
   it("Emits add-games when add games button pressed", async () => {
     await wrapper.findComponent(Button).trigger("click");
     expect(wrapper.emitted("add-games")).toBeTruthy();

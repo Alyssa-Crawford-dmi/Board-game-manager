@@ -24,12 +24,14 @@
         <ListItem
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
+          @item-clicked="() => detail(slotProps.data.id)"
         />
       </template>
       <template #grid="slotProps">
         <GridItem
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
+          @item-clicked="() => detail(slotProps.data.id)"
         />
       </template>
     </DataView>
@@ -52,7 +54,7 @@ export default {
     GridItem,
     ListItem,
   },
-  emits: ["add-games", "delete-item"],
+  emits: ["add-games", "delete-item", "game-detail"],
   props: { gamesList: { required: true, type: Array } },
   data() {
     return {
@@ -65,6 +67,9 @@ export default {
     },
     addGames() {
       this.$emit("add-games");
+    },
+    detail(id) {
+      this.$emit("game-detail", id);
     },
   },
 };

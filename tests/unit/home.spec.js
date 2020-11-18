@@ -4,8 +4,10 @@ import GamesList from "@/components/GamesList.vue";
 import Dialog from "primevue/dialog";
 import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import AddModal from "@/components/Modals/AddModal.vue";
+import DetailModal from "@/components/Modals/DetailModal.vue";
 import axios from "axios";
 import { modalTypes } from "../../src/utils/modalTypes.js";
+import { nextTick } from "vue";
 
 const fakeResult = {
   data: {
@@ -77,9 +79,18 @@ describe("Home.vue", () => {
 
   it("On add-games opens an addModal", async () => {
     const gamesList = wrapper.findComponent(GamesList);
-    await gamesList.vm.$emit("add-games", clickIndex);
+    await gamesList.vm.$emit("add-games");
     const addModal = wrapper.findComponent(AddModal);
     expect(addModal.exists()).toBe(true);
+  });
+
+  it("On game-detail opens an detailModal and sets detailGameId to the payload of the emitted event", async () => {
+    const gameId = fakeResult.data.games[clickIndex].id;
+    const gamesList = wrapper.findComponent(GamesList);
+    await gamesList.vm.$emit("game-detail", gameId);
+    const detailModal = wrapper.findComponent(DetailModal);
+    expect(detailModal.exists()).toBe(true);
+    expect(wrapper.vm.detailGameId).toEqual(gameId);
   });
 
   //Removing list items
@@ -115,11 +126,54 @@ describe("Home.vue", () => {
     await wrapper.setData({
       showModal: true,
       indexToRemove: clickIndex,
-      deleteModal: true,
+      selectedModalType: modalTypes.DELETE,
     });
     const dialog = wrapper.findComponent(DeleteModal);
     expect(dialog.props("gameName")).toBe(
       fakeResult.data.games[clickIndex].name
     );
+  });
+
+  //State diagram between modals
+  it("Opening a detailModal when the active modal is an addModal saves the current search string to lastSearch", async () => {
+    const search = "Game";
+    await wrapper.setData({
+      showModal: true,
+      selectedModalType: modalTypes.ADD,
+    });
+    const modal = wrapper.findComponent(AddModal);
+    await modal.vm.$emit("game-detail", "id", search);
+    expect(wrapper.vm.lastSearch).toEqual(search);
+  });
+
+  it("Clears last search when the add modal is closed", async () => {
+    await wrapper.setData({
+      showModal: false,
+      selectedModalType: modalTypes.ADD,
+    });
+    expect(wrapper.vm.lastSearch).toEqual("");
+  });
+  it("Closing the detail modal does not change lastSearch", async () => {
+    const lastSearch = "game";
+    await wrapper.setData({
+      showModal: false,
+      selectedModalType: modalTypes.DETAIL,
+      lastSearch,
+    });
+    expect(wrapper.vm.lastSearch).toEqual(lastSearch);
+  });
+  it("Opens the add modal if the detail modal was closed and lastSearch is not empty", async () => {
+    const lastSearch = "game";
+    await wrapper.setData({
+      showModal: true,
+      selectedModalType: modalTypes.DETAIL,
+      lastSearch,
+    });
+    await wrapper.setData({
+      showModal: false,
+    });
+    await nextTick();
+    const modal = wrapper.findComponent(AddModal);
+    expect(modal.exists()).toBe(true);
   });
 });

@@ -31,7 +31,7 @@ import { rangeString, ageString } from "../utils/rangeString";
 export default {
   name: "listItem",
   props: { gameData: { required: true, type: Object } },
-  emits: ["delete-item"],
+  emits: ["delete-item", "item-clicked"],
   components: {
     RemoveGameButton,
   },
@@ -55,7 +55,7 @@ export default {
       this.$emit("delete-item");
     },
     loadDetails() {
-      this.$router.push(`/game/${this.gameData.id}`);
+      this.$emit("item-clicked");
     },
   },
 };

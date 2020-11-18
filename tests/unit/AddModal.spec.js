@@ -78,4 +78,13 @@ describe("AddModal.vue", () => {
     const message = wrapper.findComponent(Message);
     expect(message.exists()).toBe(true);
   });
+
+  //History
+  it("When a lastSearch value is passed it sets search term to that value", async () => {
+    const lastSearch = "game";
+    const wrapperWithProps = mount(AddModal, {
+      props: { addStatus: { msg: "", error: "" }, gamesList: [], lastSearch },
+    });
+    expect(wrapperWithProps.vm.searchTerm).toEqual(lastSearch);
+  });
 });

@@ -30,6 +30,7 @@
         v-for="game in searchResults"
         :key="game.id"
         :gameData="game"
+        @item-clicked="() => detail(game.id)"
       >
         <i
           v-if="gamesListContains(game)"
@@ -56,16 +57,23 @@ import Message from "../UI/Message";
 
 export default {
   name: "AddModal",
-  emits: ["add-game"],
+  emits: ["add-game", "game-detail"],
   components: {
     InputText,
     Button,
     SearchListItem,
     Message,
   },
-  props: { addStatus: Object, gamesList: { required: true, type: Array } },
+  props: {
+    addStatus: Object,
+    gamesList: { required: true, type: Array },
+    lastSearch: { type: String, default: "" },
+  },
   data: () => {
     return { searchTerm: "", searchResults: [], showStatus: false };
+  },
+  created() {
+    this.searchTerm = this.lastSearch;
   },
   watch: {
     searchTerm: function () {
@@ -84,6 +92,9 @@ export default {
     },
     gamesListContains(game) {
       return this.gamesList.some((gameInList) => game.id === gameInList.id);
+    },
+    detail(id) {
+      this.$emit("game-detail", id, this.searchTerm);
     },
   },
 };

@@ -31,6 +31,7 @@ import { rangeString, ageString } from "../utils/rangeString";
 export default {
   name: "listItem",
   props: { gameData: { required: true, type: Object } },
+  emits: ["item-clicked"],
   computed: {
     playtime() {
       return rangeString(
@@ -48,7 +49,7 @@ export default {
   },
   methods: {
     loadDetails() {
-      this.$router.push(`/game/${this.gameData.id}`);
+      this.$emit("item-clicked");
     },
   },
 };
