@@ -38,7 +38,7 @@
         />
         <Button
           v-else
-          @click="() => addGame(game)"
+          @click="(e) => addGame(game, e)"
           icon="pi pi-plus"
           class="p-button-rounded"
           title="Add game"
@@ -77,7 +77,8 @@ export default {
       this.searchResults = await getGamesByName(this.searchTerm);
       this.showStatus = false;
     },
-    addGame(game) {
+    addGame(game, e) {
+      e.stopPropagation();
       this.$emit("add-game", game);
       this.showStatus = true;
     },

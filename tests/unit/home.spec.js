@@ -5,6 +5,7 @@ import Dialog from "primevue/dialog";
 import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import AddModal from "@/components/Modals/AddModal.vue";
 import axios from "axios";
+import { modalTypes } from "../../src/utils/modalTypes.js";
 
 const fakeResult = {
   data: {
@@ -41,7 +42,7 @@ describe("Home.vue", () => {
   it("On delete-confirmed the modal is no longer shown", async () => {
     await wrapper.setData({
       showModal: true,
-      deleteModal: true,
+      selectedModalType: modalTypes.DELETE,
     });
     const modal = wrapper.findComponent(DeleteModal);
     await modal.vm.$emit("delete-confirmed");
@@ -51,7 +52,7 @@ describe("Home.vue", () => {
     const oldLength = wrapper.vm.gamesList.length;
     await wrapper.setData({
       showModal: true,
-      deleteModal: false,
+      selectedModalType: modalTypes.ADD,
     });
     const modal = wrapper.findComponent(AddModal);
     await modal.vm.$emit("add-game", { id: "3", name: "game3", images: [] });
@@ -87,7 +88,7 @@ describe("Home.vue", () => {
     await wrapper.setData({
       indexToRemove: clickIndex,
       showModal: true,
-      deleteModal: true,
+      selectedModalType: modalTypes.DELETE,
     });
     const modal = wrapper.findComponent(DeleteModal);
     await modal.vm.$emit("delete-confirmed");
@@ -98,7 +99,7 @@ describe("Home.vue", () => {
   it("Does not remove any elements if indexToRemove is -1", async () => {
     await wrapper.setData({
       showModal: true,
-      deleteModal: true,
+      selectedModalType: modalTypes.DELETE,
     });
     const modal = wrapper.findComponent(DeleteModal);
     await modal.vm.$emit("delete-confirmed");

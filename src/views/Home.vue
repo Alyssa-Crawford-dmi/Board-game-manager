@@ -5,13 +5,13 @@
     @add-games="openAddGamesModal"
   />
   <Dialog
-    :header="deleteModal ? 'Remove game' : 'Add games'"
+    :header="header"
     v-model:visible="showModal"
-    :style="{ width: deleteModal ? '50vw' : '75vw' }"
     :modal="true"
+    :style="{ width: modalWidth }"
   >
     <DeleteModal
-      v-if="deleteModal"
+      v-if="selectedModalType === 'DELETE'"
       @delete-confirmed="deleteItem"
       :gameName="gamesList[indexToRemove] ? gamesList[indexToRemove].name : ''"
     /><AddModal
@@ -28,6 +28,7 @@ import GamesList from "../components/GamesList";
 import Dialog from "primevue/dialog";
 import DeleteModal from "../components/Modals/DeleteModal.vue";
 import AddModal from "../components/Modals/AddModal.vue";
+import { modalTypes } from "../utils/modalTypes.js";
 
 export default {
   components: {
@@ -39,11 +40,31 @@ export default {
   data: () => {
     return {
       showModal: false,
-      deleteModal: true,
+      selectedModalType: modalTypes.DELETE,
       gamesList: [],
       indexToRemove: -1,
       addStatus: {},
     };
+  },
+  computed: {
+    header() {
+      switch (this.selectedModalType) {
+        case modalTypes.DELETE:
+          return "Remove game";
+        case modalTypes.ADD:
+          return "Add games";
+        case modalTypes.DETAIL:
+          return "Game detail";
+        default:
+          return "";
+      }
+    },
+    modalWidth() {
+      if (this.selectedModalType === modalTypes.DELETE) {
+        return "50vw";
+      }
+      return "75vw";
+    },
   },
   mounted() {
     const gameIds = ["AuBvbISHR6", "GJ94Cl7cz5", "XZ9BeWAgCu", "GGwRDABj7L"];
@@ -68,11 +89,11 @@ export default {
     openDeleteModal(clickedIndex) {
       this.showModal = true;
       this.indexToRemove = clickedIndex;
-      this.deleteModal = true;
+      this.selectedModalType = modalTypes.DELETE;
     },
     openAddGamesModal() {
       this.showModal = true;
-      this.deleteModal = false;
+      this.selectedModalType = modalTypes.ADD;
     },
     addGame(newGame) {
       const duplicate = this.gamesList.some((game) => game.id === newGame.id);

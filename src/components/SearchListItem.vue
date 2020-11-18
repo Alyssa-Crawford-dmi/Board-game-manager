@@ -1,5 +1,5 @@
 <template>
-  <div class="p-col-12">
+  <div class="p-col-12 pointer" @click="loadDetails">
     <div class="game-list-item">
       <div>
         <img :src="gameData.thumb_url" :alt="gameData.name" />
@@ -44,6 +44,11 @@ export default {
     },
     age() {
       return ageString(this.gameData.min_age);
+    },
+  },
+  methods: {
+    loadDetails() {
+      this.$router.push(`/game/${this.gameData.id}`);
     },
   },
 };

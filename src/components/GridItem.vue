@@ -1,5 +1,5 @@
 <template>
-  <div class="p-col-12 p-md-4">
+  <div class="p-col-12 p-md-4 pointer" @click="loadDetails">
     <div class="game-grid-item card">
       <div class="game-grid-centered">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
@@ -50,6 +50,9 @@ export default {
   methods: {
     deleteItem() {
       this.$emit("delete-item");
+    },
+    loadDetails() {
+      this.$router.push(`/game/${this.gameData.id}`);
     },
   },
 };

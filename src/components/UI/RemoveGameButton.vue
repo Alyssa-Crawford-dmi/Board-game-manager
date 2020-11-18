@@ -1,6 +1,6 @@
 <template>
   <Button
-    @click="() => deleteItem()"
+    @click="(e) => deleteItem(e)"
     label="Remove game"
     class="p-button-danger p-button-text"
     title="Delete Item"
@@ -16,7 +16,8 @@ export default {
   },
   emits: ["delete-item"],
   methods: {
-    deleteItem() {
+    deleteItem(e) {
+      e.stopPropagation();
       this.$emit("delete-item");
     },
   },

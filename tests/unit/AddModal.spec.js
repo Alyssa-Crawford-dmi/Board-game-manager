@@ -69,11 +69,11 @@ describe("AddModal.vue", () => {
 
   //Adding games
   it("Calling addGame emits the add-game event", async () => {
-    wrapper.vm.addGame(fakeResult.data.games[0]);
+    wrapper.vm.addGame(fakeResult.data.games[0], new Event("Click"));
     expect(wrapper.emitted("add-game")[0][0]).toEqual(fakeResult.data.games[0]);
   });
   it("Has a message component after addGame is called", async () => {
-    wrapper.vm.addGame(fakeResult.data.games[0]);
+    wrapper.vm.addGame(fakeResult.data.games[0], new Event("Click"));
     await nextTick();
     const message = wrapper.findComponent(Message);
     expect(message.exists()).toBe(true);
