@@ -2,7 +2,9 @@
   <table>
     <tr>
       <td class="first-col">Average user rating:</td>
-      <td>{{ gameData.average_user_rating.toFixed(1) }} stars</td>
+      <td class="second-col">
+        {{ gameData.average_user_rating.toFixed(1) }} stars
+      </td>
     </tr>
     <tr>
       <td>Number of user ratings:</td>
@@ -36,13 +38,17 @@
     <tr>
       <td>Offical url:</td>
       <td>
-        <a :href="gameData.official_url">{{ gameData.official_url }}</a>
+        <span class="trucated">
+          <a :href="gameData.official_url">{{ gameData.official_url }}</a>
+        </span>
       </td>
     </tr>
     <tr>
       <td>Rules:</td>
       <td>
-        <a :href="gameData.rules_url">{{ gameData.rules_url }}</a>
+        <span class="trucated">
+          <a :href="gameData.rules_url">{{ gameData.rules_url }}</a>
+        </span>
       </td>
     </tr>
   </table>
@@ -56,6 +62,9 @@ export default {
 <style scoped>
 table {
   width: 100%;
+  table-layout: fixed;
+  /* display: block;
+  overflow: auto; */
 }
 td {
   border-bottom: 1px solid #ddd;
@@ -69,5 +78,24 @@ tr:hover {
 }
 a {
   text-decoration: none;
+}
+.trucated {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+@media screen and (max-width: 700px) {
+  td {
+    padding: 0.5rem 0.5rem;
+  }
+}
+@media screen and (max-width: 445px) {
+  .first-col {
+    width: 50%;
+  }
 }
 </style>

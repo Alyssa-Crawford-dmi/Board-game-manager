@@ -17,11 +17,13 @@
             Age: <strong>{{ age }}</strong>
           </p>
         </div>
-        <p>{{ gameData.description_preview }}</p>
+        <PreviewText :text="gameData.description_preview" />
       </div>
     </div>
     <h4>Details:</h4>
-    <DetailTable :gameData="gameData" />
+    <div class="bounded-width">
+      <DetailTable :gameData="gameData" />
+    </div>
   </div>
 </template>
 
@@ -29,12 +31,14 @@
 import { getGameDetailsFromId } from "../../apiInteractions/boardGameAtlas";
 import { rangeString, ageString } from "../../utils/rangeString";
 import DetailTable from "../DetailTable.vue";
+import PreviewText from "../PreviewText";
 
 export default {
   name: "DetailModal",
   props: { gameId: { type: String, required: true } },
   components: {
     DetailTable,
+    PreviewText,
   },
   async setup(props) {
     const gameData = await getGameDetailsFromId(props.gameId);
@@ -72,11 +76,37 @@ img {
 .game-details {
   display: flex;
   flex-direction: row;
+  margin-bottom: 1rem;
 }
 .game-details p {
   margin-right: 1rem;
 }
 h4 {
   text-align: center;
+}
+.limit-length {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media screen and (max-width: 700px) {
+  .main-info {
+    flex-direction: column;
+    align-items: center;
+  }
+  .container {
+    padding: 0;
+  }
+  .game-details {
+    flex-direction: column;
+  }
+  .game-details p {
+    padding: 0;
+    margin: 0;
+  }
+  img {
+    margin: 0;
+  }
 }
 </style>

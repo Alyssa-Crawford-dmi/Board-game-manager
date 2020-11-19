@@ -15,3 +15,6 @@
 .pointer{
   cursor: pointer;
 }
+.bounded-width {
+  width: 100%;
+}

@@ -7,7 +7,7 @@
           type="text"
           v-model="searchTerm"
           placeholder="Ticket to Ride"
-          class="p-inputtext-lg"
+          class="p-inputtext-lg bounded-width"
         />
       </span>
       <Button

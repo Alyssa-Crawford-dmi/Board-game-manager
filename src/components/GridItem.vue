@@ -1,5 +1,5 @@
 <template>
-  <div class="p-col-12 p-md-4 pointer" @click="loadDetails">
+  <div class="p-col-12 p-md-4 p-lg-3 pointer p-sm-6" @click="loadDetails">
     <div class="game-grid-item card">
       <div class="game-grid-centered">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
@@ -12,7 +12,7 @@
         <p>
           <strong>{{ playtime }}</strong> mins
         </p>
-        <p>
+        <p class="last-p">
           <strong>{{ age }}</strong>
         </p>
       </div>
@@ -62,11 +62,15 @@ export default {
   margin: 0.5rem;
   border: 1px solid #dee2e6;
   background-color: var(--very-light-grey);
+  padding: 1rem;
+  height: 22rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 img {
   height: 100%;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  margin: 1rem 0;
   max-height: 15rem;
 }
 h3 {
@@ -76,8 +80,15 @@ h3 {
 }
 .game-grid-details {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  height: min-content;
+}
+.game-grid-details p {
+  padding-right: 1rem;
+  margin: 0 0 0 0;
+}
+.game-grid-details .last-p {
+  padding-right: 0rem;
 }
 .game-grid-centered {
   text-align: center;

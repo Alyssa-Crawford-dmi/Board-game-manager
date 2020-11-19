@@ -20,6 +20,7 @@ const fakeResult = {
         average_user_rating: 3.440842183244887,
         primary_publisher: {},
         primary_designer: {},
+        description_preview: "",
       },
       {
         id: "2",
@@ -29,6 +30,7 @@ const fakeResult = {
         average_user_rating: 3.440842183244887,
         primary_publisher: {},
         primary_designer: {},
+        description_preview: "",
       },
       {
         id: "3",
@@ -38,6 +40,7 @@ const fakeResult = {
         average_user_rating: 3.440842183244887,
         primary_publisher: {},
         primary_designer: {},
+        description_preview: "",
       },
     ],
   },
@@ -47,7 +50,7 @@ const clickIndex = 1;
 
 describe("Home.vue", () => {
   localStorage.clear();
-  localStorage.setItem("idList", JSON.stringify([]));
+  localStorage.setItem("idList", JSON.stringify(["1"]));
   axios.get.mockResolvedValue(fakeResult);
 
   let wrapper;

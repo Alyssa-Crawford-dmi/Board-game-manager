@@ -1,12 +1,14 @@
 <template>
-  <Suspense>
-    <template #default>
-      <DetailModal :gameId="gameId" />
-    </template>
-    <template #fallback>
-      <ProgressSpinner />
-    </template>
-  </Suspense>
+  <div class="bounded-width">
+    <Suspense>
+      <template #default>
+        <DetailModal :gameId="gameId" />
+      </template>
+      <template #fallback>
+        <ProgressSpinner />
+      </template>
+    </Suspense>
+  </div>
 </template>
 <script>
 import DetailModal from "./DetailModal.vue";
@@ -21,9 +23,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.main-info {
-  display: flex;
-  align-items: center;
-}
-</style>

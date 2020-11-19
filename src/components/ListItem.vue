@@ -88,7 +88,7 @@ h3 {
 .game-list-details {
   flex: 1 1 0;
 }
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 600px) {
   .game-list-item {
     flex-direction: column;
     align-items: center;

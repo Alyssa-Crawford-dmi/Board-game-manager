@@ -69,15 +69,20 @@ export default {
       }
     },
     modalWidth() {
-      if (this.selectedModalType === modalTypes.DELETE) {
+      const bigScreen = screen.width > 600;
+      if (this.selectedModalType === modalTypes.DELETE && bigScreen) {
         return "50vw";
       }
-      return "75vw";
+      if (this.selectedModalType === modalTypes.DELETE || bigScreen) {
+        return "75vw";
+      }
+      return "90vw";
     },
   },
   mounted() {
-    if (localStorage.getItem("idList")) {
-      this.gameIds = JSON.parse(localStorage.getItem("idList"));
+    const idStr = localStorage.getItem("idList");
+    if (idStr && JSON.parse(idStr).length > 0) {
+      this.gameIds = JSON.parse(idStr);
       getGamesFromIds(this.gameIds).then((res) => {
         this.gamesList = res;
       });
@@ -104,7 +109,7 @@ export default {
         return;
       }
       this.gamesList.splice(this.indexToRemove, 1);
-      this.gameIds.splice(this.indexToRemove, -1);
+      this.gameIds.splice(this.indexToRemove, 1);
       localStorage.setItem("idList", JSON.stringify(this.gameIds));
       this.indexToRemove = -1;
     },
