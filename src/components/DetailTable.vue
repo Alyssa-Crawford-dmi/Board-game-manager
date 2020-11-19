@@ -15,7 +15,9 @@
 
     <tr>
       <td>Primary publisher</td>
-      <td>{{ gameData.primary_publisher.name }}</td>
+      <td>
+        {{ gameData.primary_publisher ? gameData.primary_publisher.name : "" }}
+      </td>
     </tr>
     <tr>
       <td>Year published</td>
@@ -23,7 +25,9 @@
     </tr>
     <tr>
       <td>Primary designer:</td>
-      <td>{{ gameData.primary_designer.name }}</td>
+      <td>
+        {{ gameData.primary_designer ? gameData.primary_designer.name : "" }}
+      </td>
     </tr>
     <tr>
       <td>Artists:</td>

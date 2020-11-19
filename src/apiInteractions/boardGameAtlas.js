@@ -26,7 +26,7 @@ const getGamesByName = async (name) => {
           min_playtime: fullGame.min_playtime,
           max_playtime: fullGame.max_playtime,
           min_age: fullGame.min_age,
-          thumb_url: fullGame.images.small,
+          thumb_url: fullGame.images ? fullGame.images.small : "",
         };
       });
     });
@@ -49,7 +49,7 @@ const getGamesFromIds = async (ids) => {
           min_playtime: fullGame.min_playtime,
           max_playtime: fullGame.max_playtime,
           min_age: fullGame.min_age,
-          thumb_url: fullGame.images.small,
+          thumb_url: fullGame.images ? fullGame.images.small : "",
         };
       });
     });
@@ -63,6 +63,9 @@ const getGameDetailsFromId = async (id) => {
     )
     .then((response) => {
       result = response.data.games[0];
+      if (!result.images) {
+        result.images = [];
+      }
     });
   return result;
 };
