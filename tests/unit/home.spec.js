@@ -46,6 +46,8 @@ const numGames = fakeResult.data.games.length;
 const clickIndex = 1;
 
 describe("Home.vue", () => {
+  localStorage.clear();
+  localStorage.setItem("idList", JSON.stringify([]));
   axios.get.mockResolvedValue(fakeResult);
 
   let wrapper;

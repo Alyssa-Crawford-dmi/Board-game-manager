@@ -7,7 +7,17 @@ const getGamesByName = async (name) => {
       `https://api.boardgameatlas.com/api/search?name=${name}&client_id=9RLKyOd9MR&limit=8`
     )
     .then((response) => {
-      result = response.data.games.map((fullGame) => {
+      const removeEmptyGames = response.data.games.filter((game) => {
+        if (Object.keys(game).length === 0) {
+          return false;
+        }
+        return true;
+      });
+      result = removeEmptyGames.map((fullGame) => {
+        if (Object.keys(fullGame).length === 0) {
+          console.log("bad game");
+          return;
+        }
         return {
           id: fullGame.id,
           name: fullGame.name,

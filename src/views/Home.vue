@@ -52,6 +52,7 @@ export default {
       addStatus: {},
       detailGameId: "",
       lastSearch: "",
+      gameIds: [],
     };
   },
   computed: {
@@ -75,10 +76,12 @@ export default {
     },
   },
   mounted() {
-    const gameIds = ["AuBvbISHR6", "GJ94Cl7cz5", "XZ9BeWAgCu", "GGwRDABj7L"];
-    getGamesFromIds(gameIds).then((res) => {
-      this.gamesList = res;
-    });
+    if (localStorage.getItem("idList")) {
+      this.gameIds = JSON.parse(localStorage.getItem("idList"));
+      getGamesFromIds(this.gameIds).then((res) => {
+        this.gamesList = res;
+      });
+    }
   },
   watch: {
     showModal: function () {
@@ -101,6 +104,8 @@ export default {
         return;
       }
       this.gamesList.splice(this.indexToRemove, 1);
+      this.gameIds.splice(this.indexToRemove, -1);
+      localStorage.setItem("idList", JSON.stringify(this.gameIds));
       this.indexToRemove = -1;
     },
     openDeleteModal(clickedIndex) {
@@ -125,6 +130,8 @@ export default {
       } else {
         this.addStatus = { error: false, msg: "Game added successfuly" };
         this.gamesList.push(newGame);
+        this.gameIds.push(newGame.id);
+        localStorage.setItem("idList", JSON.stringify(this.gameIds));
       }
     },
   },
