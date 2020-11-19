@@ -14,6 +14,7 @@ const fakeResult = {
         min_playtime: 45,
         max_playtime: 90,
         min_age: 8,
+        description_preview: "",
         images: {},
         url: "https://www.boardgameatlas.com/game/AuBvbISHR6/ticket-to-ride",
         price: "43.50",
