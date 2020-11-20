@@ -23,6 +23,7 @@
         :messageInfo="addStatus"
         @dismiss-message="showStatus = false"
       /> -->
+      <Confused />
       <p v-if="searchResults.length === 0 && searchTerm !== ''">
         No games found. Please try a different search
       </p>
@@ -54,6 +55,7 @@ import Button from "primevue/button";
 import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
 // import Message from "../UI/Message";
+import Confused from "../UI/Confused";
 
 export default {
   name: "AddModal",
@@ -62,6 +64,7 @@ export default {
     InputText,
     Button,
     SearchListItem,
+    Confused,
     // Message,
   },
   props: {
