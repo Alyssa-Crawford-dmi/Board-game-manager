@@ -18,11 +18,11 @@
       />
     </div>
     <div class="modal-contents">
-      <Message
+      <!-- <Message
         v-if="showStatus"
         :messageInfo="addStatus"
         @dismiss-message="showStatus = false"
-      />
+      /> -->
       <p v-if="searchResults.length === 0 && searchTerm !== ''">
         No games found. Please try a different search
       </p>
@@ -53,7 +53,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
-import Message from "@/components/UI/Message.vue";
+// import Message from "@/components/UI/Message.vue";
 
 export default {
   name: "AddModal",
@@ -62,7 +62,7 @@ export default {
     InputText,
     Button,
     SearchListItem,
-    Message,
+    // Message,
   },
   props: {
     addStatus: Object,
