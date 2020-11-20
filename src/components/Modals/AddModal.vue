@@ -18,11 +18,6 @@
       />
     </div>
     <div class="modal-contents">
-      <!-- <Message
-        v-if="showStatus"
-        :messageInfo="addStatus"
-        @dismiss-message="showStatus = false"
-      /> -->
       <StatusMessage
         v-if="showStatus"
         :messageInfo="addStatus"
@@ -58,7 +53,6 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
-// import Message from "../UI/Message";
 import StatusMessage from "../UI/StatusMessage";
 
 export default {
@@ -69,7 +63,6 @@ export default {
     Button,
     SearchListItem,
     StatusMessage,
-    // Message,
   },
   props: {
     addStatus: Object,
