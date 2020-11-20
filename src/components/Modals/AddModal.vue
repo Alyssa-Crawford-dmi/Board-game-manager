@@ -53,7 +53,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
-import Message from "../UI/Message";
+import Message from "../UI/Message.vue";
 
 export default {
   name: "AddModal",
