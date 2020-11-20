@@ -5,7 +5,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { nextTick } from "vue";
 import SearchListItem from "@/components/SearchListItem.vue";
-// import Message from "@/components/UI/Message.vue";
+import Message from "@/components/UI/StatusMessage.vue";
 
 const fakeResult = {
   data: {
@@ -72,12 +72,12 @@ describe("AddModal.vue", () => {
     wrapper.vm.addGame(fakeResult.data.games[0], new Event("Click"));
     expect(wrapper.emitted("add-game")[0][0]).toEqual(fakeResult.data.games[0]);
   });
-  // it("Has a message component after addGame is called", async () => {
-  //   wrapper.vm.addGame(fakeResult.data.games[0], new Event("Click"));
-  //   await nextTick();
-  //   const message = wrapper.findComponent(Message);
-  //   expect(message.exists()).toBe(true);
-  // });
+  it("Has a message component after addGame is called", async () => {
+    wrapper.vm.addGame(fakeResult.data.games[0], new Event("Click"));
+    await nextTick();
+    const message = wrapper.findComponent(Message);
+    expect(message.exists()).toBe(true);
+  });
 
   //History
   it("When a lastSearch value is passed it sets search term to that value", async () => {

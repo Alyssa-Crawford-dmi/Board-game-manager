@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import Message from "@/components/UI/Message.vue";
+import Message from "@/components/UI/StatusMessage.vue";
 import Button from "primevue/button";
 
 describe("Message.vue", () => {

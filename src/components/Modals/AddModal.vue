@@ -23,7 +23,7 @@
         :messageInfo="addStatus"
         @dismiss-message="showStatus = false"
       /> -->
-      <Confused
+      <StatusMessage
         v-if="showStatus"
         :messageInfo="addStatus"
         @dismiss-message="showStatus = false"
@@ -59,7 +59,7 @@ import Button from "primevue/button";
 import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
 // import Message from "../UI/Message";
-import Confused from "../UI/Confused";
+import StatusMessage from "../UI/StatusMessage";
 
 export default {
   name: "AddModal",
@@ -68,7 +68,7 @@ export default {
     InputText,
     Button,
     SearchListItem,
-    Confused,
+    StatusMessage,
     // Message,
   },
   props: {
