@@ -23,7 +23,11 @@
         :messageInfo="addStatus"
         @dismiss-message="showStatus = false"
       /> -->
-      <Confused />
+      <Confused
+        v-if="showStatus"
+        :messageInfo="addStatus"
+        @dismiss-message="showStatus = false"
+      />
       <p v-if="searchResults.length === 0 && searchTerm !== ''">
         No games found. Please try a different search
       </p>
