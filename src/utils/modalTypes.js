@@ -1,1 +1,5 @@
-export const modalTypes =  {DELETE:'DELETE', ADD:'ADD', DETAIL:'DETAIL'}
+export const modalTypes = {
+  DELETE: "DELETE",
+  ADD: "ADD",
+  DETAIL: "DETAIL",
+};
