@@ -1,5 +1,17 @@
 <template>
   <form>
+    <div class="space-below" v-if="signupMode">
+      <InputText
+        id="email"
+        type="email"
+        v-model="email"
+        placeholder="Email"
+        :class="['bounded-width', invalidEmail ? 'p-invalid' : '']"
+      />
+      <small id="email-help" class="p-invalid" v-if="invalidEmail"
+        >Email can not be empty</small
+      >
+    </div>
     <div class="space-below">
       <InputText
         id="username"
@@ -12,28 +24,33 @@
         >Username can not be empty</small
       >
     </div>
-    <div>
+    <div class="space-below">
       <InputText
         id="password"
         type="password"
         v-model="password"
         placeholder="Password"
-        :class="[
-          'bounded-width',
-          'space-below',
-          invalidPassword ? 'p-invalid' : '',
-        ]"
+        :class="['bounded-width', invalidPassword ? 'p-invalid' : '']"
       />
       <small id="password-help" class="p-invalid" v-if="invalidPassword"
         >Password can not be empty</small
       >
     </div>
-    <div class="centered">
-      <Button
-        :label="'Login'"
-        class="p-button-rounded p-button-secondary"
-        @click="loginUser"
-      />
+    <div class="p-grid">
+      <div class="p-col-4" style="text-align: left">
+        <Button
+          :label="signupMode ? 'Switch to login' : 'Switch to signup'"
+          class="p-button-text p-button-secondary"
+          @click="toggleMode"
+        />
+      </div>
+      <div class="p-col-4" style="text-align: center">
+        <Button
+          :label="signupMode ? 'Signup' : 'Login'"
+          class="p-button-rounded"
+          @click="loginUser"
+        />
+      </div>
     </div>
   </form>
 </template>
@@ -48,13 +65,18 @@ export default {
     InputText,
     Button,
   },
-  emits: ["close-login"],
+  props: {
+    signupMode: { type: Boolean, default: false },
+  },
+  emits: ["close-login", "toggle-mode"],
   data() {
     return {
+      email: "",
       username: "",
       password: "",
       invalidUsername: false,
       invalidPassword: false,
+      invalidEmail: false,
     };
   },
   watch: {
@@ -64,17 +86,22 @@ export default {
     password: function () {
       this.invalidPassword = false;
     },
+    email: function () {
+      this.invalidEmail = false;
+    },
   },
   methods: {
+    toggleMode() {
+      this.$emit("toggle-mode");
+    },
     loginUser() {
-      if (this.username.trim().length === 0) {
-        this.invalidUsername = true;
+      this.resetErrors();
+      try {
+        this.validateFeilds();
+      } catch (error) {
         return;
       }
-      if (this.password.trim().length === 0) {
-        this.invalidPassword = true;
-        return;
-      }
+
       auth.login(this.username, this.password, (loggedIn) => {
         if (!loggedIn) {
           console.log("An error occured");
@@ -84,9 +111,24 @@ export default {
         }
       });
     },
+    validateFeilds() {
+      if (this.signupMode && this.email.trim().length === 0) {
+        this.invalidEmail = true;
+      }
+      if (this.username.trim().length === 0) {
+        this.invalidUsername = true;
+      }
+      if (this.password.trim().length === 0) {
+        this.invalidPassword = true;
+      }
+      if (this.invalidEmail || this.invalidUsername || this.invalidPassword) {
+        throw new Error("Invalid feild");
+      }
+    },
     resetErrors() {
       this.invalidUsername = false;
       this.invalidPassword = false;
+      this.invalidEmail = false;
     },
   },
 };

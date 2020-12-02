@@ -2,12 +2,16 @@
   <Header @login="showLogin = true" />
   <router-view />
   <Dialog
-    header="Login"
+    :header="signupMode ? 'Signup' : 'Login'"
     v-model:visible="showLogin"
     :modal="true"
     :style="{ width: '50vw' }"
   >
-    <LoginModal @close-login="showLogin = false" />
+    <LoginModal
+      @close-login="showLogin = false"
+      :signupMode="signupMode"
+      @toggle-mode="signupMode = !signupMode"
+    />
   </Dialog>
 </template>
 <script>
@@ -23,7 +27,7 @@ export default {
     LoginModal,
   },
   data() {
-    return { showLogin: false };
+    return { showLogin: false, signupMode: false };
   },
 };
 </script>

@@ -26,13 +26,17 @@ describe("LoginModal.vue", () => {
   });
   it("Set invalid username to true if the username is empty and the button is pressed", async () => {
     wrapper.vm.username = "";
-    await wrapper.findComponent(Button).trigger("click");
+    await wrapper.findAllComponents(Button)[1].trigger("click");
     expect(wrapper.vm.invalidUsername).toBe(true);
   });
   it("Set invalid password to true if the password is empty and the button is pressed", async () => {
     wrapper.vm.username = "NotEmpty";
     wrapper.vm.password = "";
-    await wrapper.findComponent(Button).trigger("click");
+    await wrapper.findAllComponents(Button)[1].trigger("click");
     expect(wrapper.vm.invalidPassword).toBe(true);
+  });
+  it("Emits toggle-mode when the signup button is clicked", async () => {
+    await wrapper.findComponent(Button).trigger("click");
+    expect(wrapper.emitted("toggle-mode")).toBeTruthy();
   });
 });
