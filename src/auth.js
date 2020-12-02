@@ -1,18 +1,15 @@
-export default {
-  loggedIn() {
-    return !!localStorage.username;
+import { ref } from "vue";
+export const loginState = {
+  loggedIn: ref(false),
+  login(username, password) {
+    console.log("Login ", username, " ", password);
+    this.loggedIn.value = true;
   },
-  login(email, password, cb) {
-    localStorage.username = email;
-    cb(true);
-    this.onChange(true);
+  register(email, username, password) {
+    this.loggedIn.value = true;
+    console.log("Signup ", email, " ", username, " ", password);
   },
-  logout(cb) {
-    delete localStorage.username;
-    if (cb) {
-      cb();
-    }
-    this.onChange(false);
+  logout() {
+    this.loggedIn.value = false;
   },
-  onChange() {},
 };

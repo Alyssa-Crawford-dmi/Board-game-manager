@@ -3,7 +3,7 @@
     <h1>Board games</h1>
     <Button
       class="p-button-raised p-button-text custom-button"
-      :label="loggedIn ? 'Logout' : 'Login'"
+      :label="isLoggedIn ? 'Logout' : 'Login'"
       @click="loginChange"
     />
   </div>
@@ -11,26 +11,23 @@
 
 <script>
 import Button from "primevue/button";
-import auth from "../auth";
+import { loginState } from "../auth";
 
 export default {
   name: "Header",
   components: {
     Button,
   },
-  data() {
-    return { loggedIn: auth.loggedIn() };
-  },
   emits: ["login"],
-  created() {
-    auth.onChange = (loggedIn) => {
-      this.loggedIn = loggedIn;
+  data() {
+    return {
+      isLoggedIn: loginState.loggedIn,
     };
   },
   methods: {
     loginChange() {
-      if (this.loggedIn) {
-        auth.logout(() => {});
+      if (this.isLoggedIn) {
+        loginState.logout();
       } else {
         this.$emit("login");
       }

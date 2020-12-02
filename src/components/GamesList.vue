@@ -12,6 +12,7 @@
               label="Add games"
               class="p-button-rounded"
               title="Delete Item"
+              :disabled="!canAddGames"
             />
           </div>
           <div
@@ -48,6 +49,7 @@ import ModifiedDataViewLayoutOptions from "./modifiedPrimeVue/ModifiedDataViewLa
 import GridItem from "./GridItem.vue";
 import ListItem from "./ListItem.vue";
 import Button from "primevue/button";
+import { loginState } from "../auth";
 
 export default {
   name: "ListHolder",
@@ -70,7 +72,16 @@ export default {
     return {
       layout: "grid",
       bigScreen: false,
+      isLoggedIn: loginState.loggedIn,
     };
+  },
+  computed: {
+    canAddGames() {
+      if (this.isLoggedIn) {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     deleteItem(index) {

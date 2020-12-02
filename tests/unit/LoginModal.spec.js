@@ -2,6 +2,7 @@ import { mount } from "@vue/test-utils";
 import LoginModal from "@/components/Modals/LoginModal.vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
+import { loginState } from "../../src/auth";
 
 describe("LoginModal.vue", () => {
   let wrapper;
@@ -34,6 +35,12 @@ describe("LoginModal.vue", () => {
     wrapper.vm.password = "";
     await wrapper.findAllComponents(Button)[1].trigger("click");
     expect(wrapper.vm.invalidPassword).toBe(true);
+  });
+  it("Calls login in the auth service when login is clicked", async () => {
+    wrapper.vm.username = "NotEmpty";
+    wrapper.vm.password = "NotEmpty";
+    await wrapper.findAllComponents(Button)[1].trigger("click");
+    expect(loginState.login).toHaveBeenCalled();
   });
   it("Emits toggle-mode when the signup button is clicked", async () => {
     await wrapper.findComponent(Button).trigger("click");

@@ -9,7 +9,7 @@
         :class="['bounded-width', invalidEmail ? 'p-invalid' : '']"
       />
       <small id="email-help" class="p-invalid" v-if="invalidEmail"
-        >Email can not be empty</small
+        >Invalid email</small
       >
     </div>
     <div class="space-below">
@@ -57,7 +57,7 @@
 <script>
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import auth from "../../auth";
+import { loginState } from "../../auth";
 
 export default {
   name: "LoginModal",
@@ -102,17 +102,11 @@ export default {
         return;
       }
 
-      auth.login(this.username, this.password, (loggedIn) => {
-        if (!loggedIn) {
-          console.log("An error occured");
-        } else {
-          this.resetErrors();
-          this.$emit("close-login");
-        }
-      });
+      loginState.login(this.username, this.password);
+      this.$emit("close-login");
     },
     validateFeilds() {
-      if (this.signupMode && this.email.trim().length === 0) {
+      if (this.validateEmail()) {
         this.invalidEmail = true;
       }
       if (this.username.trim().length === 0) {
@@ -124,6 +118,9 @@ export default {
       if (this.invalidEmail || this.invalidUsername || this.invalidPassword) {
         throw new Error("Invalid feild");
       }
+    },
+    validateEmail() {
+      return this.signupMode && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
     },
     resetErrors() {
       this.invalidUsername = false;
