@@ -17,7 +17,7 @@
         </p>
       </div>
       <div class="game-grid-centered">
-        <RemoveGameButton @delete-item="deleteItem" />
+        <RemoveGameButton @delete-item="deleteItem" :disabled="disabled" />
       </div>
     </div>
   </div>
@@ -28,7 +28,10 @@ import { rangeString, ageString } from "../utils/rangeString";
 
 export default {
   name: "GridItem",
-  props: { gameData: { required: true, type: Object } },
+  props: {
+    gameData: { required: true, type: Object },
+    disabled: { type: Boolean, default: false },
+  },
   emits: ["delete-item", "item-clicked"],
   components: {
     RemoveGameButton,

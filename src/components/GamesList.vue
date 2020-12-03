@@ -11,7 +11,7 @@
               @click="() => addGames()"
               label="Add games"
               class="p-button-rounded"
-              title="Delete Item"
+              title="Add games"
               :disabled="!canAddGames"
             />
           </div>
@@ -30,6 +30,7 @@
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
           @item-clicked="() => detail(slotProps.data.id)"
+          :disabled="!canAddGames"
         />
       </template>
       <template #grid="slotProps">
@@ -37,6 +38,7 @@
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
           @item-clicked="() => detail(slotProps.data.id)"
+          :disabled="!canAddGames"
         />
       </template>
     </DataView>
