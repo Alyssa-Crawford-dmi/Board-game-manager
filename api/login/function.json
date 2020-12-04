@@ -1,0 +1,27 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "post"
+      ],
+      "route": "login/{rowKey}"
+    },
+    {
+            "type": "http",
+            "direction": "out",
+            "name": "res"
+        },
+    {
+      "name": "userEntity",
+      "type": "table",
+      "tableName": "users",
+      "partitionKey": "users",
+      "rowKey": "{rowKey}",
+      "direction": "in"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ],
+      "route": "signup/{rowKey}"
+    },
+    {
+            "type": "http",
+            "direction": "out",
+            "name": "res"
+        },
+    {
+      "name": "userEntity",
+      "type": "table",
+      "tableName": "users",
+      "partitionKey": "users",
+      "rowKey": "{rowKey}",
+      "direction": "in"
+    },
+    {
+      "name": "tableOut",
+      "type": "table",
+      "tableName": "users",
+      "partitionKey": "users",
+      "direction": "out"
+    }
+  ]
+}
