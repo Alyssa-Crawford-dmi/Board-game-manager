@@ -19,6 +19,7 @@
         v-model="username"
         placeholder="Username"
         :class="['bounded-width', invalidUsername ? 'p-invalid' : '']"
+        :onBlur="signupMode ? checkUniqueUsername : ''"
       />
       <small id="username-help" class="p-invalid" v-if="invalidUsername"
         >Username can not be empty</small
@@ -36,6 +37,7 @@
         >Password can not be empty</small
       >
     </div>
+    <p class="p-invalid centered">{{ error }}</p>
     <div class="p-grid">
       <div class="p-col-4" style="text-align: left">
         <Button
@@ -77,6 +79,7 @@ export default {
       invalidUsername: false,
       invalidPassword: false,
       invalidEmail: false,
+      error: "",
     };
   },
   watch: {
@@ -92,21 +95,30 @@ export default {
   },
   methods: {
     toggleMode() {
+      this.resetErrors();
       this.$emit("toggle-mode");
     },
-    loginUser() {
+    async loginUser() {
       this.resetErrors();
       try {
         this.validateFeilds();
       } catch (error) {
         return;
       }
-
-      loginState.login(this.username, this.password);
-      this.$emit("close-login");
+      try {
+        if (this.signupMode) {
+          await loginState.register(this.email, this.username, this.password);
+          this.toggleMode();
+        } else {
+          await loginState.login(this.username, this.password);
+        }
+        this.$emit("close-login");
+      } catch (error) {
+        this.error = error.message;
+      }
     },
     validateFeilds() {
-      if (this.validateEmail()) {
+      if (this.isEmailInvalid()) {
         this.invalidEmail = true;
       }
       if (this.username.trim().length === 0) {
@@ -119,13 +131,21 @@ export default {
         throw new Error("Invalid feild");
       }
     },
-    validateEmail() {
+    isEmailInvalid() {
       return this.signupMode && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
     },
     resetErrors() {
       this.invalidUsername = false;
       this.invalidPassword = false;
       this.invalidEmail = false;
+      this.error = "";
+    },
+    async checkUniqueUsername() {
+      try {
+        await loginState.verifyAvalibleUsername(this.username);
+      } catch (error) {
+        this.error = error.message;
+      }
     },
   },
 };
@@ -135,7 +155,7 @@ export default {
   margin: 0 0 1rem 0;
 }
 .centered {
-  margin: 0 auto;
+  margin: 1rem auto;
   width: fit-content;
 }
 </style>
