@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     toggle() {
-      axios.post(`/api/tempFunc?name=Alyssa`);
+      axios.get(`/api/tempFunc`);
     },
   },
 };

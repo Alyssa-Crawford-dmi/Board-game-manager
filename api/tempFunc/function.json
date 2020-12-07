@@ -11,9 +11,17 @@
       ]
     },
     {
-      "type": "http",
-      "direction": "out",
-      "name": "res"
+            "type": "http",
+            "direction": "out",
+            "name": "res"
+        },
+    {
+      "name": "userEntity",
+      "type": "table",
+      "tableName": "users",
+      "partitionKey": "users",
+      "rowKey": "ac",
+      "direction": "in"
     },
     {
       "name": "tableOut",
