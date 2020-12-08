@@ -14,6 +14,7 @@
     </div>
     <div class="space-below">
       <InputText
+        :autofocus="!signupMode"
         id="username"
         type="text"
         v-model="username"
