@@ -1,20 +1,22 @@
 import { ref } from "vue";
 import { getGamesFromIds } from "../apiInteractions/boardGameAtlas";
+import axios from "axios";
 
 export const gamesListState = {
   gameList: ref([]),
   async loadGamesForUser(username) {
     var gameIds = [];
-    console.log(username);
-    const idStr = localStorage.getItem("idList");
-    if (idStr) {
-      gameIds = JSON.parse(idStr);
-      if (gameIds.length > 0) {
-        getGamesFromIds(gameIds).then((res) => {
-          this.gameList.value = res;
-        });
+    axios.get(`/api/games/${username}`).then((res) => {
+      const idStr = res.data.gamesList;
+      if (idStr) {
+        gameIds = JSON.parse(idStr);
+        if (gameIds.length > 0) {
+          getGamesFromIds(gameIds).then((res) => {
+            this.gameList.value = res;
+          });
+        }
       }
-    }
+    });
   },
   removeGameAtIndex(index) {
     this.gameList.value.splice(index, 1);

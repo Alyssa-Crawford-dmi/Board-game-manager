@@ -5,54 +5,14 @@ import Dialog from "primevue/dialog";
 import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import AddModal from "@/components/Modals/AddModal.vue";
 import DetailModal from "@/components/Modals/DetailModalWrapper.vue";
-import axios from "axios";
 import { modalTypes } from "../../src/utils/modalTypes.js";
 import { nextTick } from "vue";
+import { fakeGameData } from "../../jest.setup";
 
-const fakeResult = {
-  data: {
-    games: [
-      {
-        id: "1",
-        name: "game1",
-        images: [],
-        artists: ["Julien Delval", "Cyrille Daujean"],
-        average_user_rating: 3.440842183244887,
-        primary_publisher: {},
-        primary_designer: {},
-        description_preview: "",
-      },
-      {
-        id: "2",
-        name: "game2",
-        images: [],
-        artists: ["Julien Delval", "Cyrille Daujean"],
-        average_user_rating: 3.440842183244887,
-        primary_publisher: {},
-        primary_designer: {},
-        description_preview: "",
-      },
-      {
-        id: "3",
-        name: "game3",
-        images: [],
-        artists: ["Julien Delval", "Cyrille Daujean"],
-        average_user_rating: 3.440842183244887,
-        primary_publisher: {},
-        primary_designer: {},
-        description_preview: "",
-      },
-    ],
-  },
-};
-const numGames = fakeResult.data.games.length;
+const numGames = fakeGameData.data.games.length;
 const clickIndex = 1;
 
 describe("Home.vue", () => {
-  localStorage.clear();
-  localStorage.setItem("idList", JSON.stringify(["1"]));
-  axios.get.mockResolvedValue(fakeResult);
-
   let wrapper;
   beforeEach(() => {
     wrapper = mount(Home);
@@ -114,7 +74,7 @@ describe("Home.vue", () => {
   });
 
   it("On game-detail opens an detailModal and sets detailGameId to the payload of the emitted event", async () => {
-    const gameId = fakeResult.data.games[clickIndex].id;
+    const gameId = fakeGameData.data.games[clickIndex].id;
     const gamesList = wrapper.findComponent(GamesList);
     await gamesList.vm.$emit("game-detail", gameId);
     const detailModal = wrapper.findComponent(DetailModal);
@@ -159,7 +119,7 @@ describe("Home.vue", () => {
     });
     const dialog = wrapper.findComponent(DeleteModal);
     expect(dialog.props("gameName")).toBe(
-      fakeResult.data.games[clickIndex].name
+      fakeGameData.data.games[clickIndex].name
     );
   });
 
