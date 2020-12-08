@@ -4,7 +4,6 @@
 
 <script>
 import Button from "primevue/button";
-import axios from "axios";
 
 export default {
   components: {
@@ -15,7 +14,7 @@ export default {
   },
   methods: {
     toggle() {
-      axios.get(`/api/tempFunc`);
+      console.log("hello");
     },
   },
 };

@@ -21,7 +21,8 @@
       "tableName": "users",
       "partitionKey": "users",
       "rowKey": "{rowKey}",
-      "direction": "in"
+      "direction": "in",
+      "connection": "TableConnection"
     }
   ]
 }
