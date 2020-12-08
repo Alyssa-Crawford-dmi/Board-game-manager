@@ -51,7 +51,7 @@ import ModifiedDataViewLayoutOptions from "./modifiedPrimeVue/ModifiedDataViewLa
 import GridItem from "./GridItem.vue";
 import ListItem from "./ListItem.vue";
 import Button from "primevue/button";
-import { loginState } from "../auth";
+import { loginState } from "../utils/auth";
 
 export default {
   name: "ListHolder",

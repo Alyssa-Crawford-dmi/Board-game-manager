@@ -21,7 +21,7 @@
 <script>
 import Menu from "primevue/menu";
 import Button from "primevue/button";
-import { loginState } from "../auth";
+import { loginState } from "../utils/auth";
 
 export default {
   name: "Header",

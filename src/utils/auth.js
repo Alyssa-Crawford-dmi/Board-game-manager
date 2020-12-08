@@ -11,6 +11,7 @@ const options = { headers: HEADERS };
 const duplicateUsername = "Username already exists";
 const badLogin = "Invalid username or password. Please try again";
 const genericError = "Something went wrong. Please try again later";
+
 export const loginState = {
   loggedIn: ref(false),
   async login(username, password) {

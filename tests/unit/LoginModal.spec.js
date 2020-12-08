@@ -2,7 +2,7 @@ import { mount } from "@vue/test-utils";
 import LoginModal from "@/components/Modals/LoginModal.vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import { loginState } from "../../src/auth";
+import { loginState } from "../../src/utils/auth";
 
 describe("LoginModal.vue", () => {
   let wrapper;

@@ -27,13 +27,13 @@
   </Dialog>
 </template>
 <script>
-import { getGamesFromIds } from "../apiInteractions/boardGameAtlas";
 import GamesList from "../components/GamesList";
 import Dialog from "primevue/dialog";
 import DeleteModal from "../components/Modals/DeleteModal.vue";
 import AddModal from "../components/Modals/AddModal.vue";
 import DetailModal from "../components/Modals/DetailModalWrapper.vue";
 import { modalTypes } from "../utils/modalTypes.js";
+import { gamesListState } from "../utils/gameListManager.js";
 
 export default {
   components: {
@@ -47,12 +47,11 @@ export default {
     return {
       showModal: false,
       selectedModalType: modalTypes.DELETE,
-      gamesList: [],
+      gamesList: gamesListState.gameList,
       indexToRemove: -1,
       addStatus: {},
       detailGameId: "",
       lastSearch: "",
-      gameIds: [],
     };
   },
   computed: {
@@ -80,12 +79,7 @@ export default {
     },
   },
   mounted() {
-    this.gameIds = this.getGameIdArr();
-    if (this.gameIds.length > 0) {
-      getGamesFromIds(this.gameIds).then((res) => {
-        this.gamesList = res;
-      });
-    }
+    gamesListState.loadGamesForUser("ac");
   },
   watch: {
     showModal: function () {
@@ -107,9 +101,7 @@ export default {
       if (this.indexToRemove === -1) {
         return;
       }
-      this.gamesList.splice(this.indexToRemove, 1);
-      this.gameIds.splice(this.indexToRemove, 1);
-      this.saveGames();
+      gamesListState.removeGameAtIndex(this.indexToRemove);
       this.indexToRemove = -1;
     },
     openDeleteModal(clickedIndex) {
@@ -128,25 +120,7 @@ export default {
       this.lastSearch = search;
     },
     addGame(newGame) {
-      const duplicate = this.gamesList.some((game) => game.id === newGame.id);
-      if (duplicate) {
-        this.addStatus = { error: true, msg: "Game already in list" };
-      } else {
-        this.addStatus = { error: false, msg: "Game added successfuly" };
-        this.gamesList.push(newGame);
-        this.gameIds.push(newGame.id);
-        this.saveGames();
-      }
-    },
-    getGameIdArr() {
-      const idStr = localStorage.getItem("idList");
-      if (idStr) {
-        return JSON.parse(idStr);
-      }
-      return [];
-    },
-    saveGames() {
-      localStorage.setItem("idList", JSON.stringify(this.gameIds));
+      this.addStatus = gamesListState.addGameIfNotExists(newGame);
     },
   },
 };

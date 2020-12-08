@@ -18,7 +18,7 @@
 import Header from "@/components/Header.vue";
 import Dialog from "primevue/dialog";
 import LoginModal from "@/components/Modals/LoginModal";
-import { loginState } from "./auth";
+import { loginState } from "./utils/auth";
 
 export default {
   name: "App",
@@ -28,7 +28,7 @@ export default {
     LoginModal,
   },
   data() {
-    return { showLogin: true, signupMode: false };
+    return { showLogin: false, signupMode: false };
   },
   computed: {
     modalWidth() {

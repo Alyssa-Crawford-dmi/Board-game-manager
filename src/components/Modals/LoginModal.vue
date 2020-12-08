@@ -65,7 +65,7 @@
 <script>
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import { loginState } from "../../auth";
+import { loginState } from "../../utils/auth";
 import Checkbox from "primevue/checkbox";
 
 export default {

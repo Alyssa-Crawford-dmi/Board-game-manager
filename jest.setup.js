@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loginState } from "./src/auth";
+import { loginState } from "./src/utils/auth";
 
 const fakeResult = {
   data: {
@@ -8,7 +8,7 @@ const fakeResult = {
 };
 
 jest.mock("axios");
-jest.mock("./src/auth");
+jest.mock("./src/utils/auth");
 
 axios.get.mockResolvedValue(fakeResult);
 loginState.loggedIn = true;
