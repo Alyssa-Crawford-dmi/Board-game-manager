@@ -18,6 +18,7 @@
 import Header from "@/components/Header.vue";
 import Dialog from "primevue/dialog";
 import LoginModal from "@/components/Modals/LoginModal";
+import { loginState } from "./auth";
 
 export default {
   name: "App",
@@ -28,6 +29,9 @@ export default {
   },
   data() {
     return { showLogin: false, signupMode: false };
+  },
+  mounted() {
+    loginState.signInLocalUser();
   },
 };
 </script>

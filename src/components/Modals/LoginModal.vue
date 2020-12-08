@@ -38,6 +38,10 @@
       >
     </div>
     <p class="p-invalid centered">{{ error }}</p>
+    <div class="p-field-checkbox">
+      <Checkbox id="staySignedIn" v-model="staySignedIn" :binary="true" />
+      <label for="staySignedIn">Stay signed in</label>
+    </div>
     <div class="p-grid">
       <div class="p-col-4" style="text-align: left">
         <Button
@@ -60,12 +64,14 @@
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { loginState } from "../../auth";
+import Checkbox from "primevue/checkbox";
 
 export default {
   name: "LoginModal",
   components: {
     InputText,
     Button,
+    Checkbox,
   },
   props: {
     signupMode: { type: Boolean, default: false },
@@ -80,6 +86,7 @@ export default {
       invalidPassword: false,
       invalidEmail: false,
       error: "",
+      staySignedIn: false,
     };
   },
   watch: {
@@ -112,6 +119,7 @@ export default {
         } else {
           await loginState.login(this.username, this.password);
         }
+        this.saveUserIfNeeded();
         this.$emit("close-login");
       } catch (error) {
         this.error = error.message;
@@ -133,6 +141,11 @@ export default {
     },
     isEmailInvalid() {
       return this.signupMode && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+    },
+    saveUserIfNeeded() {
+      if (this.staySignedIn) {
+        loginState.saveLocalUser(this.username);
+      }
     },
     resetErrors() {
       this.invalidUsername = false;

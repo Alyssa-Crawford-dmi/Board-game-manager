@@ -76,5 +76,14 @@ export const loginState = {
   },
   logout() {
     this.loggedIn.value = false;
+    delete localStorage.username;
+  },
+  saveLocalUser(username) {
+    localStorage.username = username;
+  },
+  signInLocalUser() {
+    if (localStorage.username) {
+      this.loggedIn.value = true;
+    }
   },
 };
