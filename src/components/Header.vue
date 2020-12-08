@@ -1,9 +1,9 @@
 <template>
   <div class="p-grid p-ai-center vertical-container header">
-    <div class="p-col-9">
+    <div class="p-col-6">
       <h1>Alyssa's games</h1>
     </div>
-    <div class="p-col-3" style="text-align: right">
+    <div class="p-col-6" style="text-align: right">
       <Button
         class="p-button-raised p-button-text custom-button"
         label="My account"
@@ -93,6 +93,11 @@ export default {
 div {
   padding: 0;
   margin: 0;
+}
+@media screen and (max-width: 700px) {
+  .header {
+    padding: 0 0.5rem;
+  }
 }
 </style>
 

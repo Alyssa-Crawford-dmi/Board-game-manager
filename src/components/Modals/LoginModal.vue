@@ -1,5 +1,6 @@
 <template>
   <form>
+    <p class="p-invalid centered">{{ error }}</p>
     <div class="space-below" v-if="signupMode">
       <InputText
         id="email"
@@ -14,7 +15,7 @@
     </div>
     <div class="space-below">
       <InputText
-        :autofocus="!signupMode"
+        autofocus
         id="username"
         type="text"
         v-model="username"
@@ -38,20 +39,20 @@
         >Password can not be empty</small
       >
     </div>
-    <p class="p-invalid centered">{{ error }}</p>
+
     <div class="p-field-checkbox">
       <Checkbox id="staySignedIn" v-model="staySignedIn" :binary="true" />
       <label for="staySignedIn">Stay signed in</label>
     </div>
     <div class="p-grid">
-      <div class="p-col-4" style="text-align: left">
+      <div class="p-col-12 p-md-6 p-lg-4" :style="{ textAlign: toggleBtnPos }">
         <Button
           :label="signupMode ? 'Switch to login' : 'Switch to signup'"
-          class="p-button-text p-button-secondary"
+          class="p-button-secondary p-button-outlined"
           @click="toggleMode"
         />
       </div>
-      <div class="p-col-4" style="text-align: center">
+      <div class="p-col-12 p-md-6 p-lg-4" style="text-align: center">
         <Button
           :label="signupMode ? 'Signup' : 'Login'"
           class="p-button-rounded"
@@ -88,6 +89,7 @@ export default {
       invalidEmail: false,
       error: "",
       staySignedIn: false,
+      toggleBtnPos: screen.width > 768 ? "left" : "center",
     };
   },
   watch: {
@@ -169,7 +171,7 @@ export default {
   margin: 0 0 1rem 0;
 }
 .centered {
-  margin: 1rem auto;
+  margin: 0rem auto 1rem auto;
   width: fit-content;
 }
 </style>

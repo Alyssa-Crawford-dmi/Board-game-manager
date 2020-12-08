@@ -5,7 +5,7 @@
     :header="signupMode ? 'Signup' : 'Login'"
     v-model:visible="showLogin"
     :modal="true"
-    :style="{ width: '50vw' }"
+    :style="{ width: modalWidth }"
   >
     <LoginModal
       @close-login="showLogin = false"
@@ -28,7 +28,16 @@ export default {
     LoginModal,
   },
   data() {
-    return { showLogin: false, signupMode: false };
+    return { showLogin: true, signupMode: false };
+  },
+  computed: {
+    modalWidth() {
+      const bigScreen = screen.width > 700;
+      if (bigScreen) {
+        return "50vw";
+      }
+      return "90vw";
+    },
   },
   mounted() {
     loginState.signInLocalUser();
