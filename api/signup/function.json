@@ -22,14 +22,16 @@
       "tableName": "users",
       "partitionKey": "users",
       "rowKey": "{rowKey}",
-      "direction": "in"
+      "direction": "in",
+      "connection": "TableConnection"
     },
     {
       "name": "tableOut",
       "type": "table",
       "tableName": "users",
       "partitionKey": "users",
-      "direction": "out"
+      "direction": "out",
+      "connection": "TableConnection"
     }
   ]
 }
