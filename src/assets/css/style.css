@@ -3,7 +3,6 @@
   --light-purple-gray: #e8ddeb;
   --dark-highlight: 84, 36, 107;
 }
-
 .card{
   background: var(--surface-e);
   padding:1rem 2rem;
@@ -11,7 +10,6 @@
     border-radius: 4px;
     margin-bottom: 2rem;
 }
-
 .pointer{
   cursor: pointer;
 }

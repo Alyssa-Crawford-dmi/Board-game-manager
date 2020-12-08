@@ -6,9 +6,13 @@
           <div class="p-col-4 header-content" style="text-align: left">
             <h2>Games List</h2>
           </div>
-          <div class="p-col-4 header-content" style="text-align: center">
+          <div
+            class="p-col-4 header-content"
+            style="text-align: center"
+            @click="addGames"
+          >
             <Button
-              @click="() => addGames()"
+              @click="addGames"
               label="Add games"
               class="p-button-rounded"
               title="Add games"
@@ -30,6 +34,7 @@
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
           @item-clicked="() => detail(slotProps.data.id)"
+          @unauthorized-action="unauthorizedAction"
           :disabled="!canAddGames"
         />
       </template>
@@ -38,6 +43,7 @@
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
           @item-clicked="() => detail(slotProps.data.id)"
+          @unauthorized-action="unauthorizedAction"
           :disabled="!canAddGames"
         />
       </template>
@@ -62,7 +68,7 @@ export default {
     GridItem,
     ListItem,
   },
-  emits: ["add-games", "delete-item", "game-detail"],
+  emits: ["add-games", "delete-item", "game-detail", "unauthorized-action"],
   props: { gamesList: { required: true, type: Array } },
   mounted() {
     this.bigScreen = screen.width > 650;
@@ -90,6 +96,10 @@ export default {
       this.$emit("delete-item", index);
     },
     addGames() {
+      if (!this.canAddGames) {
+        this.$emit("unauthorized-action");
+        return;
+      }
       this.$emit("add-games");
     },
     detail(id) {
@@ -98,6 +108,9 @@ export default {
     detectOrientationChange() {
       console.log("Detected change");
       this.bigScreen = screen.width > 650;
+    },
+    unauthorizedAction() {
+      this.$emit("unauthorized-action");
     },
   },
 };

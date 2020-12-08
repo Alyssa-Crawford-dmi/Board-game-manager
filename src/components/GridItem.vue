@@ -16,7 +16,7 @@
           <strong>{{ age }}</strong>
         </p>
       </div>
-      <div class="game-grid-centered">
+      <div class="game-grid-centered" @click="deleteItem">
         <RemoveGameButton @delete-item="deleteItem" :disabled="disabled" />
       </div>
     </div>
@@ -32,7 +32,7 @@ export default {
     gameData: { required: true, type: Object },
     disabled: { type: Boolean, default: false },
   },
-  emits: ["delete-item", "item-clicked"],
+  emits: ["delete-item", "item-clicked", "unauthorized-action"],
   components: {
     RemoveGameButton,
   },
@@ -51,7 +51,12 @@ export default {
     },
   },
   methods: {
-    deleteItem() {
+    deleteItem(event) {
+      if (this.disabled) {
+        this.$emit("unauthorized-action");
+        event.stopPropagation();
+        return;
+      }
       this.$emit("delete-item");
     },
     loadDetails() {
@@ -94,7 +99,9 @@ h3 {
   padding-right: 0rem;
 }
 .game-grid-centered {
-  text-align: center;
+  margin: 0 auto;
+  padding: 0;
+  width: fit-content;
 }
 strong {
   font-weight: 500;

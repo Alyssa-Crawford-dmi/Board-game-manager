@@ -18,7 +18,7 @@
           Age: <strong>{{ age }}</strong>
         </p>
       </div>
-      <div class="game-list-centered">
+      <div class="game-list-centered" @click="deleteItem">
         <RemoveGameButton @delete-item="deleteItem" :disabled="disabled" />
       </div>
     </div>
@@ -34,7 +34,7 @@ export default {
     gameData: { required: true, type: Object },
     disabled: { type: Boolean, default: false },
   },
-  emits: ["delete-item", "item-clicked"],
+  emits: ["delete-item", "item-clicked", "unauthorized-action"],
   components: {
     RemoveGameButton,
   },
@@ -54,7 +54,12 @@ export default {
     },
   },
   methods: {
-    deleteItem() {
+    deleteItem(event) {
+      if (this.disabled) {
+        this.$emit("unauthorized-action");
+        event.stopPropagation();
+        return;
+      }
       this.$emit("delete-item");
     },
     loadDetails() {

@@ -4,6 +4,7 @@
     @delete-item="(gameIndex) => openDeleteModal(gameIndex)"
     @add-games="openAddGamesModal"
     @game-detail="(gameId) => openDetailModal(gameId)"
+    @unauthorized-action="openErrorModal"
   />
   <Dialog
     :header="header"
@@ -23,6 +24,10 @@
       @game-detail="(gameId, search) => openDetailModal(gameId, search)"
       :lastSearch="lastSearch"
     />
+    <ErrorModal
+      v-else-if="selectedModalType === 'ERROR'"
+      @close-modal="showModal = false"
+    />
     <DetailModal v-else :gameId="detailGameId" />
   </Dialog>
 </template>
@@ -32,6 +37,7 @@ import Dialog from "primevue/dialog";
 import DeleteModal from "../components/Modals/DeleteModal.vue";
 import AddModal from "../components/Modals/AddModal.vue";
 import DetailModal from "../components/Modals/DetailModalWrapper.vue";
+import ErrorModal from "../components/Modals/ErrorModal.vue";
 import { modalTypes } from "../utils/modalTypes.js";
 import { gamesListState } from "../utils/gameListManager.js";
 
@@ -41,6 +47,7 @@ export default {
     DeleteModal,
     AddModal,
     DetailModal,
+    ErrorModal,
     Dialog,
   },
   data: () => {
@@ -63,6 +70,8 @@ export default {
           return "Add games";
         case modalTypes.DETAIL:
           return "Game detail";
+        case modalTypes.ERROR:
+          return "Error";
         default:
           return "";
       }
@@ -118,6 +127,10 @@ export default {
       this.showModal = true;
       this.selectedModalType = modalTypes.DETAIL;
       this.lastSearch = search;
+    },
+    openErrorModal() {
+      this.showModal = true;
+      this.selectedModalType = modalTypes.ERROR;
     },
     addGame(newGame) {
       this.addStatus = gamesListState.addGameIfNotExists(newGame);
