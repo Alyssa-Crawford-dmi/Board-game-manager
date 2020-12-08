@@ -16,7 +16,8 @@ export const loginState = {
   async login(username, password) {
     await axios
       .post(
-        API + `/login/${username}`,
+        // API + `/login/${username}`,
+        API + `/tempFunc/${username}`,
         JSON.stringify({
           username: username,
           email: "fake@email.com",

@@ -6,9 +6,9 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
         "post"
-      ]
+      ],
+      "route": "tempFunc/{rowKey}"
     },
     {
             "type": "http",
@@ -20,16 +20,8 @@
       "type": "table",
       "tableName": "users",
       "partitionKey": "users",
-      "rowKey": "ac",
+      "rowKey": "{rowKey}",
       "direction": "in",
-      "connection": "TableConnection"
-    },
-    {
-      "name": "tableOut",
-      "type": "table",
-      "tableName": "users",
-      "partitionKey": "users",
-      "direction": "out",
       "connection": "TableConnection"
     }
   ]

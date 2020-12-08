@@ -1,4 +1,4 @@
-module.exports = async function (context, req) {
+module.exports = async function(context, req) {
   const foundUser = context.bindings.userEntity;
   if (foundUser) {
     context.res = { body: { user: foundUser } };
