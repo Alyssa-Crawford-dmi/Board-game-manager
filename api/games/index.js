@@ -1,3 +1,5 @@
+var azure = require("azure-storage");
+
 module.exports = async function(context, req) {
   const method = req.method.toLowerCase();
   const foundUser = context.bindings.userEntity;
@@ -9,8 +11,18 @@ module.exports = async function(context, req) {
         context.done();
       }
       context.done();
+      return;
 
     case "post":
-      context.done();
+      if (!foundUser) {
+        context.res = { status: 400 };
+        context.done();
+      }
+      const tableService = azure.createTableService(
+        process.env.TableConnection
+      );
+
+      const updatedUser = { ...foundUser, ownedIds: req.body.gameIdStr };
+      tableService.replaceEntity("users", updatedUser, () => {});
   }
 };
