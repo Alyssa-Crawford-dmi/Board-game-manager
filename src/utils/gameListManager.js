@@ -3,14 +3,11 @@ import { getGamesFromIds } from "../apiInteractions/boardGameAtlas";
 import axios from "axios";
 import { activeUserState } from "./activeUser";
 
-const ROUTE = `/api/games/`;
-const username = activeUserState.activeUser;
-
 export const gamesListState = {
   gameList: ref([]),
   async loadGamesForUser() {
     var gameIds = [];
-    axios.get(ROUTE + username.value).then((res) => {
+    axios.get(this.buildRouteString()).then((res) => {
       const idStr = res.data.gamesList;
       if (idStr) {
         gameIds = JSON.parse(idStr);
@@ -19,6 +16,8 @@ export const gamesListState = {
             this.gameList.value = res;
           });
         }
+      } else {
+        this.gameList.value = [];
       }
     });
   },
@@ -42,7 +41,17 @@ export const gamesListState = {
     const gameIds = this.gameList.value.map((obj) => obj.id);
     const gameIdStr = JSON.stringify(gameIds);
     axios
-      .put(ROUTE + username.value, { gameIdStr })
+      .put(this.buildRouteString(), { gameIdStr })
       .catch((err) => console.log(err));
+  },
+
+  //Used for reactivity
+  buildRouteString() {
+    const BASE_ROUTE = `/api/games/`;
+    const usernameWrapper = activeUserState.activeUser;
+    const gameListName = activeUserState.isWishList.value
+      ? "wishlist"
+      : "ownedlist";
+    return BASE_ROUTE + "/" + gameListName + "/" + usernameWrapper.value;
   },
 };

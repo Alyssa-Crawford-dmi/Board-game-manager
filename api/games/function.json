@@ -8,7 +8,7 @@
       "methods": [
         "get", "put"
       ],
-      "route": "games/{rowKey}"
+      "route": "games/{listName}/{rowKey}"
     },
     {
             "type": "http",

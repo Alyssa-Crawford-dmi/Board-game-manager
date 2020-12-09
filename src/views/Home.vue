@@ -91,7 +91,6 @@ export default {
   },
   mounted() {
     this.setActiveUser();
-    gamesListState.loadGamesForUser();
   },
   watch: {
     showModal: function () {
@@ -110,9 +109,9 @@ export default {
   methods: {
     setActiveUser() {
       if (this.$route.query.user) {
-        activeUserState.setActiveUser(this.$route.query.user);
+        activeUserState.setActiveUserAndListMode(this.$route.query.user);
       } else if (loginState.loggedIn) {
-        activeUserState.setActiveUser(loginState.loggedInUser.value);
+        activeUserState.setActiveUserAndListMode(loginState.loggedInUser.value);
       }
     },
     deleteItem() {

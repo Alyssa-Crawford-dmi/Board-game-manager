@@ -34,7 +34,7 @@ export const loginState = {
       });
     this.loggedIn.value = true;
     this.loggedInUser.value = username;
-    activeUserState.setActiveUser(username);
+    activeUserState.setActiveUserAndListMode(username);
   },
   async register(email, username, password) {
     this.loggedIn.value = true;
@@ -59,7 +59,7 @@ export const loginState = {
       });
     this.loggedInUser.value = username;
     this.loggedIn.value = true;
-    activeUserState.setActiveUser(username);
+    activeUserState.setActiveUserAndListMode(username);
   },
   async verifyAvalibleUsername(username) {
     await axios

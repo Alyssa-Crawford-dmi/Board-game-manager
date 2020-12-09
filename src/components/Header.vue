@@ -46,7 +46,10 @@ export default {
         {
           label: "My wishlist",
           command: () => {
-            activeUserState.setActiveUser(loginState.loggedInUser.value);
+            activeUserState.setActiveUserAndListMode(
+              loginState.loggedInUser.value,
+              true
+            );
             this.sharedAction();
           },
           disabled: this.disabled,
@@ -54,7 +57,10 @@ export default {
         {
           label: "Owned games",
           command: () => {
-            activeUserState.setActiveUser(loginState.loggedInUser.value);
+            activeUserState.setActiveUserAndListMode(
+              loginState.loggedInUser.value,
+              false
+            );
             this.sharedAction();
           },
           disabled: this.disabled,
