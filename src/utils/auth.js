@@ -1,5 +1,7 @@
 import { ref } from "vue";
 import axios from "axios";
+import { activeUserState } from "./activeUser";
+
 const bcrypt = require("bcryptjs");
 
 const API = "/api";
@@ -14,6 +16,7 @@ const genericError = "Something went wrong. Please try again later";
 
 export const loginState = {
   loggedIn: ref(false),
+  loggedInUser: ref(""),
   async login(username, password) {
     await axios
       .get(API + `/login/${username}`, options)
@@ -30,9 +33,12 @@ export const loginState = {
         throw new Error(genericError);
       });
     this.loggedIn.value = true;
+    this.loggedInUser.value = username;
+    activeUserState.setActiveUser(username);
   },
   async register(email, username, password) {
     this.loggedIn.value = true;
+
     var hashedPassword = bcrypt.hashSync(password, 8);
     await axios
       .post(
@@ -51,6 +57,9 @@ export const loginState = {
         }
         throw new Error(genericError);
       });
+    this.loggedInUser.value = username;
+    this.loggedIn.value = true;
+    activeUserState.setActiveUser(username);
   },
   async verifyAvalibleUsername(username) {
     await axios
@@ -69,6 +78,7 @@ export const loginState = {
   },
   logout() {
     this.loggedIn.value = false;
+    this.loggedInUser.value = "";
     delete localStorage.username;
   },
   saveLocalUser(username) {
@@ -77,6 +87,7 @@ export const loginState = {
   signInLocalUser() {
     if (localStorage.username) {
       this.loggedIn.value = true;
+      this.loggedInUser.value = localStorage.username;
     }
   },
 };

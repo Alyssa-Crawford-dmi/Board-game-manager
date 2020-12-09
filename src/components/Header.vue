@@ -1,7 +1,7 @@
 <template>
   <div class="p-grid p-ai-center vertical-container header">
     <div class="p-col-6">
-      <h1>Alyssa's games</h1>
+      <h1>{{ activeUsername }}'s games</h1>
     </div>
     <div class="p-col-6" style="text-align: right">
       <Button
@@ -22,6 +22,7 @@
 import Menu from "primevue/menu";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
+import { activeUserState } from "../utils/activeUser";
 
 export default {
   name: "Header",
@@ -33,6 +34,7 @@ export default {
   data() {
     return {
       isLoggedIn: loginState.loggedIn,
+      activeUsername: activeUserState.activeUser,
     };
   },
   computed: {
@@ -44,14 +46,16 @@ export default {
         {
           label: "My wishlist",
           command: () => {
-            console.log("Wishlist");
+            activeUserState.setActiveUser(loginState.loggedInUser.value);
+            this.sharedAction();
           },
           disabled: this.disabled,
         },
         {
           label: "Owned games",
           command: () => {
-            console.log("Owned");
+            activeUserState.setActiveUser(loginState.loggedInUser.value);
+            this.sharedAction();
           },
           disabled: this.disabled,
         },
@@ -59,6 +63,7 @@ export default {
           label: "Shared with me",
           command: () => {
             console.log("shared");
+            this.sharedAction();
           },
           disabled: this.disabled,
         },
@@ -66,6 +71,7 @@ export default {
           label: this.isLoggedIn ? "Sign out" : "Login",
           command: () => {
             this.loginChange();
+            this.sharedAction();
           },
           icon: "pi pi-user",
         },
@@ -82,6 +88,9 @@ export default {
     },
     showOverlay(event) {
       this.$refs.menu.toggle(event);
+    },
+    sharedAction() {
+      this.$router.push("/");
     },
   },
 };

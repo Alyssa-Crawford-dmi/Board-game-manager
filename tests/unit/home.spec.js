@@ -1,4 +1,6 @@
 import { mount } from "@vue/test-utils";
+import { nextTick } from "vue";
+
 import Home from "@/views/Home.vue";
 import GamesList from "@/components/GamesList.vue";
 import Dialog from "primevue/dialog";
@@ -6,7 +8,6 @@ import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import AddModal from "@/components/Modals/AddModal.vue";
 import DetailModal from "@/components/Modals/DetailModalWrapper.vue";
 import { modalTypes } from "../../src/utils/modalTypes.js";
-import { nextTick } from "vue";
 import { fakeGameData } from "../../jest.setup";
 
 const numGames = fakeGameData.data.games.length;
@@ -14,8 +15,15 @@ const clickIndex = 1;
 
 describe("Home.vue", () => {
   let wrapper;
+
   beforeEach(() => {
-    wrapper = mount(Home);
+    wrapper = mount(Home, {
+      global: {
+        mocks: {
+          $route: { query: {} },
+        },
+      },
+    });
   });
 
   //Basic components

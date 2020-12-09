@@ -40,8 +40,8 @@ import DetailModal from "../components/Modals/DetailModalWrapper.vue";
 import ErrorModal from "../components/Modals/ErrorModal.vue";
 import { modalTypes } from "../utils/modalTypes.js";
 import { gamesListState } from "../utils/gameListManager.js";
-
-const activeUser = "ac2"
+import { loginState } from "../utils/auth";
+import { activeUserState } from "../utils/activeUser";
 
 export default {
   components: {
@@ -90,7 +90,8 @@ export default {
     },
   },
   mounted() {
-    gamesListState.loadGamesForUser(activeUser);
+    this.setActiveUser();
+    gamesListState.loadGamesForUser();
   },
   watch: {
     showModal: function () {
@@ -107,12 +108,19 @@ export default {
     },
   },
   methods: {
+    setActiveUser() {
+      if (this.$route.query.user) {
+        activeUserState.setActiveUser(this.$route.query.user);
+      } else if (loginState.loggedIn) {
+        activeUserState.setActiveUser(loginState.loggedInUser.value);
+      }
+    },
     deleteItem() {
       this.showModal = false;
       if (this.indexToRemove === -1) {
         return;
       }
-      gamesListState.removeGameAtIndex(this.indexToRemove, activeUser);
+      gamesListState.removeGameAtIndex(this.indexToRemove);
       this.indexToRemove = -1;
     },
     openDeleteModal(clickedIndex) {
@@ -135,7 +143,7 @@ export default {
       this.selectedModalType = modalTypes.ERROR;
     },
     addGame(newGame) {
-      this.addStatus = gamesListState.addGameIfNotExists(newGame, activeUser);
+      this.addStatus = gamesListState.addGameIfNotExists(newGame);
     },
   },
 };
