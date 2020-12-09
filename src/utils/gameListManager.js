@@ -2,11 +2,13 @@ import { ref } from "vue";
 import { getGamesFromIds } from "../apiInteractions/boardGameAtlas";
 import axios from "axios";
 
+const ROUTE = `/api/games/`;
+
 export const gamesListState = {
   gameList: ref([]),
   async loadGamesForUser(username) {
     var gameIds = [];
-    axios.get(`/api/games/${username}`).then((res) => {
+    axios.get(ROUTE + username).then((res) => {
       const idStr = res.data.gamesList;
       if (idStr) {
         gameIds = JSON.parse(idStr);
@@ -18,11 +20,11 @@ export const gamesListState = {
       }
     });
   },
-  removeGameAtIndex(index) {
+  removeGameAtIndex(index, username) {
     this.gameList.value.splice(index, 1);
-    this.saveGames();
+    this.saveGamesForUser(username);
   },
-  addGameIfNotExists(newGame) {
+  addGameIfNotExists(newGame, username) {
     const duplicate = this.gameList.value.some(
       (game) => game.id === newGame.id
     );
@@ -30,12 +32,13 @@ export const gamesListState = {
       return { error: true, msg: "Game already in list" };
     } else {
       this.gameList.value.push(newGame);
-      this.saveGames();
-      return { error: false, msg: "Game added successfuly" };
+      this.saveGamesForUser(username);
+      return { error: false, msg: "Game added successfully" };
     }
   },
-  saveGames() {
+  saveGamesForUser(username) {
     const gameIds = this.gameList.value.map((obj) => obj.id);
-    localStorage.setItem("idList", JSON.stringify(gameIds));
+    const gameIdStr = JSON.stringify(gameIds);
+    axios.put(ROUTE + username, { gameIdStr }).catch((err) => console.log(err));
   },
 };

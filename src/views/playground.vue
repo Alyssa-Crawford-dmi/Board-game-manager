@@ -4,6 +4,7 @@
 
 <script>
 import Button from "primevue/button";
+import axios from "axios";
 
 export default {
   components: {
@@ -14,7 +15,9 @@ export default {
   },
   methods: {
     toggle() {
-      console.log("hello");
+      axios.post("/api/games/acFake")
+      .then(res=> console.log(res))
+      .catch(err => console.log(err));
     },
   },
 };

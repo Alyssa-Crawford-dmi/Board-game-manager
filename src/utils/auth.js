@@ -16,15 +16,7 @@ export const loginState = {
   loggedIn: ref(false),
   async login(username, password) {
     await axios
-      .post(
-        API + `/login/${username}`,
-        JSON.stringify({
-          username: username,
-          email: "fake@email.com",
-          password: password,
-        }),
-        options
-      )
+      .get(API + `/login/${username}`, options)
       .then((res) => {
         if (!bcrypt.compareSync(password, res.data.user.password)) {
           throw new Error(badLogin);

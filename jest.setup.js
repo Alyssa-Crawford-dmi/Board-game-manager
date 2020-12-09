@@ -69,6 +69,9 @@ axios.get.mockImplementation((url) => {
   }
   return Promise.resolve(fakeIds);
 });
+axios.put.mockImplementation((url) => {
+  return Promise.resolve({ status: 200 });
+});
 loginState.loggedIn = true;
 
 const originalWarn = console.warn.bind(console.warn);

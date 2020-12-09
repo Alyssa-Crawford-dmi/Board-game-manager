@@ -1,4 +1,4 @@
-module.exports = async function (context, req) {
+module.exports = async function(context, req) {
   const method = req.method.toLowerCase();
   const foundUser = context.bindings.userEntity;
 
@@ -10,6 +10,7 @@ module.exports = async function (context, req) {
       }
       context.res = { body: { isUsernameUnique } };
       context.done();
+      return;
 
     case "post":
       if (foundUser) {
@@ -19,7 +20,7 @@ module.exports = async function (context, req) {
       context.bindings.tableOut = [];
       context.bindings.tableOut.push({
         PartitionKey: "users",
-        RowKey: req.body.username,
+        RowKey: context.bindingData.rowKey,
         ...req.body,
       });
       addedUser = true;

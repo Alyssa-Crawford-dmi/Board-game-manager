@@ -41,6 +41,8 @@ import ErrorModal from "../components/Modals/ErrorModal.vue";
 import { modalTypes } from "../utils/modalTypes.js";
 import { gamesListState } from "../utils/gameListManager.js";
 
+const activeUser = "ac"
+
 export default {
   components: {
     GamesList,
@@ -88,7 +90,7 @@ export default {
     },
   },
   mounted() {
-    gamesListState.loadGamesForUser("ac");
+    gamesListState.loadGamesForUser(activeUser);
   },
   watch: {
     showModal: function () {
@@ -110,7 +112,7 @@ export default {
       if (this.indexToRemove === -1) {
         return;
       }
-      gamesListState.removeGameAtIndex(this.indexToRemove);
+      gamesListState.removeGameAtIndex(this.indexToRemove, activeUser);
       this.indexToRemove = -1;
     },
     openDeleteModal(clickedIndex) {
@@ -133,7 +135,7 @@ export default {
       this.selectedModalType = modalTypes.ERROR;
     },
     addGame(newGame) {
-      this.addStatus = gamesListState.addGameIfNotExists(newGame);
+      this.addStatus = gamesListState.addGameIfNotExists(newGame, activeUser);
     },
   },
 };

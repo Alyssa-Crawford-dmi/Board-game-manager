@@ -12,6 +12,7 @@
     "@ionic/vue": "^5.4.3",
     "@ionic/vue-router": "^5.4.3",
     "axios": "^0.21.0",
+    "azure-storage": "^2.10.3",
     "bcryptjs": "^2.4.3",
     "core-js": "^3.6.5",
     "primeflex": "^2.0.0",
