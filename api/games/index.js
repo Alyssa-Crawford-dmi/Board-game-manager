@@ -13,7 +13,7 @@ module.exports = async function(context, req) {
       context.done();
       return;
 
-    case "post":
+    case "put":
       if (!foundUser) {
         context.res = { status: 400 };
         context.done();

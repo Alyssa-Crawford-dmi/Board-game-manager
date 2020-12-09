@@ -41,7 +41,7 @@ import ErrorModal from "../components/Modals/ErrorModal.vue";
 import { modalTypes } from "../utils/modalTypes.js";
 import { gamesListState } from "../utils/gameListManager.js";
 
-const activeUser = "ac"
+const activeUser = "ac2"
 
 export default {
   components: {
