@@ -1,5 +1,6 @@
 import axios from "axios";
 import { loginState } from "./src/utils/auth";
+import { activeUserState } from "./src/utils/activeUser";
 
 export const fakeGameData = {
   data: {
@@ -73,6 +74,7 @@ axios.put.mockImplementation((url) => {
   return Promise.resolve({ status: 200 });
 });
 loginState.loggedIn = true;
+activeUserState.setActiveUserAndListMode("AC");
 
 const originalWarn = console.warn.bind(console.warn);
 const originalInfo = console.info.bind(console.info);

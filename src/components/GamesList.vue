@@ -29,6 +29,9 @@
         </div>
       </template>
 
+      <template #empty>{{
+        isLoggedIn ? "No games yet" : "Please login or sign up to get started"
+      }}</template>
       <template #list="slotProps">
         <ListItem
           :gameData="slotProps.data"

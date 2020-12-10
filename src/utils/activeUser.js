@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { gamesListState } from "./gameListManager";
 
 export const activeUserState = {
-  activeUser: ref("ac"),
+  activeUser: ref(""),
   isWishList: ref(false),
   setActiveUserAndListMode(newUser, newMode = false) {
     this.activeUser.value = newUser;

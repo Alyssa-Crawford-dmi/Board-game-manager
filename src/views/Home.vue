@@ -110,7 +110,7 @@ export default {
     setActiveUser() {
       if (this.$route.query.user) {
         activeUserState.setActiveUserAndListMode(this.$route.query.user);
-      } else if (loginState.loggedIn) {
+      } else if (loginState.loggedIn.value) {
         activeUserState.setActiveUserAndListMode(loginState.loggedInUser.value);
       }
     },

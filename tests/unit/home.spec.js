@@ -9,6 +9,7 @@ import AddModal from "@/components/Modals/AddModal.vue";
 import DetailModal from "@/components/Modals/DetailModalWrapper.vue";
 import { modalTypes } from "../../src/utils/modalTypes.js";
 import { fakeGameData } from "../../jest.setup";
+import { activeUserState } from "../../src/utils/activeUser";
 
 const numGames = fakeGameData.data.games.length;
 const clickIndex = 1;
@@ -24,6 +25,13 @@ describe("Home.vue", () => {
         },
       },
     });
+    activeUserState.setActiveUserAndListMode("AC");
+  });
+
+  // If this test fails other tests are likely to fail in more subtle
+  // ways because the setup is different than expected
+  it("Has as many games in gamesList as in fakeGameData", () => {
+    expect(wrapper.vm.gamesList.length).toEqual(numGames);
   });
 
   //Basic components

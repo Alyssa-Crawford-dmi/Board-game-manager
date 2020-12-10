@@ -1,7 +1,9 @@
 <template>
   <div class="p-grid p-ai-center vertical-container header">
     <div class="p-col-6">
-      <h1>{{ activeUsername }}'s games</h1>
+      <h1>
+        {{ activeUsername ? `${activeUsername}'s games` : "Board games" }}
+      </h1>
     </div>
     <div class="p-col-6" style="text-align: right">
       <Button
@@ -88,6 +90,7 @@ export default {
     loginChange() {
       if (this.isLoggedIn) {
         loginState.logout();
+        activeUserState.setActiveUserAndListMode("");
       } else {
         this.$emit("login");
       }
