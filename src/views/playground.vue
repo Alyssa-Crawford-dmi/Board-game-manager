@@ -1,41 +1,33 @@
 <template>
-  <Button type="button" label="Toggle" @click="toggle" />
+  <TabMenu :model="items" />
 </template>
 
 <script>
-import Button from "primevue/button";
-import axios from "axios";
-import { activeUserState } from "../utils/activeUser";
-import { loginState } from "../utils/auth";
+// import { activeUserState } from "../utils/activeUser";
+import TabMenu from "primevue/tabmenu";
 
 export default {
-  components: {
-    Button,
-  },
+  components: { TabMenu },
   data() {
-    return {};
-  },
-  mounted() {
-    console.log(this.$route);
-    if (this.$route.query.user) {
-      console.log("inside if");
-      activeUserState.setActiveUser(this.$route.query.user);
-    } else if (loginState.loggedIn) {
-      activeUserState.setActiveUser(loginState.loggedInUser.value);
-    }
-  },
-  methods: {
-    toggle() {
-      axios
-        .post("/api/games/acFake")
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-    },
+    return {
+      items: [
+        { label: "Home", icon: "pi pi-fw pi-home", to: "/play" },
+        {
+          label: "Calendar",
+          icon: "pi pi-fw pi-calendar",
+          to: "/play/calendar",
+        },
+        { label: "Edit", icon: "pi pi-fw pi-pencil", to: "/play/edit" },
+        {
+          label: "Documentation",
+          icon: "pi pi-fw pi-file",
+          to: "/play/documentation",
+        },
+        { label: "Settings", icon: "pi pi-fw pi-cog", to: "/play/settings" },
+      ],
+    };
   },
 };
 </script>
 <style scoped>
-.div {
-  background-color: blueviolet;
-}
 </style>

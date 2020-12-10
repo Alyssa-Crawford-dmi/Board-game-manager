@@ -1,11 +1,20 @@
 <template>
   <div class="p-grid p-ai-center vertical-container header">
-    <div class="p-col-6">
+    <div class="p-col-12 p-sm-4" :style="{ textAlign: centerOrLeftPos }">
       <h1>
         {{ activeUsername ? `${activeUsername}'s games` : "Board games" }}
       </h1>
     </div>
-    <div class="p-col-6" style="text-align: right">
+    <div
+      class="p-col-12 p-sm-4"
+      v-if="activeUsername !== ''"
+      :style="{ display: 'flex', justifyContent: 'center' }"
+    >
+      <div class="smallest-wrapping">
+        <GameListTypeNav />
+      </div>
+    </div>
+    <div class="p-col-12 p-sm-4" :style="{ textAlign: centerOrRightPos }">
       <Button
         class="p-button-raised p-button-text custom-button"
         label="My account"
@@ -15,7 +24,7 @@
         icon="pi pi-user"
         iconPos="right"
       />
-      <Menu id="overlay_menu" ref="menu" :model="items" :popup="true" />
+      <Menu id="overlay_menu" ref="menu" :model="accountItems" :popup="true" />
     </div>
   </div>
 </template>
@@ -25,25 +34,29 @@ import Menu from "primevue/menu";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
 import { activeUserState } from "../utils/activeUser";
+import GameListTypeNav from "./GameListTypeNav.vue";
 
 export default {
   name: "Header",
   components: {
     Button,
     Menu,
+    GameListTypeNav,
   },
   emits: ["login"],
   data() {
     return {
       isLoggedIn: loginState.loggedIn,
       activeUsername: activeUserState.activeUser,
+      centerOrLeftPos: screen.width > 576 ? "left" : "center",
+      centerOrRightPos: screen.width > 576 ? "right" : "center",
     };
   },
   computed: {
     disabled() {
       return !this.isLoggedIn;
     },
-    items() {
+    accountItems() {
       return [
         {
           label: "My wishlist",
@@ -107,6 +120,11 @@ export default {
 <style scoped>
 .header {
   padding: 0 2rem;
+}
+.smallest-wrapping {
+  margin: 0;
+  padding: 0;
+  width: fit-content;
 }
 div {
   padding: 0;
