@@ -4,6 +4,7 @@ module.exports = async function(context, req) {
   const method = req.method.toLowerCase();
   const foundUser = context.bindings.userEntity;
   const listName = context.bindingData.listName;
+  console.log(foundUser);
 
   switch (method) {
     case "get":

@@ -73,8 +73,8 @@ axios.get.mockImplementation((url) => {
 axios.put.mockImplementation((url) => {
   return Promise.resolve({ status: 200 });
 });
-loginState.loggedIn = true;
 activeUserState.setActiveUserAndListMode("AC");
+loginState.loggedInUser = "AC";
 
 const originalWarn = console.warn.bind(console.warn);
 const originalInfo = console.info.bind(console.info);

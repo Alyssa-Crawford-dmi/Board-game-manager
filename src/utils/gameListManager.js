@@ -44,6 +44,9 @@ export const gamesListState = {
       .put(this.buildRouteString(), { gameIdStr })
       .catch((err) => console.log(err));
   },
+  clearGamesList() {
+    this.gameList.value = [];
+  },
 
   //Used for reactivity
   buildRouteString() {

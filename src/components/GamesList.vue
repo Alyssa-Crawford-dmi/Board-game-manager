@@ -36,7 +36,7 @@
         <ListItem
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
-          @item-clicked="() => detail(slotProps.data.id)"
+          @item-clicked="() => detail(slotProps.data)"
           @unauthorized-action="unauthorizedAction"
           :disabled="!canAddGames"
         />
@@ -45,7 +45,7 @@
         <GridItem
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
-          @item-clicked="() => detail(slotProps.data.id)"
+          @item-clicked="() => detail(slotProps.data)"
           @unauthorized-action="unauthorizedAction"
           :disabled="!canAddGames"
         />
@@ -61,6 +61,7 @@ import GridItem from "./GridItem.vue";
 import ListItem from "./ListItem.vue";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
+import { activeUserState } from "../utils/activeUser";
 
 export default {
   name: "ListHolder",
@@ -83,12 +84,15 @@ export default {
     return {
       layout: "grid",
       bigScreen: false,
-      isLoggedIn: loginState.loggedIn,
+      isLoggedIn: loginState.loggedInUser,
     };
   },
   computed: {
     canAddGames() {
-      if (this.isLoggedIn) {
+      if (
+        this.isLoggedIn &&
+        this.isLoggedIn === activeUserState.activeUser.value
+      ) {
         return true;
       }
       return false;
@@ -105,8 +109,8 @@ export default {
       }
       this.$emit("add-games");
     },
-    detail(id) {
-      this.$emit("game-detail", id);
+    detail(game) {
+      this.$emit("game-detail", game);
     },
     detectOrientationChange() {
       console.log("Detected change");

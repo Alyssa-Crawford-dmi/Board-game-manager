@@ -3,7 +3,7 @@
     :gamesList="gamesList"
     @delete-item="(gameIndex) => openDeleteModal(gameIndex)"
     @add-games="openAddGamesModal"
-    @game-detail="(gameId) => openDetailModal(gameId)"
+    @game-detail="(game) => openDetailModal(game)"
     @unauthorized-action="openErrorModal"
   />
   <Dialog
@@ -21,23 +21,34 @@
       @add-game="(game) => addGame(game)"
       :addStatus="addStatus"
       :gamesList="gamesList"
-      @game-detail="(gameId, search) => openDetailModal(gameId, search)"
+      @game-detail="(game, search) => openDetailModal(game, search)"
       :lastSearch="lastSearch"
     />
     <ErrorModal
       v-else-if="selectedModalType === 'ERROR'"
       @close-modal="showModal = false"
     />
-    <DetailModal v-else :gameId="detailGameId" />
+    <DetailModal v-else :gameId="detailGame.id">
+      <template v-slot:action-btn v-if="lastSearch">
+        <Button
+          @click="() => addGame(detailGame, e)"
+          label="Add game to list"
+          class="p-button-rounded"
+          title="Add game"
+        />
+      </template>
+    </DetailModal>
   </Dialog>
 </template>
 <script>
 import GamesList from "../components/GamesList";
 import Dialog from "primevue/dialog";
+import Button from "primevue/button";
 import DeleteModal from "../components/Modals/DeleteModal.vue";
 import AddModal from "../components/Modals/AddModal.vue";
 import DetailModal from "../components/Modals/DetailModalWrapper.vue";
 import ErrorModal from "../components/Modals/ErrorModal.vue";
+
 import { modalTypes } from "../utils/modalTypes.js";
 import { gamesListState } from "../utils/gameListManager.js";
 import { loginState } from "../utils/auth";
@@ -51,6 +62,7 @@ export default {
     DetailModal,
     ErrorModal,
     Dialog,
+    Button,
   },
   data: () => {
     return {
@@ -59,7 +71,7 @@ export default {
       gamesList: gamesListState.gameList,
       indexToRemove: -1,
       addStatus: {},
-      detailGameId: "",
+      detailGame: {},
       lastSearch: "",
     };
   },
@@ -110,7 +122,7 @@ export default {
     setActiveUser() {
       if (this.$route.query.user) {
         activeUserState.setActiveUserAndListMode(this.$route.query.user);
-      } else if (loginState.loggedIn.value) {
+      } else if (loginState.loggedInUser.value) {
         activeUserState.setActiveUserAndListMode(loginState.loggedInUser.value);
       }
     },
@@ -131,8 +143,8 @@ export default {
       this.showModal = true;
       this.selectedModalType = modalTypes.ADD;
     },
-    openDetailModal(gameId, search) {
-      this.detailGameId = gameId;
+    openDetailModal(game, search) {
+      this.detailGame = game;
       this.showModal = true;
       this.selectedModalType = modalTypes.DETAIL;
       this.lastSearch = search;

@@ -15,7 +15,6 @@ const badLogin = "Invalid username or password. Please try again";
 const genericError = "Something went wrong. Please try again later";
 
 export const loginState = {
-  loggedIn: ref(false),
   loggedInUser: ref(""),
   async login(username, password) {
     await axios
@@ -32,13 +31,10 @@ export const loginState = {
         console.log(e);
         throw new Error(genericError);
       });
-    this.loggedIn.value = true;
     this.loggedInUser.value = username;
     activeUserState.setActiveUserAndListMode(username);
   },
   async register(email, username, password) {
-    this.loggedIn.value = true;
-
     var hashedPassword = bcrypt.hashSync(password, 8);
     await axios
       .post(
@@ -58,7 +54,6 @@ export const loginState = {
         throw new Error(genericError);
       });
     this.loggedInUser.value = username;
-    this.loggedIn.value = true;
     activeUserState.setActiveUserAndListMode(username);
   },
   async verifyAvalibleUsername(username) {
@@ -77,7 +72,6 @@ export const loginState = {
       });
   },
   logout() {
-    this.loggedIn.value = false;
     this.loggedInUser.value = "";
     delete localStorage.username;
   },
@@ -86,7 +80,6 @@ export const loginState = {
   },
   signInLocalUser() {
     if (localStorage.username) {
-      this.loggedIn.value = true;
       this.loggedInUser.value = localStorage.username;
     }
   },

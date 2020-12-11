@@ -1,32 +1,21 @@
 <template>
-  <TabMenu :model="items" />
+  <PlayComp
+    ><template v-slot:action-btn>
+      <Button
+        @click="(e) => addGame(game, e)"
+        icon="pi pi-plus"
+        class="p-button-rounded"
+        title="Add game"
+      /> </template
+  ></PlayComp>
 </template>
 
 <script>
-// import { activeUserState } from "../utils/activeUser";
-import TabMenu from "primevue/tabmenu";
+import PlayComp from "../components/PlayComp";
+import Button from "primevue/button";
 
 export default {
-  components: { TabMenu },
-  data() {
-    return {
-      items: [
-        { label: "Home", icon: "pi pi-fw pi-home", to: "/play" },
-        {
-          label: "Calendar",
-          icon: "pi pi-fw pi-calendar",
-          to: "/play/calendar",
-        },
-        { label: "Edit", icon: "pi pi-fw pi-pencil", to: "/play/edit" },
-        {
-          label: "Documentation",
-          icon: "pi pi-fw pi-file",
-          to: "/play/documentation",
-        },
-        { label: "Settings", icon: "pi pi-fw pi-cog", to: "/play/settings" },
-      ],
-    };
-  },
+  components: { PlayComp, Button },
 };
 </script>
 <style scoped>

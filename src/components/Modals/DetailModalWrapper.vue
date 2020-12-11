@@ -8,6 +8,9 @@
         <ProgressSpinner />
       </template>
     </Suspense>
+    <div class="centered">
+      <slot name="action-btn"></slot>
+    </div>
   </div>
 </template>
 <script>
@@ -23,3 +26,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.centered {
+  width: fit-content;
+  margin: 0.5rem auto;
+}
+</style>

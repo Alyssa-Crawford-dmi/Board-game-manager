@@ -89,13 +89,13 @@ describe("Home.vue", () => {
     expect(addModal.exists()).toBe(true);
   });
 
-  it("On game-detail opens an detailModal and sets detailGameId to the payload of the emitted event", async () => {
-    const gameId = fakeGameData.data.games[clickIndex].id;
+  it("On game-detail opens an detailModal and sets detailGame to the payload of the emitted event", async () => {
+    const game = fakeGameData.data.games[clickIndex];
     const gamesList = wrapper.findComponent(GamesList);
-    await gamesList.vm.$emit("game-detail", gameId);
+    await gamesList.vm.$emit("game-detail", game);
     const detailModal = wrapper.findComponent(DetailModal);
     expect(detailModal.exists()).toBe(true);
-    expect(wrapper.vm.detailGameId).toEqual(gameId);
+    expect(wrapper.vm.detailGame).toEqual(game);
   });
 
   //Removing list items
@@ -122,11 +122,6 @@ describe("Home.vue", () => {
     expect(wrapper.vm.gamesList).toHaveLength(numGames);
   });
 
-  //Game list updated on load
-  it("Loading listHolder causes an api call to be made which updates the state", async () => {
-    expect(wrapper.vm.gamesList).toHaveLength(numGames);
-  });
-
   it("Passes the name of the game to remove to deleteModal", async () => {
     await wrapper.setData({
       showModal: true,
@@ -147,7 +142,7 @@ describe("Home.vue", () => {
       selectedModalType: modalTypes.ADD,
     });
     const modal = wrapper.findComponent(AddModal);
-    await modal.vm.$emit("game-detail", "id", search);
+    await modal.vm.$emit("game-detail", { id: "1" }, search);
     expect(wrapper.vm.lastSearch).toEqual(search);
   });
 
@@ -164,6 +159,7 @@ describe("Home.vue", () => {
       showModal: false,
       selectedModalType: modalTypes.DETAIL,
       lastSearch,
+      detailGame: { id: "1" },
     });
     expect(wrapper.vm.lastSearch).toEqual(lastSearch);
   });
@@ -173,6 +169,7 @@ describe("Home.vue", () => {
       showModal: true,
       selectedModalType: modalTypes.DETAIL,
       lastSearch,
+      detailGame: { id: "1" },
     });
     await wrapper.setData({
       showModal: false,

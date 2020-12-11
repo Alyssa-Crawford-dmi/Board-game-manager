@@ -7,6 +7,10 @@ export const activeUserState = {
   setActiveUserAndListMode(newUser, newMode = false) {
     this.activeUser.value = newUser;
     this.isWishList.value = newMode;
-    gamesListState.loadGamesForUser();
+    if (newUser) {
+      gamesListState.loadGamesForUser();
+    } else {
+      gamesListState.clearGamesList();
+    }
   },
 };

@@ -46,7 +46,7 @@ export default {
   emits: ["login"],
   data() {
     return {
-      isLoggedIn: loginState.loggedIn,
+      isLoggedIn: loginState.loggedInUser,
       activeUsername: activeUserState.activeUser,
       centerOrLeftPos: screen.width > 576 ? "left" : "center",
       centerOrRightPos: screen.width > 576 ? "right" : "center",

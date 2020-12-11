@@ -30,7 +30,7 @@
         v-for="game in searchResults"
         :key="game.id"
         :gameData="game"
-        @item-clicked="() => detail(game.id)"
+        @item-clicked="() => detail(game)"
       >
         <i
           v-if="gamesListContains(game)"
@@ -93,8 +93,8 @@ export default {
     gamesListContains(game) {
       return this.gamesList.some((gameInList) => game.id === gameInList.id);
     },
-    detail(id) {
-      this.$emit("game-detail", id, this.searchTerm);
+    detail(game) {
+      this.$emit("game-detail", game, this.searchTerm);
     },
   },
 };
