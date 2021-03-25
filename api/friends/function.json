@@ -1,0 +1,38 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "put",
+        "post"
+      ],
+      "route": "friends/{inviter}/{invitee}"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "name": "friendEntity",
+      "type": "table",
+      "tableName": "friends",
+      "partitionKey": "friends",
+      "inviter": "{inviter}",
+      "invitee": "{invitee}",
+      "direction": "in",
+      "connection": "TableConnection"
+    },
+    {
+      "name": "tableOut",
+      "type": "table",
+      "tableName": "friends",
+      "partitionKey": "friends",
+      "direction": "out",
+      "connection": "TableConnection"
+    }
+  ]
+}
