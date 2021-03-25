@@ -14,6 +14,13 @@
       "type": "http",
       "direction": "out",
       "name": "res"
+    },
+    {
+      "name": "allResults",
+      "type": "table",
+      "tableName": "friends",
+      "direction": "in",
+      "connection": "TableConnection"
     }
   ]
 }

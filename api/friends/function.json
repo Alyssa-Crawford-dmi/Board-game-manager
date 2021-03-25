@@ -9,7 +9,7 @@
         "put",
         "post"
       ],
-      "route": "friends/{person1}/{person2}"
+      "route": "friends/{person1}/{person2}/{inviter}"
     },
     {
       "type": "http",

@@ -8,6 +8,7 @@ module.exports = async function(context, req) {
   const baseFriendRelationShip = {
     PartitionKey: partitionKey,
     RowKey: rowKey,
+    inviter: context.bindings.req.params.inviter,
   };
   switch (method) {
     case "post":
