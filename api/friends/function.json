@@ -9,7 +9,7 @@
         "put",
         "post"
       ],
-      "route": "friends/{inviter}/{invitee}"
+      "route": "friends/{person1}/{person2}"
     },
     {
       "type": "http",
@@ -20,7 +20,8 @@
       "name": "friendEntity",
       "type": "table",
       "tableName": "friends",
-      "partitionKey": "friends",
+      "partitionKey": "{person1}",
+      "rowKey": "{person2}",
       "direction": "in",
       "connection": "TableConnection"
     },

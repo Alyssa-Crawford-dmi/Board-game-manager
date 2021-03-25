@@ -2,49 +2,46 @@ var azure = require("azure-storage");
 
 module.exports = async function(context, req) {
   const method = req.method.toLowerCase();
-  const inviter = context.bindings.req.params.inviter;
-  const invitee = context.bindings.req.params.invitee;
-  const RowKey =
-    invitee < inviter ? `${invitee}*${inviter}` : `${inviter}*${invitee}`;
+  const partitionKey = context.bindings.req.params.person1;
+  const rowKey = context.bindings.req.params.person2;
   const tableService = azure.createTableService(process.env.TableConnection);
-  let isNew;
-
+  const baseFriendRelationShip = {
+    PartitionKey: partitionKey,
+    RowKey: rowKey,
+  };
   switch (method) {
     case "post":
-      isNew = true;
+      if (context.bindings.friendEntity) {
+        context.res = { body: { error: "Already friends" } };
+        context.done();
+        return;
+      }
+      tableService.insertEntity(
+        "friends",
+        { ...baseFriendRelationShip, pending: true },
+        (err) => {
+          if (err) {
+            context.res = { status: 400 };
+          }
+          context.done();
+        }
+      );
       break;
     case "put":
-      isNew = false;
+      if (!context.bindings.friendEntity) {
+        context.res = { body: { error: "No pending friend request" } };
+        context.done();
+        return;
+      }
+      tableService.insertOrReplaceEntity(
+        "friends",
+        { ...baseFriendRelationShip, pending: false },
+        (err) => {
+          if (err) {
+            context.res = { status: 400 };
+          }
+          context.done();
+        }
+      );
   }
-
-  const friendRelationShip = {
-    PartitionKey: "friends",
-    RowKey,
-    inviter,
-    invitee,
-    pending: isNew,
-  };
-
-  tableService.retrieveEntity("friends", "friends", RowKey, function(
-    error,
-    entity
-  ) {
-    if ((isNew && !entity) || (!isNew && !!entity)) {
-      insertEntity(tableService, friendRelationShip, context);
-      return;
-    } else {
-      context.res = { body: { error: "error" } };
-      context.done();
-      return;
-    }
-  });
 };
-
-function insertEntity(tableService, friendRelationShip, context) {
-  tableService.insertOrReplaceEntity("friends", friendRelationShip, (err) => {
-    if (err) {
-      context.res = { status: 400 };
-    }
-    context.done();
-  });
-}

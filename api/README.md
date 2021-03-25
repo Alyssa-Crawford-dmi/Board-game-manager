@@ -14,7 +14,9 @@ GET - Returns the user with the given username. **IMPORTANT:** it is up to the c
 GET - Returns the games list with listName associated with the current user
 PUT - Updates the games list with listName associated with the current user
 
-### /friends/{inviter}/{invitee}
+### /friends/{person1}/{person2}
+
+Person1 should come before person2 in the alphabet
 
 POST - Creates a new pending friend relationship
 PUT - Accepts the friend request
