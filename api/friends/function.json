@@ -21,8 +21,6 @@
       "type": "table",
       "tableName": "friends",
       "partitionKey": "friends",
-      "inviter": "{inviter}",
-      "invitee": "{invitee}",
       "direction": "in",
       "connection": "TableConnection"
     },

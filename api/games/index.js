@@ -4,7 +4,6 @@ module.exports = async function(context, req) {
   const method = req.method.toLowerCase();
   const foundUser = context.bindings.userEntity;
   const listName = context.bindingData.listName;
-  console.log(foundUser);
 
   switch (method) {
     case "get":
@@ -25,6 +24,7 @@ module.exports = async function(context, req) {
       );
 
       const updatedUser = { ...foundUser, [listName]: req.body.gameIdStr };
+      console.log(updatedUser);
       tableService.replaceEntity("users", updatedUser, () => {});
   }
 };

@@ -2,7 +2,7 @@
 
 ### /api/signup/{username}
 
-GET - verifies username avalible
+GET - verifies username available
 POST - creates a new user with the given info
 
 ### /api/login/{username}
