@@ -1,22 +1,22 @@
 <template>
-  <PlayComp
-    ><template v-slot:action-btn>
-      <Button
-        @click="(e) => addGame(game, e)"
-        icon="pi pi-plus"
-        class="p-button-rounded"
-        title="Add game"
-      /> </template
-  ></PlayComp>
+  <div class="flex-test">
+    <h1>longer Text</h1>
+    <Button label="First" />
+    <Button label="Second" />
+  </div>
 </template>
 
 <script>
-import PlayComp from "../components/PlayComp";
 import Button from "primevue/button";
 
 export default {
-  components: { PlayComp, Button },
+  components: { Button },
 };
 </script>
 <style scoped>
+.flex-test {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

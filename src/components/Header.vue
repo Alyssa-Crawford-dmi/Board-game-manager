@@ -1,20 +1,13 @@
 <template>
-  <div class="p-grid p-ai-center vertical-container header">
-    <div class="p-col-12 p-sm-4" :style="{ textAlign: centerOrLeftPos }">
-      <h1>
-        {{ activeUsername ? `${activeUsername}'s games` : "Board games" }}
-      </h1>
-    </div>
-    <div
-      class="p-col-12 p-sm-4"
-      v-if="activeUsername !== ''"
-      :style="{ display: 'flex', justifyContent: 'center' }"
-    >
-      <div class="smallest-wrapping">
-        <GameListTypeNav />
-      </div>
-    </div>
-    <div class="p-col-12 p-sm-4" :style="{ textAlign: centerOrRightPos }">
+  <div class="flex-container header">
+    <h1 class="header-item">
+      {{ headerText }}
+    </h1>
+    <GameListTypeNav
+      v-if="activeUsername !== '' && onHomePage"
+      class="header-item"
+    />
+    <div class="header-item">
       <Button
         class="p-button-raised p-button-text custom-button"
         label="My account"
@@ -48,11 +41,20 @@ export default {
     return {
       isLoggedIn: loginState.loggedInUser,
       activeUsername: activeUserState.activeUser,
-      centerOrLeftPos: screen.width > 576 ? "left" : "center",
-      centerOrRightPos: screen.width > 576 ? "right" : "center",
     };
   },
   computed: {
+    onHomePage() {
+      return this.$route.name === "Home";
+    },
+    headerText() {
+      if (this.onHomePage) {
+        return this.activeUsername
+          ? `${this.activeUsername}'s games`
+          : "Board games";
+      }
+      return "Friends";
+    },
     disabled() {
       return !this.isLoggedIn;
     },
@@ -81,10 +83,9 @@ export default {
           disabled: this.disabled,
         },
         {
-          label: "Shared with me",
+          label: "Friends",
           command: () => {
-            console.log("shared");
-            this.sharedAction();
+            this.$router.push("/friends");
           },
           disabled: this.disabled,
         },
@@ -118,21 +119,25 @@ export default {
 };
 </script>
 <style scoped>
-.header {
-  padding: 0 2rem;
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
 }
-.smallest-wrapping {
-  margin: 0;
+div,
+h1 {
   padding: 0;
-  width: fit-content;
-}
-div {
-  padding: 0;
   margin: 0;
 }
+
 @media screen and (max-width: 700px) {
-  .header {
-    padding: 0 0.5rem;
+  .flex-container {
+    flex-direction: column;
+    padding: 0;
+  }
+  .header-item {
+    padding-bottom: 1rem;
   }
 }
 </style>

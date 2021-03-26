@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Friends from "../views/Friends.vue";
 import Home from "../views/Home.vue";
 import Playground from "../views/playground.vue";
 
@@ -7,6 +8,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/friends",
+    name: "friends",
+    component: Friends,
   },
   {
     path: "/play",
