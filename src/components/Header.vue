@@ -10,7 +10,7 @@
     <div class="header-item">
       <Button
         class="p-button-raised p-button-text custom-button"
-        label="My account"
+        :label="accountBtnLabel"
         @click="showOverlay"
         aria-haspopup="true"
         aria-controls="overlay_menu"
@@ -44,6 +44,9 @@ export default {
     };
   },
   computed: {
+    accountBtnLabel() {
+      return this.isLoggedIn ? this.activeUsername : "My account";
+    },
     onHomePage() {
       return this.$route.name === "Home";
     },

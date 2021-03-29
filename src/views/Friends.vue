@@ -2,7 +2,7 @@
   <div>
     <h2>Add Friend</h2>
     <div class="add-div">
-      <div class="invlaid-div">
+      <div class="status-div">
         <InputText
           type="text"
           v-model="friendToAdd"
@@ -31,7 +31,7 @@
         :key="friend"
         class="card friend-item"
       >
-        <p>
+        <p class="friend-text">
           {{ friend.friendName }}
         </p>
       </div>
@@ -43,7 +43,7 @@
         :key="friend"
         class="card friend-item"
       >
-        <p>
+        <p class="friend-text">
           {{ friend.friendName }}
         </p>
         <Button
@@ -57,7 +57,7 @@
     <template v-if="friends.length > 0">
       <h2>My Friends</h2>
       <div v-for="friend in friends" :key="friend" class="card friend-item">
-        <p>
+        <p class="friend-text">
           {{ friend.friendName }}
         </p>
         <div class="action-buttons">
@@ -128,12 +128,12 @@ h2 {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 1rem;
 }
 .add-button {
   margin-left: 1rem;
 }
-.invlaid-div {
+.status-div {
   display: inline-flex;
   flex-direction: column;
   padding-left: 0rem;
@@ -145,5 +145,25 @@ h2 {
 }
 .success {
   color: green;
+}
+.friend-text {
+  font-weight: bold;
+  font-size: large;
+}
+@media screen and (max-width: 500px) {
+  .friend-item {
+    flex-direction: column;
+    align-items: center;
+  }
+  .action-buttons {
+    padding: 0rem;
+  }
+  .add-div {
+    flex-direction: column;
+    align-items: center;
+  }
+  .status-div {
+    padding-bottom: 1rem;
+  }
 }
 </style>
