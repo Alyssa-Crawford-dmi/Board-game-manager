@@ -1,7 +1,7 @@
 <template>
   <div class="p-col-12 pointer" @click="loadDetails">
     <div class="game-list-item">
-      <div class="game-list-centered">
+      <div class="game-list-centered image-box">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
       </div>
       <div class="game-list-details">
@@ -84,8 +84,10 @@ strong {
 }
 img {
   height: 100%;
+  width: 100%;
+  object-fit: contain;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  margin: 0 2rem;
+
   max-height: 15rem;
 }
 h3 {
@@ -95,6 +97,10 @@ h3 {
 }
 .game-list-details {
   flex: 1 1 0;
+}
+.image-box {
+  width: 10rem;
+  margin: 0 2rem 0 1rem;
 }
 @media screen and (max-width: 600px) {
   .game-list-item {

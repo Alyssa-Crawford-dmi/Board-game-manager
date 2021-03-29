@@ -14,7 +14,7 @@ GET - Returns the user with the given username. **IMPORTANT:** it is up to the c
 GET - Returns the games list with listName associated with the current user
 PUT - Updates the games list with listName associated with the current user
 
-### /friends/{person1}/{person2}/{inviter}
+### /friends/{person1}/{person2}/{invitee}
 
 Person1 should come before person2 in the alphabet
 

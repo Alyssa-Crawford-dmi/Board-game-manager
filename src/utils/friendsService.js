@@ -6,12 +6,14 @@ export const friendsListState = {
   friends: ref([]),
   sentRequests: ref([]),
   pendingRequests: ref([]),
+  invalidFriend: ref(false),
+  requestSent: ref(false),
   async getFriends() {
     const user = loginState.loggedInUser.value;
     const res = (await axios.get(`/api/friends/${user}`)).data;
     const allFriends = res.map((elm) => {
       return {
-        isInviter: elm.inviter === user,
+        isInviter: elm.invitee !== user,
         friendName: elm.PartitionKey === user ? elm.RowKey : elm.PartitionKey,
         pending: elm.pending,
       };
@@ -33,18 +35,38 @@ export const friendsListState = {
       ? this.buildUrl(user, friend.friendName)
       : this.buildUrl(friend.friendName, user);
 
-    await axios.put(url);
-    await this.getFriends();
+    axios.put(url).then(
+      () => {
+        this.requestSent.value = true;
+        this.invalidFriend.value = false;
+
+        this.getFriends();
+      },
+      () => {
+        this.requestSent.value = false;
+        this.invalidFriend.value = true;
+      }
+    );
   },
   async addFriend(friendName) {
     const user = loginState.loggedInUser.value;
     const url = this.buildUrl(user, friendName);
-    await axios.post(url);
-    await this.getFriends();
+    axios.post(url).then(
+      () => {
+        this.requestSent.value = true;
+        this.invalidFriend.value = false;
+
+        this.getFriends();
+      },
+      () => {
+        this.requestSent.value = false;
+        this.invalidFriend.value = true;
+      }
+    );
   },
   buildUrl(inviter, invitee) {
     return inviter < invitee
-      ? `/api/friends/${inviter}/${invitee}/${inviter}`
-      : `/api/friends/${invitee}/${inviter}/${inviter}`;
+      ? `/api/friends/${inviter}/${invitee}/${invitee}`
+      : `/api/friends/${invitee}/${inviter}/${invitee}`;
   },
 };

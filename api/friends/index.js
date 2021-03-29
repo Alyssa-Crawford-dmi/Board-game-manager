@@ -8,8 +8,13 @@ module.exports = async function(context, req) {
   const baseFriendRelationShip = {
     PartitionKey: partitionKey,
     RowKey: rowKey,
-    inviter: context.bindings.req.params.inviter,
+    invitee: context.bindings.req.params.invitee,
   };
+  if (!context.bindings.userEntity) {
+    context.res = { status: 400 };
+    context.done();
+    return;
+  }
   switch (method) {
     case "post":
       if (context.bindings.friendEntity) {

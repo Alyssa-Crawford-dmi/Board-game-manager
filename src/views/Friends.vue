@@ -1,18 +1,29 @@
 <template>
   <div>
     <h2>Add Friend</h2>
-    <InputText
-      type="text"
-      v-model="friendToAdd"
-      placeholder="Enter a username"
-      class="p-inputtext-lg"
-    />
-    <Button
-      @click="addFriend"
-      label="Add Friend"
-      class="add-button p-button-raised p-button-text p-button-lg"
-      title="Add Friend"
-    />
+    <div class="add-div">
+      <div class="invlaid-div">
+        <InputText
+          type="text"
+          v-model="friendToAdd"
+          placeholder="Enter a username"
+          class="p-inputtext-lg"
+        />
+        <small
+          v-if="invalidFriend || requestSent"
+          :class="invalidFriend ? 'p-error' : 'success'"
+          >{{
+            invalidFriend ? "No user exists with that username" : "Request sent"
+          }}</small
+        >
+      </div>
+      <Button
+        @click="addFriend"
+        label="Add Friend"
+        class="add-button p-button-raised p-button-text p-button-lg"
+        title="Add Friend"
+      />
+    </div>
     <template v-if="sentRequests.length > 0">
       <h2>Sent Friend requests</h2>
       <div
@@ -87,6 +98,8 @@ export default {
       friends: friendsListState.friends,
       sentRequests: friendsListState.sentRequests,
       pendingRequests: friendsListState.pendingRequests,
+      invalidFriend: friendsListState.invalidFriend,
+      requestSent: friendsListState.requestSent,
     };
   },
   methods: {
@@ -119,5 +132,18 @@ h2 {
 }
 .add-button {
   margin-left: 1rem;
+}
+.invlaid-div {
+  display: inline-flex;
+  flex-direction: column;
+  padding-left: 0rem;
+}
+.add-div {
+  padding-left: 0rem;
+  display: flex;
+  align-items: flex-start;
+}
+.success {
+  color: green;
 }
 </style>

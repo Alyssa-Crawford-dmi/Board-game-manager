@@ -1,7 +1,7 @@
 <template>
   <div class="p-col-12 p-md-4 p-lg-3 pointer p-sm-6" @click="loadDetails">
     <div class="game-grid-item card">
-      <div class="game-grid-centered">
+      <div class="game-grid-centered image-box">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
       </div>
       <h3>{{ gameData.name }}</h3>
@@ -78,8 +78,9 @@ export default {
 }
 img {
   height: 100%;
+  width: 100%;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  max-height: 15rem;
+  object-fit: contain;
 }
 h3 {
   font-size: 1.1rem;
@@ -102,6 +103,12 @@ h3 {
   margin: 0 auto;
   padding: 0;
   width: fit-content;
+}
+.image-box {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1rem;
 }
 strong {
   font-weight: 500;
