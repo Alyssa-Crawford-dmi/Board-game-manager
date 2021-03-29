@@ -80,7 +80,7 @@ strong {
   align-items: center;
   padding: 1rem;
   width: 100%;
-  background-color: var(--very-light-grey);
+  background-color: var(--very-light-gray);
 }
 img {
   height: 100%;

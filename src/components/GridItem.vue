@@ -69,7 +69,7 @@ export default {
 .game-grid-item {
   margin: 0.5rem;
   border: 1px solid #dee2e6;
-  background-color: var(--very-light-grey);
+  background-color: var(--very-light-gray);
   padding: 1rem;
   height: 22rem;
   display: flex;
