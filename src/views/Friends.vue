@@ -86,9 +86,17 @@ import { friendsListState } from "../utils/friendsService";
 import { activeUserState } from "../utils/activeUser";
 
 import Button from "primevue/button";
+import { loginState } from "../utils/auth";
 
 export default {
   components: { Button, InputText },
+  beforeRouteEnter(_to, _from, next) {
+    if (!loginState.loggedInUser.value) {
+      next("/");
+      return;
+    }
+    next();
+  },
   mounted() {
     friendsListState.getFriends();
   },

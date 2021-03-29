@@ -1,5 +1,5 @@
-import { ref } from "vue";
 import axios from "axios";
+import { ref } from "vue";
 import { activeUserState } from "./activeUser";
 
 const bcrypt = require("bcryptjs");
@@ -74,13 +74,20 @@ export const loginState = {
   logout() {
     this.loggedInUser.value = "";
     delete localStorage.username;
+    delete localStorage.staySignedIn;
   },
-  saveLocalUser(username) {
+  saveLocalUser(username, staySignedIn) {
     localStorage.username = username;
+    localStorage.staySignedIn = staySignedIn;
   },
   signInLocalUser() {
     if (localStorage.username) {
       this.loggedInUser.value = localStorage.username;
+    }
+  },
+  handleWindowClose() {
+    if (localStorage.staySignedIn === "false") {
+      delete localStorage.username;
     }
   },
 };

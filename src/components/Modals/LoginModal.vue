@@ -118,7 +118,7 @@ export default {
         } else {
           await loginState.login(this.username, this.password);
         }
-        this.saveUserIfNeeded();
+        loginState.saveLocalUser(this.username, this.staySignedIn);
         this.$emit("close-login");
       } catch (error) {
         this.error = error.message;
@@ -140,11 +140,6 @@ export default {
     },
     isEmailInvalid() {
       return this.signupMode && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
-    },
-    saveUserIfNeeded() {
-      if (this.staySignedIn) {
-        loginState.saveLocalUser(this.username);
-      }
     },
     resetErrors() {
       this.invalidUsername = false;

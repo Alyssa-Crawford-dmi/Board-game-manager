@@ -41,6 +41,9 @@ export default {
   },
   mounted() {
     loginState.signInLocalUser();
+    window.addEventListener("beforeunload", () => {
+      loginState.handleWindowClose();
+    });
   },
 };
 </script>
