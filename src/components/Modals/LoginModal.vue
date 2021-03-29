@@ -44,21 +44,17 @@
       <Checkbox id="staySignedIn" v-model="staySignedIn" :binary="true" />
       <label for="staySignedIn">Stay signed in</label>
     </div>
-    <div class="p-grid">
-      <div class="p-col-12 p-md-6 p-lg-4" :style="{ textAlign: toggleBtnPos }">
-        <Button
-          :label="signupMode ? 'Switch to login' : 'Switch to signup'"
-          class="p-button-secondary p-button-outlined"
-          @click="toggleMode"
-        />
-      </div>
-      <div class="p-col-12 p-md-6 p-lg-4" style="text-align: center">
-        <Button
-          :label="signupMode ? 'Signup' : 'Login'"
-          class="p-button-rounded"
-          @click="loginUser"
-        />
-      </div>
+    <div class="action-buttons">
+      <Button
+        :label="signupMode ? 'Switch to login' : 'Switch to signup'"
+        class="p-button-secondary p-button-outlined toggle-action"
+        @click="toggleMode"
+      />
+      <Button
+        :label="signupMode ? 'Signup' : 'Login'"
+        class="p-button-rounded"
+        @click="loginUser"
+      />
     </div>
   </form>
 </template>
@@ -173,5 +169,18 @@ export default {
 .centered {
   margin: 0rem auto 1rem auto;
   width: fit-content;
+}
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+@media screen and (max-width: 500px) {
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  .toggle-action {
+    margin-bottom: 1rem;
+  }
 }
 </style>

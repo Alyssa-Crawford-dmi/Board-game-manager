@@ -21,16 +21,6 @@ export default {
     navItems() {
       return [
         {
-          label: "Owned",
-          command: () => {
-            activeUserState.setActiveUserAndListMode(
-              activeUserState.activeUser.value,
-              false
-            );
-          },
-          class: this.tabActive(false),
-        },
-        {
           label: "Wishlist",
           command: () => {
             activeUserState.setActiveUserAndListMode(
@@ -39,6 +29,16 @@ export default {
             );
           },
           class: this.tabActive(true),
+        },
+        {
+          label: "Owned",
+          command: () => {
+            activeUserState.setActiveUserAndListMode(
+              activeUserState.activeUser.value,
+              false
+            );
+          },
+          class: this.tabActive(false),
         },
       ];
     },

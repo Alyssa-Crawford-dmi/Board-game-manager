@@ -49,6 +49,20 @@
         <p>
           {{ friend.friendName }}
         </p>
+        <div class="action-buttons">
+          <Button
+            @click="() => seeList(friend, true)"
+            label="Wishlist"
+            class="add-button p-button-raised p-button-text p-button-lg"
+            title="Wishlist"
+          />
+          <Button
+            @click="() => seeList(friend, false)"
+            label="Owned games"
+            class="add-button p-button-raised p-button-text p-button-lg"
+            title="Owned games"
+          />
+        </div>
       </div>
     </template>
   </div>
@@ -58,6 +72,8 @@
 import InputText from "primevue/inputtext";
 
 import { friendsListState } from "../utils/friendsService";
+import { activeUserState } from "../utils/activeUser";
+
 import Button from "primevue/button";
 
 export default {
@@ -80,6 +96,10 @@ export default {
     addFriend() {
       friendsListState.addFriend(this.friendToAdd);
       this.friendToAdd = "";
+    },
+    seeList(friend, isWishlist) {
+      activeUserState.setActiveUserAndListMode(friend.friendName, isWishlist);
+      this.$router.push("/");
     },
   },
 };
