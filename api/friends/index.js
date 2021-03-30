@@ -35,7 +35,10 @@ module.exports = async function(context, req) {
       break;
     case "put":
       if (!context.bindings.friendEntity) {
-        context.res = { body: { error: "No pending friend request" } };
+        context.res = {
+          body: { error: "No pending friend request" },
+          status: 400,
+        };
         context.done();
         return;
       }
@@ -49,5 +52,17 @@ module.exports = async function(context, req) {
           context.done();
         }
       );
+    case "delete":
+      if (!context.bindings.friendEntity) {
+        context.res = { body: { error: "No existing friend" }, status: 400 };
+        context.done();
+        return;
+      }
+      tableService.deleteEntity("friends", baseFriendRelationShip, (err) => {
+        if (err) {
+          context.res = { status: 400 };
+        }
+        context.done();
+      });
   }
 };

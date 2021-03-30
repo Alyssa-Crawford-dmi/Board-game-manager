@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     accountBtnLabel() {
-      return this.isLoggedIn ? this.activeUsername : "My account";
+      return this.isLoggedIn ? this.isLoggedIn : "My account";
     },
     onHomePage() {
       return this.$route.name === "Home";

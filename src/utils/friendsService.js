@@ -35,18 +35,12 @@ export const friendsListState = {
       ? this.buildUrl(user, friend.friendName)
       : this.buildUrl(friend.friendName, user);
 
-    axios.put(url).then(
-      () => {
-        this.requestSent.value = true;
-        this.invalidFriend.value = false;
+    axios.put(url).then(() => {
+      this.requestSent.value = false;
+      this.invalidFriend.value = false;
 
-        this.getFriends();
-      },
-      () => {
-        this.requestSent.value = false;
-        this.invalidFriend.value = true;
-      }
-    );
+      this.getFriends();
+    });
   },
   async addFriend(friendName) {
     const user = loginState.loggedInUser.value;
@@ -62,6 +56,16 @@ export const friendsListState = {
         this.requestSent.value = false;
         this.invalidFriend.value = true;
       }
+    );
+  },
+  async removeFriend(friendName) {
+    const user = loginState.loggedInUser.value;
+    const url = this.buildUrl(user, friendName);
+    axios.delete(url).then(
+      () => {
+        this.getFriends();
+      },
+      () => {}
     );
   },
   buildUrl(inviter, invitee) {

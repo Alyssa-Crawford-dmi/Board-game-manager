@@ -20,7 +20,7 @@
       <Button
         @click="addFriend"
         label="Add Friend"
-        class="add-button p-button-raised p-button-text p-button-lg"
+        class="space-left p-button-raised p-button-text p-button-lg"
         title="Add Friend"
       />
     </div>
@@ -29,11 +29,17 @@
       <div
         v-for="friend in sentRequests"
         :key="friend"
-        class="card friend-item"
+        class="card friend-item sent-requests"
       >
         <p class="friend-text">
           {{ friend.friendName }}
         </p>
+        <Button
+          icon="pi pi-times"
+          class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
+          title="Cancel request"
+          @click="() => removeFriend(friend)"
+        />
       </div>
     </template>
     <template v-if="pendingRequests.length > 0">
@@ -46,12 +52,20 @@
         <p class="friend-text">
           {{ friend.friendName }}
         </p>
-        <Button
-          @click="(e) => acceptRequest(friend, e)"
-          label="Accept"
-          class="p-button-raised p-button-text p-button-lg"
-          title="Accept"
-        />
+        <div class="action-buttons">
+          <Button
+            @click="(e) => acceptRequest(friend, e)"
+            label="Accept"
+            class="p-button-raised p-button-text p-button-lg"
+            title="Accept"
+          />
+          <Button
+            icon="pi pi-times"
+            class="space-left p-button-rounded p-button-danger p-button-outlined p-button-sm"
+            title="Reject request"
+            @click="() => removeFriend(friend)"
+          />
+        </div>
       </div>
     </template>
     <template v-if="friends.length > 0">
@@ -64,32 +78,46 @@
           <Button
             @click="() => seeList(friend, true)"
             label="Wishlist"
-            class="add-button p-button-raised p-button-text p-button-lg"
+            class="space-left p-button-raised p-button-text p-button-lg"
             title="Wishlist"
           />
           <Button
             @click="() => seeList(friend, false)"
             label="Owned games"
-            class="add-button p-button-raised p-button-text p-button-lg"
+            class="space-left p-button-raised p-button-text p-button-lg"
             title="Owned games"
+          />
+          <Button
+            icon="pi pi-times"
+            class="p-button-rounded p-button-danger p-button-outlined p-button-sm space-left"
+            title="Delete friend"
+            @click="() => removeFriend(friend)"
           />
         </div>
       </div>
     </template>
   </div>
+  <Dialog
+    header="Remove friend"
+    v-model:visible="showModal"
+    :modal="true"
+    :style="{ width: '75vw' }"
+  >
+    <DeleteModal @delete-confirmed="deleteItem" :gameName="friendToDelete" />
+  </Dialog>
 </template>
 
 <script>
 import InputText from "primevue/inputtext";
-
+import Dialog from "primevue/dialog";
 import { friendsListState } from "../utils/friendsService";
 import { activeUserState } from "../utils/activeUser";
-
+import DeleteModal from "../components/Modals/DeleteModal.vue";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
 
 export default {
-  components: { Button, InputText },
+  components: { Button, InputText, Dialog, DeleteModal },
   beforeRouteEnter(_to, _from, next) {
     if (!loginState.loggedInUser.value) {
       next("/");
@@ -102,12 +130,14 @@ export default {
   },
   data: () => {
     return {
+      showModal: false,
       friendToAdd: "",
       friends: friendsListState.friends,
       sentRequests: friendsListState.sentRequests,
       pendingRequests: friendsListState.pendingRequests,
       invalidFriend: friendsListState.invalidFriend,
       requestSent: friendsListState.requestSent,
+      friendToDelete: "",
     };
   },
   methods: {
@@ -121,6 +151,14 @@ export default {
     seeList(friend, isWishlist) {
       activeUserState.setActiveUserAndListMode(friend.friendName, isWishlist);
       this.$router.push("/");
+    },
+    removeFriend(friend) {
+      this.showModal = true;
+      this.friendToDelete = friend.friendName;
+    },
+    deleteItem() {
+      this.showModal = false;
+      friendsListState.removeFriend(this.friendToDelete);
     },
   },
 };
@@ -137,8 +175,9 @@ h2 {
   justify-content: space-between;
   margin-bottom: 1rem;
   padding: 0.5rem 1rem;
+  align-items: center;
 }
-.add-button {
+.space-left {
   margin-left: 1rem;
 }
 .status-div {

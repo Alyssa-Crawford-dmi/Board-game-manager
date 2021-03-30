@@ -87,7 +87,7 @@ export const loginState = {
   },
   handleWindowClose() {
     if (localStorage.staySignedIn === "false") {
-      delete localStorage.username;
+      this.logout();
     }
   },
 };
