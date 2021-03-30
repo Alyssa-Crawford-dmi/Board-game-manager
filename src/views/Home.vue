@@ -31,7 +31,7 @@
     <DetailModal v-else :gameId="detailGame.id">
       <template v-slot:action-btn v-if="lastSearch">
         <Button
-          @click="() => addGame(detailGame, e)"
+          @click="(e) => addGame(detailGame, e)"
           label="Add game to list"
           class="p-button-rounded"
           title="Add game"
@@ -151,8 +151,11 @@ export default {
       this.showModal = true;
       this.selectedModalType = modalTypes.ERROR;
     },
-    addGame(newGame) {
+    addGame(newGame, e) {
       this.addStatus = gamesListState.addGameIfNotExists(newGame);
+      if (e) {
+        this.showModal = false;
+      }
     },
   },
 };

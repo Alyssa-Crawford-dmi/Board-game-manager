@@ -1,5 +1,5 @@
 <template>
-  <div class="p-col-12">
+  <div class="p-col-12 wrapper">
     <div
       :class="{
         error: messageInfo.error,
@@ -73,7 +73,7 @@ export default {
 .container {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   width: 100%;
   font-size: 1.2rem;
   height: min-content;

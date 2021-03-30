@@ -105,7 +105,8 @@ h3 {
   width: fit-content;
 }
 .image-box {
-  width: 90%;
+  max-width: 90%;
+  max-height: 60%;
   display: flex;
   justify-content: center;
   padding-bottom: 1rem;

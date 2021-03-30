@@ -18,14 +18,18 @@
       />
     </div>
     <div class="modal-contents">
+      <p
+        v-if="searchResults.length === 0 && searchTerm !== ''"
+        class="p-error info-text"
+      >
+        No games found. Please try a different search
+      </p>
+      <p v-else class="info-text">Click on a game to see more information</p>
       <StatusMessage
         v-if="showStatus"
         :messageInfo="addStatus"
         @dismiss-message="showStatus = false"
       />
-      <p v-if="searchResults.length === 0 && searchTerm !== ''">
-        No games found. Please try a different search
-      </p>
       <SearchListItem
         v-for="game in searchResults"
         :key="game.id"
@@ -70,14 +74,25 @@ export default {
     lastSearch: { type: String, default: "" },
   },
   data: () => {
-    return { searchTerm: "", searchResults: [], showStatus: false };
+    return {
+      searchTerm: "",
+      searchResults: [],
+      showStatus: false,
+      debounce: null,
+    };
   },
   created() {
     this.searchTerm = this.lastSearch;
   },
+  beforeUnmount() {
+    clearTimeout(this.debounce);
+  },
   watch: {
     searchTerm: function () {
-      this.search();
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(() => {
+        this.search();
+      }, 500);
     },
   },
   methods: {
@@ -106,7 +121,7 @@ export default {
 .search-bar {
   margin-top: 1rem;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 .modal-contents {
   padding: 0;
@@ -120,5 +135,12 @@ p {
 .green {
   color: forestgreen;
   font-size: large;
+}
+.info-text {
+  font-size: unset;
+  text-align: left;
+  margin-top: 0rem;
+  padding-top: 0rem;
+  padding-left: 1rem;
 }
 </style>

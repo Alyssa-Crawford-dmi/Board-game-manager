@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <DataView :value="gamesList" :layout="layout" :paginator="true" :rows="10">
+    <DataView :value="gamesList" :layout="layout" :paginator="true" :rows="25">
       <template #header>
         <div class="p-grid p-nogutter p-ai-center vertical-container header">
           <div class="p-col-4 header-content" style="text-align: left">
