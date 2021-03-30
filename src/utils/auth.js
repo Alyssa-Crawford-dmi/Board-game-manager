@@ -74,20 +74,20 @@ export const loginState = {
   logout() {
     this.loggedInUser.value = "";
     delete localStorage.username;
-    delete localStorage.staySignedIn;
+    delete sessionStorage.username;
   },
   saveLocalUser(username, staySignedIn) {
-    localStorage.username = username;
-    localStorage.staySignedIn = staySignedIn;
-  },
-  signInLocalUser() {
-    if (localStorage.username) {
-      this.loggedInUser.value = localStorage.username;
+    if (staySignedIn) {
+      localStorage.username = username;
+    } else {
+      sessionStorage.username = username;
     }
   },
-  handleWindowClose() {
-    if (localStorage.staySignedIn === "false") {
-      this.logout();
+  signInLocalUser() {
+    if (sessionStorage.username) {
+      this.loggedInUser.value = sessionStorage.username;
+    } else if (localStorage.username) {
+      this.loggedInUser.value = localStorage.username;
     }
   },
 };

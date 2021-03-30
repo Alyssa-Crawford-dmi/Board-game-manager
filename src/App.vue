@@ -39,23 +39,8 @@ export default {
       return "90vw";
     },
   },
-  methods: {
-    navigationChange() {
-      const navType = performance.getEntriesByType("navigation")[0].type;
-      if (navType !== "reload") {
-        console.log("Not reload");
-        loginState.handleWindowClose();
-      } else {
-        console.log("PRINT");
-      }
-    },
-  },
   mounted() {
     loginState.signInLocalUser();
-    window.addEventListener("beforeunload", this.navigationChange);
-  },
-  beforeUnmount() {
-    window.removeEventListener("unload", this.navigationChange);
   },
 };
 </script>

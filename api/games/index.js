@@ -24,7 +24,6 @@ module.exports = async function(context, req) {
       );
 
       const updatedUser = { ...foundUser, [listName]: req.body.gameIdStr };
-      console.log(updatedUser);
       tableService.replaceEntity("users", updatedUser, () => {});
   }
 };

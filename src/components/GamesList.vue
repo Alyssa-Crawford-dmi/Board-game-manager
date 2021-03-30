@@ -113,7 +113,6 @@ export default {
       this.$emit("game-detail", game);
     },
     detectOrientationChange() {
-      console.log("Detected change");
       this.bigScreen = screen.width > 650;
     },
     unauthorizedAction() {

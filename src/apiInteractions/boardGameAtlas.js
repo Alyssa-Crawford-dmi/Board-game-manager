@@ -15,7 +15,6 @@ const getGamesByName = async (name) => {
       });
       result = removeEmptyGames.map((fullGame) => {
         if (Object.keys(fullGame).length === 0) {
-          console.log("bad game");
           return;
         }
         return {
