@@ -1,10 +1,11 @@
 const axios = require("axios").default;
 
-const getGamesByName = async (name) => {
+const getGamesByName = async (name, pageNum = 0) => {
   var result;
+  const skip = pageNum * 10;
   await axios
     .get(
-      `https://api.boardgameatlas.com/api/search?name=${name}&client_id=9RLKyOd9MR&limit=8`
+      `https://api.boardgameatlas.com/api/search?name=${name}&client_id=9RLKyOd9MR&limit=10&skip=${skip}`
     )
     .then((response) => {
       const removeEmptyGames = response.data.games.filter((game) => {

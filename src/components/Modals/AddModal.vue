@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div id="scroll-marker"></div>
     <div class="search-bar">
       <span class="p-input-icon-left">
         <i class="pi pi-search" />
@@ -19,12 +20,15 @@
     </div>
     <div class="modal-contents">
       <p
-        v-if="searchResults.length === 0 && searchTerm !== ''"
+        v-if="searchResults.length === 0 && searchTerm !== '' && page === 0"
         class="p-error info-text"
       >
         No games found. Please try a different search
       </p>
-      <p v-else class="info-text">Click on a game to see more information</p>
+      <p v-else-if="searchResults.length !== 0" class="info-text">
+        Click on a game to see more information
+      </p>
+      <p v-else-if="searchResults.length === 0 && page > 0">End of results</p>
       <StatusMessage
         v-if="showStatus"
         :messageInfo="addStatus"
@@ -49,6 +53,22 @@
           title="Add game"
         />
       </SearchListItem>
+      <div class="action-buttons" v-if="searchResults.length !== 0 || page > 0">
+        <Button
+          @click="() => changePage(-1)"
+          class="p-button-raised p-button-text"
+          title="Previous"
+          label="Previous"
+          :disabled="page === 0"
+        />
+        <Button
+          @click="() => changePage(1)"
+          class="p-button-raised p-button-text"
+          title="Next"
+          label="Next"
+          :disabled="searchResults.length !== 10"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -79,6 +99,7 @@ export default {
       searchResults: [],
       showStatus: false,
       debounce: null,
+      page: 0,
     };
   },
   created() {
@@ -91,13 +112,14 @@ export default {
     searchTerm: function () {
       clearTimeout(this.debounce);
       this.debounce = setTimeout(() => {
+        this.page = 0;
         this.search();
       }, 500);
     },
   },
   methods: {
     async search() {
-      this.searchResults = await getGamesByName(this.searchTerm);
+      this.searchResults = await getGamesByName(this.searchTerm, this.page);
       this.showStatus = false;
     },
     addGame(game, e) {
@@ -110,6 +132,14 @@ export default {
     },
     detail(game) {
       this.$emit("game-detail", game, this.searchTerm);
+    },
+    async changePage(change) {
+      if (change === -1 && this.page === 0) {
+        return;
+      }
+      this.page = this.page + change;
+      await this.search();
+      document.getElementById("scroll-marker").scrollIntoView();
     },
   },
 };
@@ -142,5 +172,15 @@ p {
   margin-top: 0rem;
   padding-top: 0rem;
   padding-left: 1rem;
+}
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 0rem 4rem;
+  margin: 0rem;
+}
+#scroll-marker {
+  padding: 0;
+  margin: 0;
 }
 </style>

@@ -43,6 +43,17 @@ export default {
   components: {
     Button,
   },
+  mounted() {
+    this.autoDismiss = setTimeout(() => {
+      this.dismissMessage();
+    }, 1500);
+  },
+  beforeUnmount() {
+    clearTimeout(this.autoDismiss);
+  },
+  data: () => {
+    return { autoDismiss: null };
+  },
   methods: {
     dismissMessage() {
       this.$emit("dismiss-message");
