@@ -55,6 +55,11 @@ export const gamesListState = {
         .catch((err) => console.log(err));
     });
   },
+  moveGameToOtherList(index) {
+    const game = this.gameList.value.splice(index, 1)[0];
+    this.addGameToOtherList(game);
+    this.removeGameAtIndex(index);
+  },
   saveGamesForUser() {
     const gameIds = this.gameList.value.map((obj) => obj.id);
     const gameIdStr = JSON.stringify(gameIds);

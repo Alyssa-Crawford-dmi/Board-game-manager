@@ -16,7 +16,15 @@
           <strong>{{ age }}</strong>
         </p>
       </div>
-      <div class="game-grid-centered" @click="deleteItem">
+      <div class="game-grid-centered btn" @click="moveItem">
+        <Button
+          @click="moveItem"
+          :label="isWishList ? 'Move to owned list' : 'Move to wish list'"
+          class="p-button-text p-button-sm"
+          :title="isWishList ? 'Move to owned list' : 'Move to wish list'"
+        />
+      </div>
+      <div class="game-grid-centered btn" @click="deleteItem">
         <RemoveGameButton @delete-item="deleteItem" :disabled="disabled" />
       </div>
     </div>
@@ -25,6 +33,8 @@
 <script>
 import RemoveGameButton from "./UI/RemoveGameButton.vue";
 import { rangeString, ageString } from "../utils/rangeString";
+import { activeUserState } from "../utils/activeUser";
+import Button from "primevue/button";
 
 export default {
   name: "GridItem",
@@ -32,9 +42,15 @@ export default {
     gameData: { required: true, type: Object },
     disabled: { type: Boolean, default: false },
   },
+  data: () => {
+    return {
+      isWishList: activeUserState.isWishList,
+    };
+  },
   emits: ["delete-item", "item-clicked", "unauthorized-action"],
   components: {
     RemoveGameButton,
+    Button,
   },
   computed: {
     playtime() {
@@ -58,6 +74,14 @@ export default {
         return;
       }
       this.$emit("delete-item");
+    },
+    moveItem(event) {
+      if (this.disabled) {
+        this.$emit("unauthorized-action");
+        event.stopPropagation();
+        return;
+      }
+      this.$emit("move-item");
     },
     loadDetails() {
       this.$emit("item-clicked");
@@ -114,4 +138,9 @@ h3 {
 strong {
   font-weight: 500;
 }
+/* .btn {
+  border: 1px solid aqua;
+  margin: 0;
+  padding: 0;
+} */
 </style>
