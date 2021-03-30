@@ -1,6 +1,6 @@
+import axios from "axios";
 import { ref } from "vue";
 import { getGamesFromIds } from "../apiInteractions/boardGameAtlas";
-import axios from "axios";
 import { activeUserState } from "./activeUser";
 
 export const gamesListState = {
@@ -25,7 +25,11 @@ export const gamesListState = {
     this.gameList.value.splice(index, 1);
     this.saveGamesForUser();
   },
-  addGameIfNotExists(newGame) {
+  addGameIfNotExists(newGame, addToOtherList = false) {
+    if (addToOtherList) {
+      this.addGameToOtherList(newGame);
+      return;
+    }
     const duplicate = this.gameList.value.some(
       (game) => game.id === newGame.id
     );
@@ -36,6 +40,20 @@ export const gamesListState = {
       this.saveGamesForUser();
       return { error: false, msg: "Game added successfully" };
     }
+  },
+  addGameToOtherList(newGame) {
+    var gameIds = [];
+    axios.get(this.buildRouteString(true)).then((res) => {
+      const idStr = res.data.gamesList;
+      if (idStr) {
+        gameIds = JSON.parse(idStr);
+      }
+      gameIds.push(newGame.id);
+      const gameIdStr = JSON.stringify(gameIds);
+      axios
+        .put(this.buildRouteString(true), { gameIdStr })
+        .catch((err) => console.log(err));
+    });
   },
   saveGamesForUser() {
     const gameIds = this.gameList.value.map((obj) => obj.id);
@@ -49,12 +67,19 @@ export const gamesListState = {
   },
 
   //Used for reactivity
-  buildRouteString() {
+  buildRouteString(useOtherList = false) {
     const BASE_ROUTE = `/api/games/`;
     const usernameWrapper = activeUserState.activeUser;
-    const gameListName = activeUserState.isWishList.value
-      ? "wishlist"
-      : "ownedlist";
+    let gameListName;
+    if (useOtherList) {
+      gameListName = activeUserState.isWishList.value
+        ? "ownedlist"
+        : "wishlist";
+    } else {
+      gameListName = activeUserState.isWishList.value
+        ? "wishlist"
+        : "ownedlist";
+    }
     return BASE_ROUTE + "/" + gameListName + "/" + usernameWrapper.value;
   },
 };

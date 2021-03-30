@@ -30,12 +30,20 @@
     />
     <DetailModal v-else :gameId="detailGame.id">
       <template v-slot:action-btn v-if="lastSearch">
-        <Button
-          @click="(e) => addGame(detailGame, e)"
-          label="Add game to list"
-          class="p-button-rounded"
-          title="Add game"
-        />
+        <div class="btn-container">
+          <Button
+            @click="(e) => addGame(detailGame, e, true)"
+            :label="isWishList ? 'Add to owned list' : 'Add to wish list'"
+            class="p-button-text"
+            :title="isWishList ? 'Add to owned list' : 'Add to wish list'"
+          />
+          <Button
+            @click="(e) => addGame(detailGame, e)"
+            label="Add game to list"
+            class="p-button-rounded"
+            title="Add game"
+          />
+        </div>
       </template>
     </DetailModal>
   </Dialog>
@@ -73,6 +81,7 @@ export default {
       addStatus: {},
       detailGame: {},
       lastSearch: "",
+      isWishList: activeUserState.isWishList,
     };
   },
   computed: {
@@ -151,8 +160,11 @@ export default {
       this.showModal = true;
       this.selectedModalType = modalTypes.ERROR;
     },
-    addGame(newGame, e) {
-      this.addStatus = gamesListState.addGameIfNotExists(newGame);
+    addGame(newGame, e, addToOtherList = false) {
+      this.addStatus = gamesListState.addGameIfNotExists(
+        newGame,
+        addToOtherList
+      );
       if (e) {
         this.showModal = false;
       }
@@ -160,3 +172,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+</style>
