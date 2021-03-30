@@ -2,15 +2,21 @@
   <div>
     <div id="scroll-marker"></div>
     <div class="search-bar">
-      <span class="p-input-icon-left">
-        <i class="pi pi-search" />
-        <InputText
-          type="text"
-          v-model="searchTerm"
-          placeholder="Ticket to Ride"
-          class="p-inputtext-lg bounded-width"
-        />
-      </span>
+      <div class="search-options">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search" />
+          <InputText
+            type="text"
+            v-model="searchTerm"
+            placeholder="Ticket to Ride"
+            class="p-inputtext-lg bounded-width"
+          />
+        </span>
+        <div class="p-field-checkbox">
+          <Checkbox id="showExisting" v-model="showExisting" :binary="true" />
+          <label for="showExisting">Show games already in the list</label>
+        </div>
+      </div>
       <Button
         @click="search"
         label="Search"
@@ -20,7 +26,7 @@
     </div>
     <div class="modal-contents">
       <p
-        v-if="searchResults.length === 0 && searchTerm !== '' && page === 0"
+        v-if="searchResults.length === 0 && showNoResultsError && page === 0"
         class="p-error info-text"
       >
         No games found. Please try a different search
@@ -34,25 +40,26 @@
         :messageInfo="addStatus"
         @dismiss-message="showStatus = false"
       />
-      <SearchListItem
-        v-for="game in searchResults"
-        :key="game.id"
-        :gameData="game"
-        @item-clicked="() => detail(game)"
-      >
-        <i
-          v-if="gamesListContains(game)"
-          class="pi pi-check green"
-          title="Game already in list"
-        />
-        <Button
-          v-else
-          @click="(e) => addGame(game, e)"
-          icon="pi pi-plus"
-          class="p-button-rounded"
-          title="Add game"
-        />
-      </SearchListItem>
+      <template v-for="game in searchResults" :key="game.id">
+        <SearchListItem
+          :gameData="game"
+          @item-clicked="() => detail(game)"
+          v-if="!(!showExisting && gamesListContains(game))"
+        >
+          <i
+            v-if="gamesListContains(game)"
+            class="pi pi-check green"
+            title="Game already in list"
+          />
+          <Button
+            v-else
+            @click="(e) => addGame(game, e)"
+            icon="pi pi-plus"
+            class="p-button-rounded"
+            title="Add game"
+          />
+        </SearchListItem>
+      </template>
       <div class="action-buttons" v-if="searchResults.length !== 0 || page > 0">
         <Button
           @click="() => changePage(-1)"
@@ -78,6 +85,7 @@ import Button from "primevue/button";
 import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
 import StatusMessage from "../UI/StatusMessage";
+import Checkbox from "primevue/checkbox";
 
 export default {
   name: "AddModal",
@@ -87,6 +95,7 @@ export default {
     Button,
     SearchListItem,
     StatusMessage,
+    Checkbox,
   },
   props: {
     addStatus: Object,
@@ -100,6 +109,8 @@ export default {
       showStatus: false,
       debounce: null,
       page: 0,
+      showNoResultsError: false,
+      showExisting: true,
     };
   },
   created() {
@@ -111,9 +122,12 @@ export default {
   watch: {
     searchTerm: function () {
       clearTimeout(this.debounce);
-      this.debounce = setTimeout(() => {
+      this.showNoResultsError = false;
+
+      this.debounce = setTimeout(async () => {
         this.page = 0;
-        this.search();
+        await this.search();
+        this.showNoResultsError = true;
       }, 500);
     },
   },
@@ -149,9 +163,9 @@ export default {
   margin-left: 1rem;
 }
 .search-bar {
-  margin-top: 1rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 .modal-contents {
   padding: 0;
@@ -175,12 +189,26 @@ p {
 }
 .action-buttons {
   display: flex;
-  justify-content: space-between;
-  padding: 0rem 4rem;
+  justify-content: space-around;
   margin: 0rem;
 }
 #scroll-marker {
   padding: 0;
   margin: 0;
+}
+.p-field-checkbox {
+  padding-top: 0.25rem;
+}
+.search-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  margin: 0;
+}
+@media screen and (max-width: 700px) {
+  .search-bar {
+    flex-direction: column;
+  }
 }
 </style>
