@@ -52,6 +52,7 @@ module.exports = async function(context, req) {
           context.done();
         }
       );
+      break;
     case "delete":
       if (!context.bindings.friendEntity) {
         context.res = { body: { error: "No existing friend" }, status: 400 };

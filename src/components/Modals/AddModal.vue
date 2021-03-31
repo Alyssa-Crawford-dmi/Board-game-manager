@@ -20,7 +20,7 @@
       <Button
         @click="search"
         label="Search"
-        class="p-button-raised p-button-text search-button p-button-lg"
+        class="p-button-raised p-button-text search-button p-button-lg p-button-rounded"
         title="Search"
       />
     </div>
@@ -63,14 +63,14 @@
       <div class="action-buttons" v-if="searchResults.length !== 0 || page > 0">
         <Button
           @click="() => changePage(-1)"
-          class="p-button-raised p-button-text"
+          class="p-button-raised p-button-text p-button-rounded"
           title="Previous"
           label="Previous"
           :disabled="page === 0"
         />
         <Button
           @click="() => changePage(1)"
-          class="p-button-raised p-button-text"
+          class="p-button-raised p-button-text p-button-rounded"
           title="Next"
           label="Next"
           :disabled="searchResults.length !== 10"

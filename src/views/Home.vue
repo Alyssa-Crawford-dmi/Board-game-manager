@@ -37,7 +37,7 @@
           <Button
             @click="(e) => addGame(detailGame, e, true)"
             :label="isWishList ? 'Add to owned list' : 'Add to wish list'"
-            class="p-button-text"
+            class="p-button-text p-button-rounded"
             :title="isWishList ? 'Add to owned list' : 'Add to wish list'"
           />
           <Button

@@ -5,6 +5,7 @@
       label="Remove game"
       class="p-button-danger p-button-text p-button-rounded"
       title="Delete Item"
+      :disabled="disabled"
     />
     <div v-if="!showMoveText" :class="['spacer', isWishList ? 'first' : '']" />
     <Button
@@ -21,6 +22,7 @@
       :title="moveBtnText"
       :label="showMoveText ? moveBtnText : ''"
       :iconPos="isWishList ? 'right' : 'left'"
+      :disabled="disabled"
     />
   </div>
 </template>
@@ -33,7 +35,10 @@ export default {
   components: {
     Button,
   },
-  props: { showMoveText: { type: Boolean, default: false } },
+  props: {
+    showMoveText: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
+  },
   emits: ["delete-item", "move-item"],
   methods: {
     deleteItem(e) {

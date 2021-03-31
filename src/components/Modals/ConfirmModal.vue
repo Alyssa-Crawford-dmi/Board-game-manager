@@ -8,7 +8,7 @@
       <Button
         :label="capitalize(actionName)"
         :text="capitalize(actionName)"
-        class="p-button-raised p-button-danger p-button-text"
+        class="p-button-raised p-button-danger p-button-text p-button-rounded"
         @click="(e) => actionConfirmed(e)"
       />
     </div>

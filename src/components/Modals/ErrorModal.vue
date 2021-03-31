@@ -1,7 +1,12 @@
 <template>
   <div class="centered">
     <p>You can only add or remove your own games</p>
-    <Button @click="confirm" label="Okay" title="close popup" />
+    <Button
+      @click="confirm"
+      label="Okay"
+      title="close popup"
+      class="p-button-rounded"
+    />
   </div>
 </template>
 <script>

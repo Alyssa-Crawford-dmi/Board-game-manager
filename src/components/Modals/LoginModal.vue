@@ -47,7 +47,7 @@
     <div class="action-buttons">
       <Button
         :label="signupMode ? 'Switch to login' : 'Switch to signup'"
-        class="p-button-secondary p-button-outlined toggle-action"
+        class="p-button-secondary p-button-outlined toggle-action p-button-rounded"
         @click="toggleMode"
       />
       <Button

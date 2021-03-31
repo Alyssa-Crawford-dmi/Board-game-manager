@@ -48,7 +48,9 @@ export const gamesListState = {
       if (idStr) {
         gameIds = JSON.parse(idStr);
       }
-      gameIds.push(newGame.id);
+      if (gameIds.indexOf(newGame.id) === -1) {
+        gameIds.push(newGame.id);
+      }
       const gameIdStr = JSON.stringify(gameIds);
       axios
         .put(this.buildRouteString(true), { gameIdStr })
@@ -56,7 +58,7 @@ export const gamesListState = {
     });
   },
   moveGameToOtherList(index) {
-    const game = this.gameList.value.splice(index, 1)[0];
+    const game = this.gameList.value[index];
     this.addGameToOtherList(game);
     this.removeGameAtIndex(index);
   },

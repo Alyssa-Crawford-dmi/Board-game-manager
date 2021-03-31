@@ -9,7 +9,7 @@
     />
     <div class="header-item">
       <Button
-        class="p-button-raised p-button-text custom-button"
+        class="p-button-raised p-button-text custom-button p-button-rounded"
         :label="accountBtnLabel"
         @click="showOverlay"
         aria-haspopup="true"

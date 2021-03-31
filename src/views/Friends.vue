@@ -20,7 +20,7 @@
       <Button
         @click="addFriend"
         label="Add Friend"
-        class="space-left p-button-raised p-button-text p-button-lg"
+        class="space-left p-button-raised p-button-text p-button-lg p-button-rounded"
         title="Add Friend"
       />
     </div>
@@ -56,12 +56,12 @@
           <Button
             @click="(e) => acceptRequest(friend, e)"
             label="Accept"
-            class="p-button-raised p-button-text p-button-lg"
+            class="p-button-raised p-button-text p-button-lg p-button-rounded"
             title="Accept"
           />
           <Button
             icon="pi pi-times"
-            class="space-left p-button-rounded p-button-danger p-button-outlined p-button-sm"
+            class="space-left p-button-rounded p-button-danger p-button-outlined p-button-sm p-button-rounded"
             title="Reject request"
             @click="() => removeFriend(friend)"
           />
@@ -78,18 +78,18 @@
           <Button
             @click="() => seeList(friend, true)"
             label="Wishlist"
-            class="space-left p-button-raised p-button-text p-button-lg"
+            class="space-left p-button-raised p-button-text p-button-lg p-button-rounded"
             title="Wishlist"
           />
           <Button
             @click="() => seeList(friend, false)"
             label="Owned games"
-            class="space-left p-button-raised p-button-text p-button-lg"
+            class="space-left p-button-raised p-button-text p-button-lg p-button-rounded"
             title="Owned games"
           />
           <Button
             icon="pi pi-times"
-            class="p-button-rounded p-button-danger p-button-outlined p-button-sm space-left"
+            class="p-button-rounded p-button-danger p-button-outlined p-button-sm space-left p-button-rounded"
             title="Delete friend"
             @click="() => removeFriend(friend)"
           />
