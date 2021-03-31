@@ -18,14 +18,19 @@
           Age: <strong>{{ age }}</strong>
         </p>
       </div>
-      <div class="game-list-centered" @click="deleteItem">
-        <RemoveGameButton @delete-item="deleteItem" :disabled="disabled" />
+      <div class="game-list-centered">
+        <GameActionBtns
+          @delete-item="deleteItem"
+          @move-item="moveItem"
+          :disabled="disabled"
+          :showMoveText="true"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
-import RemoveGameButton from "./UI/RemoveGameButton.vue";
+import GameActionBtns from "./UI/GameActionBtns.vue";
 import { rangeString, ageString } from "../utils/rangeString";
 
 export default {
@@ -34,9 +39,9 @@ export default {
     gameData: { required: true, type: Object },
     disabled: { type: Boolean, default: false },
   },
-  emits: ["delete-item", "item-clicked", "unauthorized-action"],
+  emits: ["delete-item", "item-clicked", "unauthorized-action", "move-item"],
   components: {
-    RemoveGameButton,
+    GameActionBtns,
   },
   computed: {
     playtime() {
@@ -61,6 +66,14 @@ export default {
         return;
       }
       this.$emit("delete-item");
+    },
+    moveItem(event) {
+      if (this.disabled) {
+        this.$emit("unauthorized-action");
+        event.stopPropagation();
+        return;
+      }
+      this.$emit("move-item");
     },
     loadDetails() {
       this.$emit("item-clicked");

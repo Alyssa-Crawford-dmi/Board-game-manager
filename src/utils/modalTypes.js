@@ -1,6 +1,11 @@
 export const modalTypes = {
-  DELETE: "DELETE",
+  BASIC_CONFIRM: "BASIC_CONFIRM",
   ADD: "ADD",
   DETAIL: "DETAIL",
   ERROR: "ERROR",
+};
+
+export const basicActions = {
+  MOVE: "move",
+  REMOVE: "remove",
 };

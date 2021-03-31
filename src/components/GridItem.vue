@@ -16,25 +16,20 @@
           <strong>{{ age }}</strong>
         </p>
       </div>
-      <div class="game-grid-centered btn" @click="moveItem">
-        <Button
-          @click="moveItem"
-          :label="isWishList ? 'Move to owned list' : 'Move to wish list'"
-          class="p-button-text p-button-sm"
-          :title="isWishList ? 'Move to owned list' : 'Move to wish list'"
+      <div class="">
+        <GameActionBtns
+          @delete-item="deleteItem"
+          :disabled="disabled"
+          @move-item="moveItem"
         />
-      </div>
-      <div class="game-grid-centered btn" @click="deleteItem">
-        <RemoveGameButton @delete-item="deleteItem" :disabled="disabled" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import RemoveGameButton from "./UI/RemoveGameButton.vue";
+import GameActionBtns from "./UI/GameActionBtns.vue";
 import { rangeString, ageString } from "../utils/rangeString";
 import { activeUserState } from "../utils/activeUser";
-import Button from "primevue/button";
 
 export default {
   name: "GridItem",
@@ -47,10 +42,9 @@ export default {
       isWishList: activeUserState.isWishList,
     };
   },
-  emits: ["delete-item", "item-clicked", "unauthorized-action"],
+  emits: ["delete-item", "item-clicked", "unauthorized-action", "move-item"],
   components: {
-    RemoveGameButton,
-    Button,
+    GameActionBtns,
   },
   computed: {
     playtime() {
@@ -95,7 +89,7 @@ export default {
   border: 1px solid #dee2e6;
   background-color: var(--very-light-gray);
   padding: 1rem;
-  height: 22rem;
+  height: 25rem;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -138,9 +132,4 @@ h3 {
 strong {
   font-weight: 500;
 }
-/* .btn {
-  border: 1px solid aqua;
-  margin: 0;
-  padding: 0;
-} */
 </style>

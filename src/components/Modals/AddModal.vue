@@ -128,7 +128,7 @@ export default {
         this.page = 0;
         await this.search();
         this.showNoResultsError = true;
-      }, 500);
+      }, 300);
     },
   },
   methods: {

@@ -1,15 +1,14 @@
-import { mount } from "@vue/test-utils";
-import { nextTick } from "vue";
-
-import Home from "@/views/Home.vue";
 import GamesList from "@/components/GamesList.vue";
-import Dialog from "primevue/dialog";
-import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import AddModal from "@/components/Modals/AddModal.vue";
+import ConfirmModal from "@/components/Modals/ConfirmModal.vue";
 import DetailModal from "@/components/Modals/DetailModalWrapper.vue";
-import { modalTypes } from "../../src/utils/modalTypes.js";
+import Home from "@/views/Home.vue";
+import { mount } from "@vue/test-utils";
+import Dialog from "primevue/dialog";
+import { nextTick } from "vue";
 import { fakeGameData } from "../../jest.setup";
 import { activeUserState } from "../../src/utils/activeUser";
+import { basicActions, modalTypes } from "../../src/utils/modalTypes.js";
 
 const numGames = fakeGameData.data.games.length;
 const clickIndex = 1;
@@ -46,13 +45,13 @@ describe("Home.vue", () => {
   });
 
   //Handle events emitted by dialogs
-  it("On delete-confirmed the modal is no longer shown", async () => {
+  it("On action-confirmed the modal is no longer shown", async () => {
     await wrapper.setData({
       showModal: true,
-      selectedModalType: modalTypes.DELETE,
+      selectedModalType: modalTypes.BASIC_CONFIRM,
     });
-    const modal = wrapper.findComponent(DeleteModal);
-    await modal.vm.$emit("delete-confirmed");
+    const modal = wrapper.findComponent(ConfirmModal);
+    await modal.vm.$emit("action-confirmed");
     expect(wrapper.vm.showModal).toBe(false);
   });
   it("On add-game a new game is added to the list unless it was already in the list", async () => {
@@ -104,10 +103,11 @@ describe("Home.vue", () => {
     await wrapper.setData({
       indexToRemove: clickIndex,
       showModal: true,
-      selectedModalType: modalTypes.DELETE,
+      selectedModalType: modalTypes.BASIC_CONFIRM,
+      action: basicActions.REMOVE,
     });
-    const modal = wrapper.findComponent(DeleteModal);
-    await modal.vm.$emit("delete-confirmed");
+    const modal = wrapper.findComponent(ConfirmModal);
+    await modal.vm.$emit("action-confirmed");
     expect(wrapper.vm.gamesList).toHaveLength(numGames - 1);
     expect(wrapper.vm.gamesList[clickIndex] === replacingElm).toBe(true);
   });
@@ -115,20 +115,21 @@ describe("Home.vue", () => {
   it("Does not remove any elements if indexToRemove is -1", async () => {
     await wrapper.setData({
       showModal: true,
-      selectedModalType: modalTypes.DELETE,
+      selectedModalType: modalTypes.BASIC_CONFIRM,
+      action: basicActions.REMOVE,
     });
-    const modal = wrapper.findComponent(DeleteModal);
-    await modal.vm.$emit("delete-confirmed");
+    const modal = wrapper.findComponent(ConfirmModal);
+    await modal.vm.$emit("action-confirmed");
     expect(wrapper.vm.gamesList).toHaveLength(numGames);
   });
 
-  it("Passes the name of the game to remove to deleteModal", async () => {
+  it("Passes the name of the game to remove to ConfirmModal", async () => {
     await wrapper.setData({
       showModal: true,
       indexToRemove: clickIndex,
-      selectedModalType: modalTypes.DELETE,
+      selectedModalType: modalTypes.BASIC_CONFIRM,
     });
-    const dialog = wrapper.findComponent(DeleteModal);
+    const dialog = wrapper.findComponent(ConfirmModal);
     expect(dialog.props("gameName")).toBe(
       fakeGameData.data.games[clickIndex].name
     );

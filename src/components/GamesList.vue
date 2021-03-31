@@ -36,6 +36,7 @@
         <ListItem
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
+          @move-item="() => moveItem(slotProps.index)"
           @item-clicked="() => detail(slotProps.data)"
           @unauthorized-action="unauthorizedAction"
           :disabled="!canAddGames"
@@ -45,6 +46,7 @@
         <GridItem
           :gameData="slotProps.data"
           @delete-item="() => deleteItem(slotProps.index)"
+          @move-item="() => moveItem(slotProps.index)"
           @item-clicked="() => detail(slotProps.data)"
           @unauthorized-action="unauthorizedAction"
           :disabled="!canAddGames"
@@ -72,7 +74,13 @@ export default {
     GridItem,
     ListItem,
   },
-  emits: ["add-games", "delete-item", "game-detail", "unauthorized-action"],
+  emits: [
+    "add-games",
+    "delete-item",
+    "game-detail",
+    "unauthorized-action",
+    "move-item",
+  ],
   props: { gamesList: { required: true, type: Array } },
   mounted() {
     this.bigScreen = screen.width > 650;
@@ -101,6 +109,9 @@ export default {
   methods: {
     deleteItem(index) {
       this.$emit("delete-item", index);
+    },
+    moveItem(index) {
+      this.$emit("move-item", index);
     },
     addGames() {
       if (!this.canAddGames) {

@@ -112,7 +112,7 @@ import InputText from "primevue/inputtext";
 import Dialog from "primevue/dialog";
 import { friendsListState } from "../utils/friendsService";
 import { activeUserState } from "../utils/activeUser";
-import DeleteModal from "../components/Modals/DeleteModal.vue";
+import DeleteModal from "../components/Modals/ConfirmModal.vue";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
 

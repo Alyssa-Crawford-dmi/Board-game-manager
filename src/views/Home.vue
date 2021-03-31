@@ -1,7 +1,8 @@
 <template>
   <GamesList
     :gamesList="gamesList"
-    @delete-item="(gameIndex) => openDeleteModal(gameIndex)"
+    @delete-item="(gameIndex) => openConfirmModal(gameIndex)"
+    @move-item="(gameIndex) => openMoveModal(gameIndex)"
     @add-games="openAddGamesModal"
     @game-detail="(game) => openDetailModal(game)"
     @unauthorized-action="openErrorModal"
@@ -12,10 +13,12 @@
     :modal="true"
     :style="{ width: modalWidth }"
   >
-    <DeleteModal
-      v-if="selectedModalType === 'DELETE'"
-      @delete-confirmed="deleteItem"
+    <ConfirmModal
+      v-if="selectedModalType === 'BASIC_CONFIRM'"
+      @action-confirmed="moveOrRemoveItem"
       :gameName="gamesList[indexToRemove] ? gamesList[indexToRemove].name : ''"
+      :actionName="action"
+      :listName="confirmListName"
     /><AddModal
       v-else-if="selectedModalType === 'ADD'"
       @add-game="(game) => addGame(game)"
@@ -28,7 +31,7 @@
       v-else-if="selectedModalType === 'ERROR'"
       @close-modal="showModal = false"
     />
-    <DetailModal v-else :gameId="detailGame.id">
+    <DetailModalWrapper v-else :gameId="detailGame.id">
       <template v-slot:action-btn v-if="lastSearch">
         <div class="btn-container">
           <Button
@@ -45,19 +48,20 @@
           />
         </div>
       </template>
-    </DetailModal>
+    </DetailModalWrapper>
   </Dialog>
 </template>
 <script>
 import GamesList from "../components/GamesList";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
-import DeleteModal from "../components/Modals/DeleteModal.vue";
+import ConfirmModal from "../components/Modals/ConfirmModal.vue";
 import AddModal from "../components/Modals/AddModal.vue";
-import DetailModal from "../components/Modals/DetailModalWrapper.vue";
+import DetailModalWrapper from "../components/Modals/DetailModalWrapper.vue";
 import ErrorModal from "../components/Modals/ErrorModal.vue";
 
 import { modalTypes } from "../utils/modalTypes.js";
+import { basicActions } from "../utils/modalTypes.js";
 import { gamesListState } from "../utils/gameListManager.js";
 import { loginState } from "../utils/auth";
 import { activeUserState } from "../utils/activeUser";
@@ -65,9 +69,9 @@ import { activeUserState } from "../utils/activeUser";
 export default {
   components: {
     GamesList,
-    DeleteModal,
+    ConfirmModal,
     AddModal,
-    DetailModal,
+    DetailModalWrapper,
     ErrorModal,
     Dialog,
     Button,
@@ -75,20 +79,23 @@ export default {
   data: () => {
     return {
       showModal: false,
-      selectedModalType: modalTypes.DELETE,
+      selectedModalType: modalTypes.BASIC_CONFIRM,
       gamesList: gamesListState.gameList,
       indexToRemove: -1,
       addStatus: {},
       detailGame: {},
       lastSearch: "",
       isWishList: activeUserState.isWishList,
+      action: "",
     };
   },
   computed: {
     header() {
       switch (this.selectedModalType) {
-        case modalTypes.DELETE:
-          return "Remove game";
+        case modalTypes.BASIC_CONFIRM:
+          return this.action === basicActions.REMOVE
+            ? "Remove game"
+            : "Move game";
         case modalTypes.ADD:
           return "Add games";
         case modalTypes.DETAIL:
@@ -101,13 +108,19 @@ export default {
     },
     modalWidth() {
       const bigScreen = screen.width > 600;
-      if (this.selectedModalType === modalTypes.DELETE && bigScreen) {
+      if (this.selectedModalType === modalTypes.BASIC_CONFIRM && bigScreen) {
         return "50vw";
       }
-      if (this.selectedModalType === modalTypes.DELETE || bigScreen) {
+      if (this.selectedModalType === modalTypes.BASIC_CONFIRM || bigScreen) {
         return "75vw";
       }
       return "90vw";
+    },
+    confirmListName() {
+      if (this.action === basicActions.MOVE) {
+        return this.isWishList ? "owned list" : "wishlist";
+      }
+      return this.isWishList ? "wishlist" : "owned list";
     },
   },
   mounted() {
@@ -133,18 +146,27 @@ export default {
         activeUserState.setActiveUserAndListMode(loginState.loggedInUser.value);
       }
     },
-    deleteItem() {
+    moveOrRemoveItem() {
       this.showModal = false;
       if (this.indexToRemove === -1) {
         return;
       }
-      gamesListState.removeGameAtIndex(this.indexToRemove);
+      this.action === basicActions.REMOVE
+        ? gamesListState.removeGameAtIndex(this.indexToRemove)
+        : gamesListState.moveGameToOtherList(this.indexToRemove);
       this.indexToRemove = -1;
     },
-    openDeleteModal(clickedIndex) {
+    openConfirmModal(clickedIndex) {
       this.showModal = true;
       this.indexToRemove = clickedIndex;
-      this.selectedModalType = modalTypes.DELETE;
+      this.action = basicActions.REMOVE;
+      this.selectedModalType = modalTypes.BASIC_CONFIRM;
+    },
+    openMoveModal(clickedIndex) {
+      this.showModal = true;
+      this.indexToRemove = clickedIndex;
+      this.action = basicActions.MOVE;
+      this.selectedModalType = modalTypes.BASIC_CONFIRM;
     },
     openAddGamesModal() {
       this.showModal = true;

@@ -1,11 +1,11 @@
+import GameActionBtns from "@/components/UI/GameActionBtns.vue";
 import { mount } from "@vue/test-utils";
-import RemoveGameButton from "@/components/UI/RemoveGameButton.vue";
 import Button from "primevue/button";
 
 describe("Message.vue", () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = mount(RemoveGameButton);
+    wrapper = mount(GameActionBtns);
   });
 
   it("Clicking on the button emits delete-item", async () => {
