@@ -1,5 +1,5 @@
 <template>
-  <div class="p-col-12 p-md-4 p-lg-3 pointer p-sm-6" @click="loadDetails">
+  <div class="pointer outer-container" @click="loadDetails">
     <div class="game-grid-item card">
       <div class="game-grid-centered image-box">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
@@ -84,6 +84,9 @@ export default {
 };
 </script>
 <style scoped>
+.outer-container {
+  width: 16.6%; /*6 across**/
+}
 .game-grid-item {
   margin: 0.5rem;
   border: 1px solid #dee2e6;
@@ -131,5 +134,31 @@ h3 {
 }
 strong {
   font-weight: 500;
+}
+
+@media screen and (max-width: 1500px) {
+  .outer-container {
+    width: 20%; /*5 across**/
+  }
+}
+@media screen and (max-width: 1200px) {
+  .outer-container {
+    width: 25%; /*4 across**/
+  }
+}
+@media screen and (max-width: 900px) {
+  .outer-container {
+    width: 33.33%; /*3 across**/
+  }
+}
+@media screen and (max-width: 700px) {
+  .outer-container {
+    width: 50%; /*2 across**/
+  }
+}
+@media screen and (max-width: 500px) {
+  .outer-container {
+    width: 100%; /*1 across**/
+  }
 }
 </style>
