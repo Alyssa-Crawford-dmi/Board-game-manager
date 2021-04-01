@@ -34,7 +34,6 @@ export default {
   right: 4px;
 }
 .slot {
-  /* border: 1px solid aqua; */
   margin: 0.3rem 0.3rem 0 0;
   align-items: center;
   padding: 0;

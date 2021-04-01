@@ -19,11 +19,7 @@
               :disabled="!canAddGames"
             />
           </div>
-          <div
-            class="p-col-4 header-content"
-            style="text-align: right"
-            v-if="bigScreen"
-          >
+          <div class="p-col-4 header-content" style="text-align: right">
             <ModifiedDataViewLayoutOptions v-model="layout" />
           </div>
         </div>
@@ -81,16 +77,16 @@ export default {
     "move-item",
   ],
   props: { gamesList: { required: true, type: Array } },
-  mounted() {
-    this.bigScreen = screen.width > 650;
-    window.onorientationchange = () => {
-      this.bigScreen = screen.width > 650;
-    };
-  },
+  // mounted() {
+  //   this.bigScreen = screen.width > 650;
+  //   window.onorientationchange = () => {
+  //     this.bigScreen = screen.width > 650;
+  //   };
+  // },
   data() {
     return {
       layout: "grid",
-      bigScreen: false,
+      // bigScreen: false,
       isLoggedIn: loginState.loggedInUser,
       gamesLoading: gamesListState.isLoading,
     };
@@ -131,9 +127,9 @@ export default {
     detail(game) {
       this.$emit("game-detail", game);
     },
-    detectOrientationChange() {
-      this.bigScreen = screen.width > 650;
-    },
+    // detectOrientationChange() {
+    //   this.bigScreen = screen.width > 650;
+    // },
     unauthorizedAction() {
       this.$emit("unauthorized-action");
     },

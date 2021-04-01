@@ -29,7 +29,7 @@
       <DeleteCard
         v-for="friend in sentRequests"
         :key="friend"
-        class="friend-item sent-requests"
+        class="friend-item"
         @remove-friend="() => removeFriend(friend)"
       >
         <p class="friend-text">
@@ -42,20 +42,18 @@
       <DeleteCard
         v-for="friend in pendingRequests"
         :key="friend"
-        class="friend-item pending-friends"
+        class="friend-item"
         @remove-friend="() => removeFriend(friend)"
       >
         <p class="friend-text">
           {{ friend.friendName }}
         </p>
-        <div class="action-buttons">
-          <Button
-            @click="(e) => acceptRequest(friend, e)"
-            label="Accept"
-            class="p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
-            title="Accept"
-          />
-        </div>
+        <Button
+          @click="(e) => acceptRequest(friend, e)"
+          label="Accept"
+          class="p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
+          title="Accept"
+        />
       </DeleteCard>
     </template>
     <template v-if="friends.length > 0">
@@ -69,7 +67,14 @@
         <p class="friend-text">
           {{ friend.friendName }}
         </p>
-        <div class="action-buttons">
+        <Button
+          v-if="isSmallScreen"
+          @click="() => seeList(friend, true)"
+          label="Games"
+          class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
+          title="Games"
+        />
+        <div v-else>
           <Button
             @click="() => seeList(friend, true)"
             label="Wishlist"
@@ -133,8 +138,12 @@ export default {
       invalidFriend: friendsListState.invalidFriend,
       requestSent: friendsListState.requestSent,
       friendToDelete: "",
-      isSmallScreen: screen.width < 400,
     };
+  },
+  computed: {
+    isSmallScreen() {
+      return window.innerWidth < 450;
+    },
   },
   methods: {
     acceptRequest(friend) {
@@ -194,39 +203,8 @@ h2 {
   font-size: large;
 }
 .word-btn {
-  /* border: 1px solid aqua; */
-  /* margin: 0.5rem; */
   padding: 0.3rem 0.5rem;
 }
-@media screen and (max-width: 400px) {
-  .pending-friends {
-    flex-direction: column;
-    justify-content: left;
-    align-items: flex-start;
-  }
-  .action-buttons {
-    padding: 0rem;
-  }
-  .friend-text {
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
-    border: 1px solid aqua;
-  }
-  .word-btn {
-    /* border: 1px solid aqua; */
-    /* margin: 0.5rem; */
-    padding: 0.3rem 0.5rem;
-    font-size: large;
-  }
-  /* .action-buttons {
-    padding: 0rem;
-  }
-  .add-div {
-    flex-direction: column;
-    align-items: center;
-  }
-  .status-div {
-    padding-bottom: 1rem;
-  } */
+@media screen and (max-width: 445px) {
 }
 </style>
