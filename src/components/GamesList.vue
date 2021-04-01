@@ -77,16 +77,9 @@ export default {
     "move-item",
   ],
   props: { gamesList: { required: true, type: Array } },
-  // mounted() {
-  //   this.bigScreen = screen.width > 650;
-  //   window.onorientationchange = () => {
-  //     this.bigScreen = screen.width > 650;
-  //   };
-  // },
   data() {
     return {
       layout: "grid",
-      // bigScreen: false,
       isLoggedIn: loginState.loggedInUser,
       gamesLoading: gamesListState.isLoading,
     };
@@ -127,9 +120,6 @@ export default {
     detail(game) {
       this.$emit("game-detail", game);
     },
-    // detectOrientationChange() {
-    //   this.bigScreen = screen.width > 650;
-    // },
     unauthorizedAction() {
       this.$emit("unauthorized-action");
     },

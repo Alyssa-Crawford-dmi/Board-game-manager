@@ -3,11 +3,19 @@
     <Button
       @click="(e) => deleteItem(e)"
       label="Remove game"
-      class="p-button-danger p-button-text p-button-rounded"
+      :class="[
+        'p-button-danger',
+        'p-button-text',
+        'p-button-rounded',
+        !centerText ? 'remove-start-padding' : '',
+      ]"
       title="Delete Item"
       :disabled="disabled"
     />
-    <div v-if="!showMoveText" :class="['spacer', isWishList ? 'first' : '']" />
+    <div
+      v-if="!showMoveText && centerText"
+      :class="['spacer', isWishList ? 'first' : '']"
+    />
     <Button
       @click="(e) => moveItem(e)"
       :icon="
@@ -38,6 +46,7 @@ export default {
   props: {
     showMoveText: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
+    centerText: { type: Boolean, default: true },
   },
   emits: ["delete-item", "move-item"],
   methods: {
@@ -75,5 +84,8 @@ export default {
 }
 .spacer {
   width: 2rem;
+}
+.remove-start-padding {
+  padding-left: 0;
 }
 </style>

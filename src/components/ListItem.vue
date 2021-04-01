@@ -18,14 +18,15 @@
           Age: <strong>{{ age }}</strong>
         </p>
       </div>
-      <div>
-        <GameActionBtns
-          @delete-item="deleteItem"
-          @move-item="moveItem"
-          :disabled="disabled"
-          :showMoveText="true"
-        />
-      </div>
+      <!-- <div class="temp"> -->
+      <GameActionBtns
+        @delete-item="deleteItem"
+        @move-item="moveItem"
+        :disabled="disabled"
+        :showMoveText="showActionBtnMoveText"
+        :centerText="false"
+      />
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -56,6 +57,9 @@ export default {
     },
     age() {
       return ageString(this.gameData.min_age);
+    },
+    showActionBtnMoveText() {
+      return window.innerWidth > 700;
     },
   },
   methods: {
@@ -101,15 +105,14 @@ img {
   height: 100%;
   width: 10rem;
   object-fit: contain;
-  border: 1px solid aqua;
 }
 h3 {
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0;
+  /* text-overflow: ellipsis; */
 }
 .game-list-details {
-  border: 1px solid aqua;
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
@@ -127,10 +130,34 @@ h3 {
   height: 100%;
   align-items: center;
 }
-@media screen and (max-width: 725px) {
+@media screen and (max-width: 700px) {
+  .game-list-item {
+    padding: 0.2rem;
+  }
   .game-text {
-    display: flex;
     flex-direction: column;
+    align-items: flex-start;
+  }
+  .image-box {
+    margin: 0 0.5rem 0 0;
+  }
+  img {
+    width: 7rem;
+  }
+}
+@media screen and (max-width: 375px) {
+  .game-list-item {
+    padding: 0.2rem;
+  }
+  .game-text {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .image-box {
+    margin: 0 0.5rem 0 0;
+  }
+  img {
+    width: 5rem;
   }
 }
 </style>
