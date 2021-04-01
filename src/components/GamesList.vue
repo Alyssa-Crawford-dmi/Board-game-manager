@@ -29,9 +29,7 @@
         </div>
       </template>
 
-      <template #empty>{{
-        isLoggedIn ? "No games yet" : "Please login or sign up to get started"
-      }}</template>
+      <template #empty>{{ emptyText }}</template>
       <template #list="slotProps">
         <ListItem
           :gameData="slotProps.data"
@@ -64,6 +62,7 @@ import ListItem from "./ListItem.vue";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
 import { activeUserState } from "../utils/activeUser";
+import { gamesListState } from "../utils/gameListManager";
 
 export default {
   name: "ListHolder",
@@ -93,6 +92,7 @@ export default {
       layout: "grid",
       bigScreen: false,
       isLoggedIn: loginState.loggedInUser,
+      gamesLoading: gamesListState.isLoading,
     };
   },
   computed: {
@@ -104,6 +104,14 @@ export default {
         return true;
       }
       return false;
+    },
+    emptyText() {
+      if (this.gamesLoading) {
+        return "Loading ...";
+      }
+      return this.isLoggedIn
+        ? "No games yet"
+        : "Please login or sign up to get started";
     },
   },
   methods: {

@@ -10,6 +10,8 @@
             v-model="searchTerm"
             placeholder="Ticket to Ride"
             class="p-inputtext-lg bounded-width"
+            autofocus
+            @keyup.enter="search"
           />
         </span>
         <div class="p-field-checkbox">

@@ -20,7 +20,7 @@
       <Button
         @click="addFriend"
         label="Add Friend"
-        class="space-left p-button-raised p-button-text p-button-lg p-button-rounded"
+        class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
         title="Add Friend"
       />
     </div>
@@ -47,7 +47,7 @@
       <div
         v-for="friend in pendingRequests"
         :key="friend"
-        class="card friend-item"
+        class="card friend-item pending-friends"
       >
         <p class="friend-text">
           {{ friend.friendName }}
@@ -56,7 +56,7 @@
           <Button
             @click="(e) => acceptRequest(friend, e)"
             label="Accept"
-            class="p-button-raised p-button-text p-button-lg p-button-rounded"
+            class="p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
             title="Accept"
           />
           <Button
@@ -78,13 +78,13 @@
           <Button
             @click="() => seeList(friend, true)"
             label="Wishlist"
-            class="space-left p-button-raised p-button-text p-button-lg p-button-rounded"
+            class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
             title="Wishlist"
           />
           <Button
             @click="() => seeList(friend, false)"
             label="Owned games"
-            class="space-left p-button-raised p-button-text p-button-lg p-button-rounded"
+            class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
             title="Owned games"
           />
           <Button
@@ -138,6 +138,7 @@ export default {
       invalidFriend: friendsListState.invalidFriend,
       requestSent: friendsListState.requestSent,
       friendToDelete: "",
+      isSmallScreen: screen.width < 400,
     };
   },
   methods: {
@@ -197,12 +198,27 @@ h2 {
   font-weight: bold;
   font-size: large;
 }
-@media screen and (max-width: 500px) {
-  .friend-item {
+@media screen and (max-width: 400px) {
+  .pending-friends {
     flex-direction: column;
-    align-items: center;
+    justify-content: left;
+    align-items: flex-start;
   }
   .action-buttons {
+    padding: 0rem;
+  }
+  .friend-text {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid aqua;
+  }
+  .word-btn {
+    /* border: 1px solid aqua; */
+    /* margin: 0.5rem; */
+    padding: 0.3rem 0.5rem;
+    font-size: large;
+  }
+  /* .action-buttons {
     padding: 0rem;
   }
   .add-div {
@@ -211,6 +227,6 @@ h2 {
   }
   .status-div {
     padding-bottom: 1rem;
-  }
+  } */
 }
 </style>

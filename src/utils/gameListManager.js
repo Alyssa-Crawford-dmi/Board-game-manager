@@ -5,8 +5,11 @@ import { activeUserState } from "./activeUser";
 
 export const gamesListState = {
   gameList: ref([]),
+  isLoading: ref(false),
   async loadGamesForUser() {
     var gameIds = [];
+    this.gameList.value = [];
+    this.isLoading.value = true;
     axios.get(this.buildRouteString()).then((res) => {
       const idStr = res.data.gamesList;
       if (idStr) {
@@ -14,10 +17,12 @@ export const gamesListState = {
         if (gameIds.length > 0) {
           getGamesFromIds(gameIds).then((res) => {
             this.gameList.value = res;
+            this.isLoading.value = false;
           });
         }
       } else {
         this.gameList.value = [];
+        this.isLoading.value = false;
       }
     });
   },

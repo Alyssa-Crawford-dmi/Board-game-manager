@@ -34,6 +34,7 @@
         v-model="password"
         placeholder="Password"
         :class="['bounded-width', invalidPassword ? 'p-invalid' : '']"
+        @keyup.enter="loginUser"
       />
       <small id="password-help" class="p-invalid" v-if="invalidPassword"
         >Password can not be empty</small
