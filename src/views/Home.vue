@@ -118,9 +118,9 @@ export default {
     },
     confirmListName() {
       if (this.action === basicActions.MOVE) {
-        return this.isWishList ? "owned list" : "wishlist";
+        return this.isWishList ? "your owned list" : "your wishlist";
       }
-      return this.isWishList ? "wishlist" : "owned list";
+      return this.isWishList ? "your wishlist" : "your owned list";
     },
   },
   mounted() {

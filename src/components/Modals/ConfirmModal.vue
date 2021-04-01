@@ -2,7 +2,7 @@
   <div>
     <p>
       Are you sure you would like to {{ actionName }} "{{ gameName }}"
-      {{ preposition }} the {{ listName }}?
+      {{ preposition }} {{ listName }}?
     </p>
     <div class="button">
       <Button

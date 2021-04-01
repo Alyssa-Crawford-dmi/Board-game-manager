@@ -26,28 +26,24 @@
     </div>
     <template v-if="sentRequests.length > 0">
       <h2>Sent Friend requests</h2>
-      <div
+      <DeleteCard
         v-for="friend in sentRequests"
         :key="friend"
-        class="card friend-item sent-requests"
+        class="friend-item sent-requests"
+        @remove-friend="() => removeFriend(friend)"
       >
         <p class="friend-text">
           {{ friend.friendName }}
         </p>
-        <Button
-          icon="pi pi-times"
-          class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
-          title="Cancel request"
-          @click="() => removeFriend(friend)"
-        />
-      </div>
+      </DeleteCard>
     </template>
     <template v-if="pendingRequests.length > 0">
       <h2>Pending Friend Requests</h2>
-      <div
+      <DeleteCard
         v-for="friend in pendingRequests"
         :key="friend"
-        class="card friend-item pending-friends"
+        class="friend-item pending-friends"
+        @remove-friend="() => removeFriend(friend)"
       >
         <p class="friend-text">
           {{ friend.friendName }}
@@ -59,18 +55,17 @@
             class="p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
             title="Accept"
           />
-          <Button
-            icon="pi pi-times"
-            class="space-left p-button-rounded p-button-danger p-button-outlined p-button-sm p-button-rounded"
-            title="Reject request"
-            @click="() => removeFriend(friend)"
-          />
         </div>
-      </div>
+      </DeleteCard>
     </template>
     <template v-if="friends.length > 0">
       <h2>My Friends</h2>
-      <div v-for="friend in friends" :key="friend" class="card friend-item">
+      <DeleteCard
+        v-for="friend in friends"
+        :key="friend"
+        class="friend-item"
+        @remove-friend="() => removeFriend(friend)"
+      >
         <p class="friend-text">
           {{ friend.friendName }}
         </p>
@@ -87,14 +82,8 @@
             class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
             title="Owned games"
           />
-          <Button
-            icon="pi pi-times"
-            class="p-button-rounded p-button-danger p-button-outlined p-button-sm space-left p-button-rounded"
-            title="Delete friend"
-            @click="() => removeFriend(friend)"
-          />
         </div>
-      </div>
+      </DeleteCard>
     </template>
   </div>
   <Dialog
@@ -103,7 +92,12 @@
     :modal="true"
     :style="{ width: '75vw' }"
   >
-    <DeleteModal @delete-confirmed="deleteItem" :gameName="friendToDelete" />
+    <DeleteModal
+      @action-confirmed="deleteItem"
+      :gameName="friendToDelete"
+      actionName="remove"
+      listName="friends"
+    />
   </Dialog>
 </template>
 
@@ -113,11 +107,12 @@ import Dialog from "primevue/dialog";
 import { friendsListState } from "../utils/friendsService";
 import { activeUserState } from "../utils/activeUser";
 import DeleteModal from "../components/Modals/ConfirmModal.vue";
+import DeleteCard from "../components/UI/DeleteCard";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
 
 export default {
-  components: { Button, InputText, Dialog, DeleteModal },
+  components: { Button, InputText, Dialog, DeleteModal, DeleteCard },
   beforeRouteEnter(_to, _from, next) {
     if (!loginState.loggedInUser.value) {
       next("/");
@@ -197,6 +192,11 @@ h2 {
 .friend-text {
   font-weight: bold;
   font-size: large;
+}
+.word-btn {
+  /* border: 1px solid aqua; */
+  /* margin: 0.5rem; */
+  padding: 0.3rem 0.5rem;
 }
 @media screen and (max-width: 400px) {
   .pending-friends {
