@@ -103,7 +103,7 @@ export default {
     },
     emptyText() {
       if (this.gamesLoading) {
-        return "Loading ...";
+        return "Loading...";
       }
       return this.isLoggedIn
         ? "No games yet"

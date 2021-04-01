@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="outer-container">
     <h2>Add Friend</h2>
     <div class="add-div">
       <div class="status-div">
@@ -20,7 +20,7 @@
       <Button
         @click="addFriend"
         label="Add Friend"
-        class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
+        class="add-friend-btn p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
         title="Add Friend"
       />
     </div>
@@ -71,14 +71,14 @@
           v-if="isSmallScreen"
           @click="() => seeList(friend, true)"
           label="Games"
-          class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
+          class="p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
           title="Games"
         />
         <div v-else>
           <Button
             @click="() => seeList(friend, true)"
             label="Wishlist"
-            class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
+            class="p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
             title="Wishlist"
           />
           <Button
@@ -126,6 +126,7 @@ export default {
     next();
   },
   mounted() {
+    friendsListState.resetStatusFlags();
     friendsListState.getFriends();
   },
   data: () => {
@@ -169,8 +170,9 @@ export default {
 };
 </script>
 <style scoped>
-div {
+.outer-container {
   padding-left: 2rem;
+  padding-right: 2rem;
 }
 h2 {
   color: var(--dark-gray);
@@ -183,6 +185,9 @@ h2 {
   align-items: center;
 }
 .space-left {
+  margin-left: 1rem;
+}
+.add-friend-btn {
   margin-left: 1rem;
 }
 .status-div {
@@ -205,6 +210,18 @@ h2 {
 .word-btn {
   padding: 0.3rem 0.5rem;
 }
-@media screen and (max-width: 445px) {
+@media screen and (max-width: 500px) {
+  .add-div {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .add-friend-btn {
+    margin-left: 0;
+    margin-top: 0.3rem;
+  }
+  .outer-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 }
 </style>

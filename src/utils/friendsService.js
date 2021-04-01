@@ -8,6 +8,10 @@ export const friendsListState = {
   pendingRequests: ref([]),
   invalidFriend: ref(false),
   requestSent: ref(false),
+  resetStatusFlags() {
+    this.invalidFriend.value = false;
+    this.requestSent.value = false;
+  },
   async getFriends() {
     const user = loginState.loggedInUser.value;
     const res = (await axios.get(`/api/friends/${user}`)).data;
@@ -36,9 +40,7 @@ export const friendsListState = {
       : this.buildUrl(friend.friendName, user);
 
     axios.put(url).then(() => {
-      this.requestSent.value = false;
-      this.invalidFriend.value = false;
-
+      this.resetStatusFlags();
       this.getFriends();
     });
   },
@@ -63,6 +65,7 @@ export const friendsListState = {
     const url = this.buildUrl(user, friendName);
     axios.delete(url).then(
       () => {
+        this.resetStatusFlags();
         this.getFriends();
       },
       () => {}
