@@ -4,7 +4,9 @@
       <div class="game-grid-centered image-box">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
       </div>
-      <h3>{{ gameData.name }}</h3>
+      <div class="header-container">
+        <h3>{{ gameData.name }}</h3>
+      </div>
       <div class="game-grid-details">
         <p>
           <strong>{{ players }}</strong> players
@@ -106,6 +108,14 @@ h3 {
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0;
+}
+.header-container {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-height: 1.5rem;
 }
 .game-grid-details {
   display: flex;

@@ -5,7 +5,9 @@
     </div>
     <div class="game-text">
       <div class="game-list-details">
-        <h3>{{ gameData.name }}</h3>
+        <div class="header-container">
+          <h3>{{ gameData.name }}</h3>
+        </div>
         <p>
           Number of players:
           <strong>{{ players }} </strong>
@@ -110,7 +112,14 @@ h3 {
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0;
-  /* text-overflow: ellipsis; */
+}
+.header-container {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.5rem;
 }
 .game-list-details {
   display: flex;

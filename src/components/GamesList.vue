@@ -20,7 +20,10 @@
             />
           </div>
           <div class="p-col-4 header-content" style="text-align: right">
-            <ModifiedDataViewLayoutOptions v-model="layout" />
+            <ModifiedDataViewLayoutOptions
+              v-model="layout"
+              v-if="isLargeScreen"
+            />
           </div>
         </div>
       </template>
@@ -79,9 +82,10 @@ export default {
   props: { gamesList: { required: true, type: Array } },
   data() {
     return {
-      layout: "grid",
       isLoggedIn: loginState.loggedInUser,
       gamesLoading: gamesListState.isLoading,
+      isLargeScreen: window.innerWidth > 500,
+      layout: window.innerWidth <= 500 ? "list" : "grid",
     };
   },
   computed: {
