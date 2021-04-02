@@ -5,26 +5,42 @@ import { activeUserState } from "./activeUser";
 
 export const gamesListState = {
   gameList: ref([]),
+  inactiveGamesList: ref([]),
   isLoading: ref(false),
   async loadGamesForUser() {
-    var gameIds = [];
     this.gameList.value = [];
     this.isLoading.value = true;
-    axios.get(this.buildRouteString()).then((res) => {
-      const idStr = res.data.gamesList;
-      if (idStr) {
-        gameIds = JSON.parse(idStr);
-        if (gameIds.length > 0) {
-          getGamesFromIds(gameIds).then((res) => {
-            this.gameList.value = res;
+    this.inactiveGamesList.value = [];
+    axios
+      .get(this.buildRouteString())
+      .then((res) => this.parseApiData(res, this.gameList, true));
+    axios
+      .get(this.buildRouteString(true))
+      .then((res) => this.parseApiData(res, this.inactiveGamesList, false));
+  },
+  parseApiData(res, list, updateIsLoading) {
+    const idStr = res.data.gamesList;
+    if (idStr) {
+      const gameIds = JSON.parse(idStr);
+      if (gameIds.length > 0) {
+        getGamesFromIds(gameIds).then((res) => {
+          list.value = res;
+          if (updateIsLoading) {
             this.isLoading.value = false;
-          });
-        }
-      } else {
-        this.gameList.value = [];
+          }
+        });
+      }
+    } else {
+      list.value = [];
+      if (updateIsLoading) {
         this.isLoading.value = false;
       }
-    });
+    }
+  },
+  switchActiveAndInactiveLists() {
+    const temp = this.gameList.value;
+    this.gameList.value = this.inactiveGamesList.value;
+    this.inactiveGamesList.value = temp;
   },
   removeGameAtIndex(index) {
     this.gameList.value.splice(index, 1);
@@ -32,39 +48,24 @@ export const gamesListState = {
   },
   addGameIfNotExists(newGame, addToOtherList = false) {
     if (addToOtherList) {
-      this.addGameToOtherList(newGame);
-      return;
+      return this.addGameToList(newGame, this.inactiveGamesList);
+    } else {
+      return this.addGameToList(newGame, this.gameList);
     }
-    const duplicate = this.gameList.value.some(
-      (game) => game.id === newGame.id
-    );
+  },
+  addGameToList(newGame, list) {
+    const duplicate = list.value.some((game) => game.id === newGame.id);
     if (duplicate) {
       return { error: true, msg: "Game already in list" };
     } else {
-      this.gameList.value.push(newGame);
+      list.value.push(newGame);
       this.saveGamesForUser();
       return { error: false, msg: "Game added successfully" };
     }
   },
-  addGameToOtherList(newGame) {
-    var gameIds = [];
-    axios.get(this.buildRouteString(true)).then((res) => {
-      const idStr = res.data.gamesList;
-      if (idStr) {
-        gameIds = JSON.parse(idStr);
-      }
-      if (gameIds.indexOf(newGame.id) === -1) {
-        gameIds.push(newGame.id);
-      }
-      const gameIdStr = JSON.stringify(gameIds);
-      axios
-        .put(this.buildRouteString(true), { gameIdStr })
-        .catch((err) => console.log(err));
-    });
-  },
   moveGameToOtherList(index) {
     const game = this.gameList.value[index];
-    this.addGameToOtherList(game);
+    this.addGameToList(game, this.inactiveGamesList);
     this.removeGameAtIndex(index);
   },
   saveGamesForUser() {
@@ -72,10 +73,16 @@ export const gamesListState = {
     const gameIdStr = JSON.stringify(gameIds);
     axios
       .put(this.buildRouteString(), { gameIdStr })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
+    const gameIdsInactive = this.inactiveGamesList.value.map((obj) => obj.id);
+    const gameIdStrInactive = JSON.stringify(gameIdsInactive);
+    axios
+      .put(this.buildRouteString(true), { gameIdStr: gameIdStrInactive })
+      .catch((err) => console.error(err));
   },
   clearGamesList() {
     this.gameList.value = [];
+    this.inactiveGamesList.value = [];
   },
 
   //Used for reactivity

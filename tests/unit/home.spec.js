@@ -24,7 +24,8 @@ describe("Home.vue", () => {
         },
       },
     });
-    activeUserState.setActiveUserAndListMode("AC");
+    const uniqueUser = `AC${+Math.random() * 100}`;
+    activeUserState.setActiveUserAndListMode(uniqueUser);
   });
 
   // If this test fails other tests are likely to fail in more subtle

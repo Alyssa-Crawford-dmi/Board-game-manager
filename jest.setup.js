@@ -1,6 +1,6 @@
 import axios from "axios";
-import { loginState } from "./src/utils/auth";
 import { activeUserState } from "./src/utils/activeUser";
+import { loginState } from "./src/utils/auth";
 
 export const fakeGameData = {
   data: {
@@ -73,8 +73,10 @@ axios.get.mockImplementation((url) => {
 axios.put.mockImplementation((url) => {
   return Promise.resolve({ status: 200 });
 });
-activeUserState.setActiveUserAndListMode("AC");
-loginState.loggedInUser = "AC";
+const uniqueUser = `AC${+Math.random() * 100}`;
+
+activeUserState.setActiveUserAndListMode(uniqueUser);
+loginState.loggedInUser = uniqueUser;
 
 const originalWarn = console.warn.bind(console.warn);
 const originalInfo = console.info.bind(console.info);

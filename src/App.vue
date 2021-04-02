@@ -1,5 +1,5 @@
 <template>
-  <Header @login="showLogin = true" />
+  <Header @login-change="showLogin = true" />
   <router-view />
   <Dialog
     :header="signupMode ? 'Signup' : 'Login'"
@@ -41,6 +41,9 @@ export default {
   },
   mounted() {
     loginState.signInLocalUser();
+    if (!loginState.loggedInUser.value) {
+      this.showLogin = true;
+    }
   },
 };
 </script>

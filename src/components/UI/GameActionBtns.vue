@@ -26,6 +26,9 @@
         'p-button-text',
         'p-button-secondary',
         !isWishList && !showMoveText ? 'first' : '',
+        !centerText && !isWishList && !showMoveText
+          ? 'remove-start-padding'
+          : '',
       ]"
       :title="moveBtnText"
       :label="showMoveText ? moveBtnText : ''"
@@ -87,5 +90,6 @@ export default {
 }
 .remove-start-padding {
   padding-left: 0;
+  padding-right: 0;
 }
 </style>

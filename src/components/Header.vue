@@ -36,7 +36,7 @@ export default {
     Menu,
     GameListTypeNav,
   },
-  emits: ["login"],
+  emits: ["login-change"],
   data() {
     return {
       isLoggedIn: loginState.loggedInUser,
@@ -108,9 +108,8 @@ export default {
       if (this.isLoggedIn) {
         loginState.logout();
         activeUserState.setActiveUserAndListMode("");
-      } else {
-        this.$emit("login");
       }
+      this.$emit("login-change");
     },
     showOverlay(event) {
       this.$refs.menu.toggle(event);

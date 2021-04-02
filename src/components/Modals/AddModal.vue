@@ -1,15 +1,15 @@
 <template>
   <div>
     <div id="scroll-marker"></div>
-    <div class="search-bar">
-      <div class="search-options">
-        <span class="p-input-icon-left">
+    <div class="search-header">
+      <div class="search-inputs">
+        <span class="p-input-icon-left temp">
           <i class="pi pi-search" />
           <InputText
             type="text"
             v-model="searchTerm"
             placeholder="Ticket to Ride"
-            class="p-inputtext-lg bounded-width"
+            class="search-input-field p-inputtext-lg"
             autofocus
             @keyup.enter="search"
           />
@@ -164,10 +164,11 @@ export default {
 .search-button {
   margin-left: 1rem;
 }
-.search-bar {
+.search-header {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  /* border: 1px solid aqua; */
 }
 .modal-contents {
   padding: 0;
@@ -201,16 +202,27 @@ p {
 .p-field-checkbox {
   padding-top: 0.25rem;
 }
-.search-options {
+.search-inputs {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: fit-content;
+  width: 70%;
   margin: 0;
 }
+.search-input-field {
+  width: 100%;
+}
+.temp {
+  width: 100%;
+  flex: 1;
+}
 @media screen and (max-width: 700px) {
-  .search-bar {
+  .search-header {
     flex-direction: column;
+    align-items: center;
+  }
+  .search-inputs {
+    width: 100%;
   }
 }
 </style>

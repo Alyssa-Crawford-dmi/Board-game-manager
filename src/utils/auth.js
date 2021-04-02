@@ -28,7 +28,7 @@ export const loginState = {
         if (e.response || e.message === badLogin) {
           throw new Error(badLogin);
         }
-        console.log(e);
+        console.error(e);
         throw new Error(genericError);
       });
     this.loggedInUser.value = username;
