@@ -115,6 +115,7 @@ import DeleteModal from "../components/Modals/ConfirmModal.vue";
 import DeleteCard from "../components/UI/DeleteCard";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
+import { windowState } from "../utils/windowSize";
 
 export default {
   components: { Button, InputText, Dialog, DeleteModal, DeleteCard },
@@ -139,11 +140,12 @@ export default {
       invalidFriend: friendsListState.invalidFriend,
       requestSent: friendsListState.requestSent,
       friendToDelete: "",
+      windowWidth: windowState.windowWidth,
     };
   },
   computed: {
     isSmallScreen() {
-      return window.innerWidth < 450;
+      return this.windowWidth < 450;
     },
   },
   methods: {

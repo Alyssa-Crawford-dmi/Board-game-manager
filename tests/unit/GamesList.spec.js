@@ -1,9 +1,9 @@
-import { mount } from "@vue/test-utils";
 import GamesList from "@/components/GamesList.vue";
-import DataView from "primevue/dataview";
-import Button from "primevue/button";
-import ListItem from "@/components/ListItem";
 import GridItem from "@/components/GridItem";
+import ListItem from "@/components/ListItem";
+import { mount } from "@vue/test-utils";
+import Button from "primevue/button";
+import DataView from "primevue/dataview";
 
 const games = [
   { name: "game1", images: [] },

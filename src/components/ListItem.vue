@@ -35,6 +35,7 @@
 <script>
 import GameActionBtns from "./UI/GameActionBtns.vue";
 import { rangeString, ageString } from "../utils/rangeString";
+import { windowState } from "../utils/windowSize";
 
 export default {
   name: "listItem",
@@ -45,6 +46,9 @@ export default {
   emits: ["delete-item", "item-clicked", "unauthorized-action", "move-item"],
   components: {
     GameActionBtns,
+  },
+  data() {
+    return { windowWidth: windowState.windowWidth };
   },
   computed: {
     playtime() {
@@ -61,7 +65,7 @@ export default {
       return ageString(this.gameData.min_age);
     },
     showActionBtnMoveText() {
-      return window.innerWidth > 700;
+      return this.windowWidth > 700;
     },
   },
   methods: {

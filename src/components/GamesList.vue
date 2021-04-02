@@ -1,6 +1,11 @@
 <template>
   <div class="card">
-    <DataView :value="gamesList" :layout="layout" :paginator="true" :rows="25">
+    <DataView
+      :value="gamesList"
+      :layout="forceLayout || layout"
+      :paginator="true"
+      :rows="25"
+    >
       <template #header>
         <div class="p-grid p-nogutter p-ai-center vertical-container header">
           <div class="p-col-4 header-content" style="text-align: left">
@@ -60,6 +65,7 @@ import GridItem from "./GridItem.vue";
 import ListItem from "./ListItem.vue";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
+import { windowState } from "../utils/windowSize";
 import { activeUserState } from "../utils/activeUser";
 import { gamesListState } from "../utils/gameListManager";
 
@@ -84,8 +90,8 @@ export default {
     return {
       isLoggedIn: loginState.loggedInUser,
       gamesLoading: gamesListState.isLoading,
-      isLargeScreen: window.innerWidth > 500,
-      layout: window.innerWidth <= 500 ? "list" : "grid",
+      windowWidth: windowState.windowWidth,
+      layout: "grid",
     };
   },
   computed: {
@@ -105,6 +111,12 @@ export default {
       return this.isLoggedIn
         ? "No games yet"
         : "Please login or sign up to get started";
+    },
+    isLargeScreen() {
+      return this.windowWidth > 500;
+    },
+    forceLayout() {
+      return this.windowWidth <= 500 ? "list" : "";
     },
   },
   methods: {

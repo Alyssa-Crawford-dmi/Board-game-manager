@@ -19,6 +19,7 @@ import Header from "@/components/Header.vue";
 import Dialog from "primevue/dialog";
 import LoginModal from "@/components/Modals/LoginModal";
 import { loginState } from "./utils/auth";
+import { windowState } from "./utils/windowSize";
 
 export default {
   name: "App",
@@ -44,6 +45,13 @@ export default {
     if (!loginState.loggedInUser.value) {
       this.showLogin = true;
     }
+    window.addEventListener(
+      "resize",
+      windowState.updateWindowSize.bind(windowState)
+    );
+  },
+  unmounted() {
+    window.removeEventListener("resize", windowState.updateWindowSize);
   },
 };
 </script>
