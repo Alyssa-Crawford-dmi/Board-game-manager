@@ -1,5 +1,5 @@
 <template>
-  <div class="p-col-12 wrapper">
+  <!-- <div class="p-col-12 wrapper">
     <div
       :class="{
         error: messageInfo.error,
@@ -24,74 +24,122 @@
         />
       </div>
     </div>
-  </div>
+  </div> -->
+  <p :class="['text', messageClass]">{{ messageText }}</p>
 </template>
 <script>
-import Button from "primevue/button";
-
+const MessageTypes = {
+  SUCCESS: "SUCCESS",
+  INFO: "INFO",
+  INFO_END: "INFO_END",
+  ERROR: "ERROR",
+  NO_MSG: "NO_MESSAGE",
+};
 export default {
   name: "message",
   props: {
-    messageInfo: {
-      type: Object,
-      default: function () {
-        return { msg: "", error: false };
-      },
+    searchResultsLength: {
+      type: Number,
+      required: true,
+    },
+    showNoResultsError: {
+      type: Boolean,
+      required: true,
+    },
+    resultsPage: {
+      type: Number,
+      required: true,
+    },
+    gameAdded: {
+      type: Number,
+      required: true,
     },
   },
-  emits: ["dismiss-message"],
-  components: {
-    Button,
-  },
-  mounted() {
-    this.autoDismiss = setTimeout(() => {
-      this.dismissMessage();
-    }, 1500);
+  mounted() {},
+  watch: {
+    gameAdded: function () {
+      if (this.gameAdded !== 0) {
+        this.showGameAdded = true;
+        if (this.autoDismiss) {
+          clearTimeout(this.autoDismiss);
+        }
+        this.autoDismiss = setTimeout(() => {
+          this.dismissMessage();
+        }, 2000);
+      }
+    },
   },
   beforeUnmount() {
     clearTimeout(this.autoDismiss);
   },
   data: () => {
-    return { autoDismiss: null };
+    return { autoDismiss: null, showGameAdded: true };
   },
   methods: {
     dismissMessage() {
-      this.$emit("dismiss-message");
+      this.showGameAdded = false;
     },
   },
   computed: {
-    iconClass() {
-      return [
-        "p-message-icon pi",
-        {
-          "pi-check": !this.messageInfo.error,
-          "pi-times-circle": this.messageInfo.error,
-        },
-      ];
+    messageType() {
+      if (this.gameAdded !== 0 && this.showGameAdded) {
+        return MessageTypes.SUCCESS;
+      }
+      if (this.searchResultsLength !== 0) {
+        return MessageTypes.INFO;
+      }
+      if (this.resultsPage > 0) {
+        return MessageTypes.INFO_END;
+      }
+      if (this.showNoResultsError) {
+        return MessageTypes.ERROR;
+      }
+      return MessageTypes.NO_MSG;
+    },
+    messageText() {
+      switch (this.messageType) {
+        case MessageTypes.SUCCESS:
+          return "Game added successfully";
+        case MessageTypes.INFO:
+          return "Click on a game to see more information";
+        case MessageTypes.INFO_END:
+          return "End of results";
+        case MessageTypes.ERROR:
+          return "No games found. Please try a different search";
+        default:
+          return " ";
+      }
+    },
+    messageClass() {
+      switch (this.messageType) {
+        case MessageTypes.SUCCESS:
+          return "success";
+        case MessageTypes.INFO:
+        case MessageTypes.INFO_END:
+          return "info";
+        case MessageTypes.ERROR:
+          return "error";
+        default:
+          return "";
+      }
     },
   },
 };
 </script>
 <style scoped>
+.text {
+  padding: 0;
+  margin: 0;
+  /* font-weight: 500; */
+}
 .success {
-  background-color: rgba(76, 175, 80, 50%);
-  border: solid rgb(76, 175, 80) 2px;
+  color: green;
+}
+.info,
+.info-end {
+  color: var(--dark-gray);
 }
 .error {
-  background-color: rgba(220, 53, 70, 50%);
-  border: solid rgb(220, 53, 70) 2px;
-}
-.container {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  width: 100%;
-  font-size: 1.2rem;
-  height: min-content;
-}
-div {
-  height: fit-content;
-  padding-top: 0rem;
-  padding-bottom: 0rem;
+  color: red;
 }
 </style>

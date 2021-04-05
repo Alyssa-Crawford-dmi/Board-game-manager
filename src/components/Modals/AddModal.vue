@@ -18,6 +18,12 @@
           <Checkbox id="showExisting" v-model="showExisting" :binary="true" />
           <label for="showExisting">Show games already in the list</label>
         </div>
+        <StatusMessage
+          :searchResultsLength="searchResults.length"
+          :showNoResultsError="showNoResultsError"
+          :resultsPage="page"
+          :gameAdded="gameAdded"
+        />
       </div>
       <Button
         @click="search"
@@ -27,21 +33,6 @@
       />
     </div>
     <div class="modal-contents">
-      <p
-        v-if="searchResults.length === 0 && showNoResultsError && page === 0"
-        class="p-error info-text"
-      >
-        No games found. Please try a different search
-      </p>
-      <p v-else-if="searchResults.length !== 0" class="info-text">
-        Click on a game to see more information
-      </p>
-      <p v-else-if="searchResults.length === 0 && page > 0">End of results</p>
-      <StatusMessage
-        v-if="showStatus"
-        :messageInfo="addStatus"
-        @dismiss-message="showStatus = false"
-      />
       <template v-for="game in searchResults" :key="game.id">
         <SearchListItem
           :gameData="game"
@@ -108,7 +99,7 @@ export default {
     return {
       searchTerm: "",
       searchResults: [],
-      showStatus: false,
+      gameAdded: 0,
       debounce: null,
       page: 0,
       showNoResultsError: false,
@@ -136,12 +127,12 @@ export default {
   methods: {
     async search() {
       this.searchResults = await getGamesByName(this.searchTerm, this.page);
-      this.showStatus = false;
+      this.gameAdded = 0;
     },
     addGame(game, e) {
       e.stopPropagation();
       this.$emit("add-game", game);
-      this.showStatus = true;
+      this.gameAdded = this.gameAdded + 1;
     },
     gamesListContains(game) {
       return this.gamesList.some((gameInList) => game.id === gameInList.id);
@@ -166,9 +157,10 @@ export default {
 }
 .search-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
-  /* border: 1px solid aqua; */
+  border: 1px solid aqua;
+  margin-top: 0;
 }
 .modal-contents {
   padding: 0;
@@ -186,9 +178,11 @@ p {
 .info-text {
   font-size: unset;
   text-align: left;
-  margin-top: 0rem;
-  padding-top: 0rem;
-  padding-left: 1rem;
+  padding: 0;
+  margin: 0;
+  /* margin-top: 0rem;
+  padding-top: 0rem; */
+  /* padding-left: 1rem; */
 }
 .action-buttons {
   display: flex;

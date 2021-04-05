@@ -12,7 +12,31 @@
     v-model:visible="showModal"
     :modal="true"
     :style="{ width: modalWidth }"
+    :closable="false"
   >
+    <template #header>
+      <div class="dialog-header">
+        <h3 class="dialog-title">{{ header }}</h3>
+        <div class="p-dialog-header-icons">
+          <button
+            class="p-dialog-header-icon p-dialog-header-close p-link"
+            @click="showModal = false"
+            type="button"
+            tabindex="-1"
+          >
+            <span
+              :class="[
+                'p-dialog-header-close-icon',
+                'pi',
+                selectedModalType === 'DETAIL' && lastSearch
+                  ? 'pi-arrow-left'
+                  : 'pi-times',
+              ]"
+            ></span>
+          </button>
+        </div>
+      </div>
+    </template>
     <ConfirmModal
       v-if="selectedModalType === 'BASIC_CONFIRM'"
       @action-confirmed="moveOrRemoveItem"
@@ -199,5 +223,16 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+}
+.dialog-header {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+}
+.dialog-title {
+  margin: 0;
+  padding: 0;
 }
 </style>
