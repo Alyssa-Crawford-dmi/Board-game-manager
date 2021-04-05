@@ -1,30 +1,4 @@
 <template>
-  <!-- <div class="p-col-12 wrapper">
-    <div
-      :class="{
-        error: messageInfo.error,
-        success: !messageInfo.error,
-        'p-ai-center': true,
-        'vertical-container': true,
-        container: true,
-      }"
-    >
-      <div class="p-col-2" style="text-align: center">
-        <span :class="iconClass"></span>
-      </div>
-      <div class="p-col-8" style="text-align: center">
-        {{ messageInfo.msg }}
-      </div>
-      <div class="p-col-2" style="text-align: right">
-        <Button
-          @click="() => dismissMessage()"
-          icon="pi pi-times"
-          class="p-button-rounded p-button-text p-button-plain"
-          title="Close alert"
-        />
-      </div>
-    </div>
-  </div> -->
   <p :class="['text', messageClass]">{{ messageText }}</p>
 </template>
 <script>
@@ -130,10 +104,9 @@ export default {
 .text {
   padding: 0;
   margin: 0;
-  /* font-weight: 500; */
 }
 .success {
-  color: green;
+  color: forestgreen;
 }
 .info,
 .info-end {

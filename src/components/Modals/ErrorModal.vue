@@ -31,5 +31,6 @@ p {
 }
 .centered {
   text-align: center;
+  margin: 1rem;
 }
 </style>

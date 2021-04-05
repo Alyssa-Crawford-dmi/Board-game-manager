@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="outer-container">
     <div id="scroll-marker"></div>
     <div class="search-header">
       <div class="search-inputs">
-        <span class="p-input-icon-left temp">
+        <span class="p-input-icon-left search-span">
           <i class="pi pi-search" />
           <InputText
             type="text"
@@ -14,7 +14,7 @@
             @keyup.enter="search"
           />
         </span>
-        <div class="p-field-checkbox">
+        <div class="p-field-checkbox filter-container">
           <Checkbox id="showExisting" v-model="showExisting" :binary="true" />
           <label for="showExisting">Show games already in the list</label>
         </div>
@@ -152,6 +152,9 @@ export default {
 };
 </script>
 <style scoped>
+.outer-container {
+  position: relative;
+}
 .search-button {
   margin-left: 1rem;
 }
@@ -159,12 +162,17 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border: 1px solid aqua;
-  margin-top: 0;
+  padding: 1rem;
+
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background-color: var(--light-purple-gray);
+  width: 100%;
 }
 .modal-contents {
   padding: 0;
-  margin: 0;
+  margin: 0 0 1rem 0;
   width: 100%;
 }
 p {
@@ -174,15 +182,6 @@ p {
 .green {
   color: forestgreen;
   font-size: large;
-}
-.info-text {
-  font-size: unset;
-  text-align: left;
-  padding: 0;
-  margin: 0;
-  /* margin-top: 0rem;
-  padding-top: 0rem; */
-  /* padding-left: 1rem; */
 }
 .action-buttons {
   display: flex;
@@ -200,15 +199,19 @@ p {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 70%;
+  justify-content: start;
+  flex: 1;
   margin: 0;
 }
 .search-input-field {
   width: 100%;
 }
-.temp {
+.search-span {
   width: 100%;
   flex: 1;
+}
+.filter-container {
+  margin-bottom: 0.2rem;
 }
 @media screen and (max-width: 700px) {
   .search-header {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <p>
       Are you sure you would like to {{ actionName }} "{{ gameName }}"
       {{ preposition }} {{ listName }}?
@@ -55,6 +55,9 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  margin: 1rem;
+}
 .button {
   margin: 0 auto;
   width: fit-content;

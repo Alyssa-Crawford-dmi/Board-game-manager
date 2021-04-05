@@ -12,6 +12,7 @@
     v-model:visible="showModal"
     :modal="true"
     :style="{ width: modalWidth }"
+    :contentStyle="{ padding: 0, margin: 0 }"
     :closable="false"
   >
     <template #header>

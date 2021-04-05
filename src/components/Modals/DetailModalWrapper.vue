@@ -1,5 +1,5 @@
 <template>
-  <div class="bounded-width">
+  <div class="container">
     <Suspense>
       <template #default>
         <DetailModal :gameId="gameId" />
@@ -8,9 +8,7 @@
         <ProgressSpinner />
       </template>
     </Suspense>
-    <div class="slot-style">
-      <slot name="action-btn"></slot>
-    </div>
+    <slot name="action-btn"></slot>
   </div>
 </template>
 <script>
@@ -27,7 +25,7 @@ export default {
 };
 </script>
 <style scoped>
-.slot-style {
-  margin: 0.5rem auto;
+.container {
+  margin: 1rem;
 }
 </style>
