@@ -42,7 +42,13 @@
           @item-clicked="() => detail(slotProps.data)"
           @unauthorized-action="unauthorizedAction"
           :disabled="!canAddGames"
-        />
+          ><GameActionBtns
+            @delete-item="() => deleteItem(slotProps.index)"
+            @move-item="() => moveItem(slotProps.index)"
+            :disabled="!canAddGames"
+            :showMoveText="showActionBtnMoveText"
+            :centerText="false"
+        /></ListItem>
       </template>
       <template #grid="slotProps">
         <GridItem
@@ -68,6 +74,7 @@ import { loginState } from "../utils/auth";
 import { windowState } from "../utils/windowSize";
 import { activeUserState } from "../utils/activeUser";
 import { gamesListState } from "../utils/gameListManager";
+import GameActionBtns from "./UI/GameActionBtns.vue";
 
 export default {
   name: "ListHolder",
@@ -77,6 +84,7 @@ export default {
     Button,
     GridItem,
     ListItem,
+    GameActionBtns,
   },
   emits: [
     "add-games",
@@ -117,6 +125,9 @@ export default {
     },
     forceLayout() {
       return this.windowWidth <= 500 ? "list" : "";
+    },
+    showActionBtnMoveText() {
+      return this.windowWidth > 700;
     },
   },
   methods: {

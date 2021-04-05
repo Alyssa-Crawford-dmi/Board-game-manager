@@ -20,20 +20,11 @@
           Age: <strong>{{ age }}</strong>
         </p>
       </div>
-      <!-- <div class="temp"> -->
-      <GameActionBtns
-        @delete-item="deleteItem"
-        @move-item="moveItem"
-        :disabled="disabled"
-        :showMoveText="showActionBtnMoveText"
-        :centerText="false"
-      />
-      <!-- </div> -->
+      <slot></slot>
     </div>
   </div>
 </template>
 <script>
-import GameActionBtns from "./UI/GameActionBtns.vue";
 import { rangeString, ageString } from "../utils/rangeString";
 import { windowState } from "../utils/windowSize";
 
@@ -43,10 +34,8 @@ export default {
     gameData: { required: true, type: Object },
     disabled: { type: Boolean, default: false },
   },
-  emits: ["delete-item", "item-clicked", "unauthorized-action", "move-item"],
-  components: {
-    GameActionBtns,
-  },
+  emits: ["item-clicked"],
+  components: {},
   data() {
     return { windowWidth: windowState.windowWidth };
   },
@@ -64,27 +53,8 @@ export default {
     age() {
       return ageString(this.gameData.min_age);
     },
-    showActionBtnMoveText() {
-      return this.windowWidth > 700;
-    },
   },
   methods: {
-    deleteItem(event) {
-      if (this.disabled) {
-        this.$emit("unauthorized-action");
-        event.stopPropagation();
-        return;
-      }
-      this.$emit("delete-item");
-    },
-    moveItem(event) {
-      if (this.disabled) {
-        this.$emit("unauthorized-action");
-        event.stopPropagation();
-        return;
-      }
-      this.$emit("move-item");
-    },
     loadDetails() {
       this.$emit("item-clicked");
     },
