@@ -2,14 +2,15 @@
   <div :class="['container', showMoveText ? 'stack-info' : '']">
     <Button
       @click="(e) => deleteItem(e)"
-      label="Remove game"
       :class="[
         'p-button-danger',
         'p-button-text',
         'p-button-rounded',
         !centerText ? 'remove-start-padding' : '',
       ]"
-      title="Delete Item"
+      title="Remove game"
+      :label="showRemoveText ? 'Remove game' : ''"
+      :icon="showRemoveText ? '' : 'pi pi-times'"
       :disabled="disabled"
     />
     <div
@@ -48,6 +49,7 @@ export default {
   },
   props: {
     showMoveText: { type: Boolean, default: false },
+    showRemoveText: { type: Boolean, default: true },
     disabled: { type: Boolean, default: false },
     centerText: { type: Boolean, default: true },
   },
@@ -91,5 +93,14 @@ export default {
 .remove-start-padding {
   padding-left: 0;
   padding-right: 0;
+}
+
+@media only screen and (max-width: 450px) {
+  .container {
+    flex-direction: column;
+  }
+  .first {
+    order: 0;
+  }
 }
 </style>

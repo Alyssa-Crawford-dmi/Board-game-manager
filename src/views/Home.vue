@@ -11,7 +11,7 @@
     :header="header"
     v-model:visible="showModal"
     :modal="true"
-    :style="{ width: modalWidth }"
+    :style="{ width: modalWidth, minHeight: modalHeight }"
     :contentStyle="{ padding: 0, margin: 0 }"
     :closable="false"
   >
@@ -90,6 +90,7 @@ import { basicActions } from "../utils/modalTypes.js";
 import { gamesListState } from "../utils/gameListManager.js";
 import { loginState } from "../utils/auth";
 import { activeUserState } from "../utils/activeUser";
+import { windowState } from "../utils/windowSize";
 
 export default {
   components: {
@@ -112,6 +113,7 @@ export default {
       lastSearch: "",
       isWishList: activeUserState.isWishList,
       action: "",
+      windowWidth: windowState.windowWidth,
     };
   },
   computed: {
@@ -131,15 +133,30 @@ export default {
           return "";
       }
     },
+    smallScreen() {
+      return this.windowWidth < 600;
+    },
     modalWidth() {
-      const bigScreen = screen.width > 600;
+      const bigScreen = this.windowWidth > 900;
       if (this.selectedModalType === modalTypes.BASIC_CONFIRM && bigScreen) {
         return "50vw";
       }
       if (this.selectedModalType === modalTypes.BASIC_CONFIRM || bigScreen) {
         return "75vw";
       }
+      if (this.smallScreen) {
+        return "98vw";
+      }
       return "90vw";
+    },
+    modalHeight() {
+      if (
+        this.smallScreen &&
+        this.selectedModalType !== modalTypes.BASIC_CONFIR
+      ) {
+        return "98vh";
+      }
+      return "auto";
     },
     confirmListName() {
       if (this.action === basicActions.MOVE) {

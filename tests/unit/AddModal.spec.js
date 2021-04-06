@@ -1,12 +1,11 @@
-import { mount } from "@vue/test-utils";
 import AddModal from "@/components/Modals/AddModal.vue";
-import InputText from "primevue/inputtext";
-import Button from "primevue/button";
-import { nextTick } from "vue";
-import SearchListItem from "@/components/SearchListItem.vue";
 import Message from "@/components/UI/StatusMessage.vue";
-import { fakeGameData } from "../../jest.setup";
+import { mount } from "@vue/test-utils";
 import axios from "axios";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import { nextTick } from "vue";
+import { fakeGameData } from "../../jest.setup";
 
 const numGames = fakeGameData.data.games.length;
 
@@ -51,11 +50,6 @@ describe("AddModal.vue", () => {
     fakeGameData.data.games.map((game, index) => {
       expect(game.name).toEqual(wrapper.vm.searchResults[index].name);
     });
-  });
-  it("Creates one SearchListItem per game in searchResults", async () => {
-    await wrapper.setData({ searchResults: fakeGameData.data.games });
-    const listItems = wrapper.findAllComponents(SearchListItem);
-    expect(listItems).toHaveLength(numGames);
   });
 
   //Adding games

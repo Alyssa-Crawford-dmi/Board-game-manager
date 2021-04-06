@@ -199,7 +199,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: start;
+  justify-content: flex-start;
   flex: 1;
   margin: 0;
 }

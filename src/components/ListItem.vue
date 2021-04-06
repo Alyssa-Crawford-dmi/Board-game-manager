@@ -20,7 +20,9 @@
           Age: <strong>{{ age }}</strong>
         </p>
       </div>
-      <slot></slot>
+      <div class="slot-wrapper">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +34,6 @@ export default {
   name: "listItem",
   props: {
     gameData: { required: true, type: Object },
-    disabled: { type: Boolean, default: false },
   },
   emits: ["item-clicked"],
   components: {},
@@ -113,32 +114,23 @@ h3 {
   height: 100%;
   align-items: center;
 }
+.slot-wrapper {
+  min-width: max-content;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
 @media screen and (max-width: 700px) {
   .game-list-item {
     padding: 0.2rem;
   }
-  .game-text {
-    flex-direction: column;
-    align-items: flex-start;
-  }
   .image-box {
-    margin: 0 0.5rem 0 0;
+    margin: 0 5% 0 0;
   }
   img {
     width: 7rem;
   }
 }
 @media screen and (max-width: 375px) {
-  .game-list-item {
-    padding: 0.2rem;
-  }
-  .game-text {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .image-box {
-    margin: 0 0.5rem 0 0;
-  }
   img {
     width: 5rem;
   }

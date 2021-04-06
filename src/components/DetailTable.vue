@@ -63,8 +63,6 @@ export default {
 table {
   width: 100%;
   table-layout: fixed;
-  /* display: block;
-  overflow: auto; */
 }
 td {
   border-bottom: 1px solid #ddd;

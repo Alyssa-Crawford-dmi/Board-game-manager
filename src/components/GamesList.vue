@@ -37,16 +37,13 @@
       <template #list="slotProps">
         <ListItem
           :gameData="slotProps.data"
-          @delete-item="() => deleteItem(slotProps.index)"
-          @move-item="() => moveItem(slotProps.index)"
           @item-clicked="() => detail(slotProps.data)"
-          @unauthorized-action="unauthorizedAction"
-          :disabled="!canAddGames"
           ><GameActionBtns
             @delete-item="() => deleteItem(slotProps.index)"
             @move-item="() => moveItem(slotProps.index)"
             :disabled="!canAddGames"
             :showMoveText="showActionBtnMoveText"
+            :showRemoveText="showActionBtnDeleteText"
             :centerText="false"
         /></ListItem>
       </template>
@@ -128,6 +125,9 @@ export default {
     },
     showActionBtnMoveText() {
       return this.windowWidth > 700;
+    },
+    showActionBtnDeleteText() {
+      return this.windowWidth > 550;
     },
   },
   methods: {
