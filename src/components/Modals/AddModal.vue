@@ -94,6 +94,7 @@ export default {
     addStatus: Object,
     gamesList: { required: true, type: Array },
     lastSearch: { type: String, default: "" },
+    lastPage: { type: Number, default: 0 },
   },
   data: () => {
     return {
@@ -108,6 +109,9 @@ export default {
   },
   created() {
     this.searchTerm = this.lastSearch;
+    this.page = this.lastPage;
+    clearTimeout(this.debounce);
+    this.search();
   },
   beforeUnmount() {
     clearTimeout(this.debounce);
@@ -118,6 +122,7 @@ export default {
       this.showNoResultsError = false;
 
       this.debounce = setTimeout(async () => {
+        console.log("Search term changed");
         this.page = 0;
         await this.search();
         this.showNoResultsError = true;
@@ -138,7 +143,7 @@ export default {
       return this.gamesList.some((gameInList) => game.id === gameInList.id);
     },
     detail(game) {
-      this.$emit("game-detail", game, this.searchTerm);
+      this.$emit("game-detail", game, this.searchTerm, this.page);
     },
     async changePage(change) {
       if (change === -1 && this.page === 0) {

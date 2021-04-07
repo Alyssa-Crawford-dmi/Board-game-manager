@@ -49,8 +49,9 @@
       @add-game="(game) => addGame(game)"
       :addStatus="addStatus"
       :gamesList="gamesList"
-      @game-detail="(game, search) => openDetailModal(game, search)"
+      @game-detail="(game, search, page) => openDetailModal(game, search, page)"
       :lastSearch="lastSearch"
+      :lastPage="lastPage"
     />
     <ErrorModal
       v-else-if="selectedModalType === 'ERROR'"
@@ -111,6 +112,7 @@ export default {
       addStatus: {},
       detailGame: {},
       lastSearch: "",
+      lastPage: 0,
       isWishList: activeUserState.isWishList,
       action: "",
       windowWidth: windowState.windowWidth,
@@ -178,6 +180,7 @@ export default {
         }
         if (this.selectedModalType === modalTypes.ADD) {
           this.lastSearch = "";
+          this.lastPage = 0;
         }
       }
     },
@@ -214,11 +217,12 @@ export default {
       this.showModal = true;
       this.selectedModalType = modalTypes.ADD;
     },
-    openDetailModal(game, search) {
+    openDetailModal(game, search, page) {
       this.detailGame = game;
       this.showModal = true;
       this.selectedModalType = modalTypes.DETAIL;
       this.lastSearch = search;
+      this.lastPage = page;
     },
     openErrorModal() {
       this.showModal = true;

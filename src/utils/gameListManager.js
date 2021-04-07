@@ -24,7 +24,7 @@ export const gamesListState = {
       const gameIds = JSON.parse(idStr);
       if (gameIds.length > 0) {
         getGamesFromIds(gameIds).then((res) => {
-          list.value = res;
+          list.value = res.sort((a, b) => (a.name > b.name ? 1 : -1));
           if (updateIsLoading) {
             this.isLoading.value = false;
           }
