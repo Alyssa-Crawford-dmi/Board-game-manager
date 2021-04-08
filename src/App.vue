@@ -19,7 +19,7 @@ import Header from "@/components/Header.vue";
 import Dialog from "primevue/dialog";
 import LoginModal from "@/components/Modals/LoginModal";
 import { loginState } from "./utils/auth";
-import { windowState } from "./utils/windowSize";
+import { systemInfo } from "./utils/systemInfo";
 
 export default {
   name: "App",
@@ -47,11 +47,11 @@ export default {
     }
     window.addEventListener(
       "resize",
-      windowState.updateWindowSize.bind(windowState)
+      systemInfo.updateWindowSize.bind(systemInfo)
     );
   },
   unmounted() {
-    window.removeEventListener("resize", windowState.updateWindowSize);
+    window.removeEventListener("resize", systemInfo.updateWindowSize);
   },
 };
 </script>

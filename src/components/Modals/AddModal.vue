@@ -79,10 +79,11 @@ import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
 import StatusMessage from "../UI/StatusMessage";
 import Checkbox from "primevue/checkbox";
+// import mitt from "mitt";
 
 export default {
   name: "AddModal",
-  emits: ["add-game", "game-detail"],
+  emits: ["add-game", "game-detail", "close-modal"],
   components: {
     InputText,
     Button,
@@ -112,6 +113,17 @@ export default {
     this.page = this.lastPage;
     clearTimeout(this.debounce);
     this.search();
+    // console.log("Just print");
+    // const emitter = mitt();
+    // this.$router.beforeEach((to, from, next) => {
+    //   console.log("never naviagate away");
+    //   this.back();
+    //   next(false);
+    // });
+    // emitter.on("hook:destroyed", () => {
+    //   unregisterRouterGuard();
+    // });
+    // emitter.on("*", (type, e) => console.log(type, e));
   },
   beforeUnmount() {
     clearTimeout(this.debounce);
@@ -122,7 +134,6 @@ export default {
       this.showNoResultsError = false;
 
       this.debounce = setTimeout(async () => {
-        console.log("Search term changed");
         this.page = 0;
         await this.search();
         this.showNoResultsError = true;
@@ -152,6 +163,10 @@ export default {
       this.page = this.page + change;
       await this.search();
       document.getElementById("scroll-marker").scrollIntoView();
+    },
+    back() {
+      console.log("Closing");
+      this.$emit("close-modal");
     },
   },
 };

@@ -68,7 +68,7 @@ import GridItem from "./GridItem.vue";
 import ListItem from "./ListItem.vue";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
-import { windowState } from "../utils/windowSize";
+import { systemInfo } from "../utils/systemInfo";
 import { activeUserState } from "../utils/activeUser";
 import { gamesListState } from "../utils/gameListManager";
 import GameActionBtns from "./UI/GameActionBtns.vue";
@@ -95,7 +95,7 @@ export default {
     return {
       isLoggedIn: loginState.loggedInUser,
       gamesLoading: gamesListState.isLoading,
-      windowWidth: windowState.windowWidth,
+      windowWidth: systemInfo.windowWidth,
       layout: "grid",
     };
   },

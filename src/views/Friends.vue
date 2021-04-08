@@ -115,7 +115,7 @@ import DeleteModal from "../components/Modals/ConfirmModal.vue";
 import DeleteCard from "../components/UI/DeleteCard";
 import Button from "primevue/button";
 import { loginState } from "../utils/auth";
-import { windowState } from "../utils/windowSize";
+import { systemInfo } from "../utils/systemInfo";
 
 export default {
   components: { Button, InputText, Dialog, DeleteModal, DeleteCard },
@@ -132,7 +132,7 @@ export default {
   },
   data: () => {
     return {
-      showModal: false,
+      showModal: systemInfo.isModalOpen,
       friendToAdd: "",
       friends: friendsListState.friends,
       sentRequests: friendsListState.sentRequests,
@@ -140,7 +140,7 @@ export default {
       invalidFriend: friendsListState.invalidFriend,
       requestSent: friendsListState.requestSent,
       friendToDelete: "",
-      windowWidth: windowState.windowWidth,
+      windowWidth: systemInfo.windowWidth,
     };
   },
   computed: {
@@ -161,11 +161,11 @@ export default {
       this.$router.push("/");
     },
     removeFriend(friend) {
-      this.showModal = true;
+      this.systemInfo.setIsModalOpen(true);
       this.friendToDelete = friend.friendName;
     },
     deleteItem() {
-      this.showModal = false;
+      this.systemInfo.setIsModalOpen(false);
       friendsListState.removeFriend(this.friendToDelete);
     },
   },

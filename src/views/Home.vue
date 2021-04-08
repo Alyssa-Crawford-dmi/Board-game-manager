@@ -47,6 +47,7 @@
     /><AddModal
       v-else-if="selectedModalType === 'ADD'"
       @add-game="(game) => addGame(game)"
+      @close-modal="showModal = false"
       :addStatus="addStatus"
       :gamesList="gamesList"
       @game-detail="(game, search, page) => openDetailModal(game, search, page)"
@@ -91,7 +92,7 @@ import { basicActions } from "../utils/modalTypes.js";
 import { gamesListState } from "../utils/gameListManager.js";
 import { loginState } from "../utils/auth";
 import { activeUserState } from "../utils/activeUser";
-import { windowState } from "../utils/windowSize";
+import { systemInfo } from "../utils/systemInfo";
 
 export default {
   components: {
@@ -115,7 +116,7 @@ export default {
       lastPage: 0,
       isWishList: activeUserState.isWishList,
       action: "",
-      windowWidth: windowState.windowWidth,
+      windowWidth: systemInfo.windowWidth,
     };
   },
   computed: {

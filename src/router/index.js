@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { systemInfo } from "../utils/systemInfo";
 import Friends from "../views/Friends.vue";
 import Home from "../views/Home.vue";
 import Playground from "../views/playground.vue";
@@ -37,6 +38,16 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior,
+});
+
+router.beforeEach((_, from, next) => {
+  if (systemInfo.isModalOpen.value) {
+    systemInfo.setIsModalOpen(false, true);
+    console.log("Overiding nav", from);
+    next(from);
+    return;
+  }
+  next();
 });
 
 export default router;

@@ -28,7 +28,7 @@
 </template>
 <script>
 import { rangeString, ageString } from "../utils/rangeString";
-import { windowState } from "../utils/windowSize";
+import { systemInfo } from "../utils/systemInfo";
 
 export default {
   name: "listItem",
@@ -38,7 +38,7 @@ export default {
   emits: ["item-clicked"],
   components: {},
   data() {
-    return { windowWidth: windowState.windowWidth };
+    return { windowWidth: systemInfo.windowWidth };
   },
   computed: {
     playtime() {
