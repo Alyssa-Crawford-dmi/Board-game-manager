@@ -21,7 +21,7 @@
         <div class="p-dialog-header-icons">
           <button
             class="p-dialog-header-icon p-dialog-header-close p-link"
-            @click="showModal = false"
+            @click="closeModal"
             type="button"
             tabindex="-1"
           >
@@ -47,7 +47,7 @@
     /><AddModal
       v-else-if="selectedModalType === 'ADD'"
       @add-game="(game) => addGame(game)"
-      @close-modal="showModal = false"
+      @close-modal="closeModal"
       :addStatus="addStatus"
       :gamesList="gamesList"
       @game-detail="(game, search, page) => openDetailModal(game, search, page)"
@@ -56,7 +56,7 @@
     />
     <ErrorModal
       v-else-if="selectedModalType === 'ERROR'"
-      @close-modal="showModal = false"
+      @close-modal="closeModal"
     />
     <DetailModalWrapper v-else :gameId="detailGame.id">
       <template v-slot:action-btn v-if="lastSearch">
@@ -106,7 +106,7 @@ export default {
   },
   data: () => {
     return {
-      showModal: false,
+      showModal: systemInfo.isModalOpen,
       selectedModalType: modalTypes.BASIC_CONFIRM,
       gamesList: gamesListState.gameList,
       indexToRemove: -1,
@@ -175,7 +175,7 @@ export default {
     showModal: function () {
       if (!this.showModal) {
         if (this.selectedModalType === modalTypes.DETAIL && this.lastSearch) {
-          this.showModal = true;
+          systemInfo.setIsModalOpen(true);
           this.selectedModalType = modalTypes.ADD;
           return;
         }
@@ -187,13 +187,16 @@ export default {
     },
   },
   methods: {
+    closeModal() {
+      systemInfo.setIsModalOpen(false);
+    },
     setActiveUser() {
       if (!activeUserState.activeUser.value) {
         activeUserState.setActiveUserAndListMode(loginState.loggedInUser.value);
       }
     },
     moveOrRemoveItem() {
-      this.showModal = false;
+      systemInfo.setIsModalOpen(false);
       if (this.indexToRemove === -1) {
         return;
       }
@@ -203,30 +206,30 @@ export default {
       this.indexToRemove = -1;
     },
     openConfirmModal(clickedIndex) {
-      this.showModal = true;
+      systemInfo.setIsModalOpen(true);
       this.indexToRemove = clickedIndex;
       this.action = basicActions.REMOVE;
       this.selectedModalType = modalTypes.BASIC_CONFIRM;
     },
     openMoveModal(clickedIndex) {
-      this.showModal = true;
+      systemInfo.setIsModalOpen(true);
       this.indexToRemove = clickedIndex;
       this.action = basicActions.MOVE;
       this.selectedModalType = modalTypes.BASIC_CONFIRM;
     },
     openAddGamesModal() {
-      this.showModal = true;
+      systemInfo.setIsModalOpen(true);
       this.selectedModalType = modalTypes.ADD;
     },
     openDetailModal(game, search, page) {
       this.detailGame = game;
-      this.showModal = true;
+      systemInfo.setIsModalOpen(true);
       this.selectedModalType = modalTypes.DETAIL;
       this.lastSearch = search;
       this.lastPage = page;
     },
     openErrorModal() {
-      this.showModal = true;
+      systemInfo.setIsModalOpen(true);
       this.selectedModalType = modalTypes.ERROR;
     },
     addGame(newGame, e, addToOtherList = false) {
@@ -235,7 +238,7 @@ export default {
         addToOtherList
       );
       if (e) {
-        this.showModal = false;
+        systemInfo.setIsModalOpen(false);
       }
     },
   },
