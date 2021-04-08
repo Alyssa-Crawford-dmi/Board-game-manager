@@ -161,11 +161,11 @@ export default {
       this.$router.push("/");
     },
     removeFriend(friend) {
-      this.systemInfo.setIsModalOpen(true);
+      systemInfo.setIsModalOpen(true);
       this.friendToDelete = friend.friendName;
     },
     deleteItem() {
-      this.systemInfo.setIsModalOpen(false);
+      systemInfo.setIsModalOpen(false);
       friendsListState.removeFriend(this.friendToDelete);
     },
   },
