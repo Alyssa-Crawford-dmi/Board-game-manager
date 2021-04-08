@@ -29,8 +29,11 @@
       <Button
         @click="search"
         label="Search"
-        class="p-button-raised p-button-text search-button p-button-lg p-button-rounded"
+        class="search-button p-button-lg"
         title="Search"
+        icon="pi pi-search"
+        iconPos="right"
+        v-if="!isSmallScreen"
       />
     </div>
     <div class="modal-contents">
@@ -49,7 +52,7 @@
             v-else
             @click="(e) => addGame(game, e)"
             icon="pi pi-plus"
-            class="p-button-rounded"
+            class="p-button-rounded p-button-secondary"
             title="Add game"
           />
         </SearchListItem>
@@ -80,6 +83,7 @@ import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
 import StatusMessage from "../UI/StatusMessage";
 import Checkbox from "primevue/checkbox";
+import { systemInfo } from "../../utils/systemInfo";
 
 export default {
   name: "AddModal",
@@ -106,6 +110,7 @@ export default {
       page: 0,
       showNoResultsError: false,
       showExisting: true,
+      windowWidth: systemInfo.windowWidth,
     };
   },
   created() {
@@ -162,6 +167,11 @@ export default {
       this.search();
     },
   },
+  computed: {
+    isSmallScreen() {
+      return this.windowWidth < 700;
+    },
+  },
 };
 </script>
 <style scoped>
@@ -175,8 +185,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 1rem;
-
+  padding: 1rem 3%;
   position: sticky;
   top: 0;
   z-index: 200;
@@ -188,10 +197,7 @@ export default {
   margin: 0 0 1rem 0;
   width: 100%;
 }
-p {
-  text-align: center;
-  font-size: large;
-}
+
 .green {
   color: forestgreen;
   font-size: large;
@@ -228,8 +234,7 @@ p {
 }
 @media screen and (max-width: 700px) {
   .search-header {
-    flex-direction: column;
-    align-items: center;
+    padding: 3%;
   }
   .search-inputs {
     width: 100%;

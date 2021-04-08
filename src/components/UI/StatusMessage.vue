@@ -104,6 +104,8 @@ export default {
 .text {
   padding: 0;
   margin: 0;
+  text-align: center;
+  font-size: large;
 }
 .success {
   color: forestgreen;
@@ -114,5 +116,10 @@ export default {
 }
 .error {
   color: red;
+}
+@media screen and (max-width: 375px) {
+  .text {
+    font-size: medium;
+  }
 }
 </style>

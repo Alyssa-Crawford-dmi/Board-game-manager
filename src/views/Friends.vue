@@ -22,7 +22,7 @@
       <Button
         @click="addFriend"
         label="Add Friend"
-        class="add-friend-btn p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
+        class="add-friend-btn p-button-lg p-button-rounded"
         title="Add Friend"
       />
     </div>
@@ -63,8 +63,9 @@
       <DeleteCard
         v-for="friend in friends"
         :key="friend"
-        class="friend-item"
+        class="friend-item pointer"
         @remove-friend="() => removeFriend(friend)"
+        @click="() => seeList(friend, true)"
       >
         <p class="friend-text">
           {{ friend.friendName }}

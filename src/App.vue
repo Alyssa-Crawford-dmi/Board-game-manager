@@ -29,11 +29,15 @@ export default {
     LoginModal,
   },
   data() {
-    return { showLogin: false, signupMode: false };
+    return {
+      showLogin: false,
+      signupMode: false,
+      windowWidth: systemInfo.windowWidth,
+    };
   },
   computed: {
     modalWidth() {
-      const bigScreen = screen.width > 700;
+      const bigScreen = this.windowWidth > 700;
       if (bigScreen) {
         return "50vw";
       }

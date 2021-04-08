@@ -19,7 +19,7 @@
             <Button
               @click="addGames"
               label="Add games"
-              class="p-button-rounded"
+              class="p-button-rounded p-button-lg"
               title="Add games"
               :disabled="!canAddGames"
             />
