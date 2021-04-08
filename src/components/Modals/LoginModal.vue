@@ -34,7 +34,7 @@
         v-model="password"
         placeholder="Password"
         :class="['bounded-width', invalidPassword ? 'p-invalid' : '']"
-        @keyup.enter="loginUser"
+        @keyup.enter="enterPressed"
       />
       <small id="password-help" class="p-invalid" v-if="invalidPassword"
         >Password can not be empty</small
@@ -154,6 +154,10 @@ export default {
       } catch (error) {
         this.error = error.message;
       }
+    },
+    enterPressed() {
+      document.getElementById("password").blur();
+      this.loginUser();
     },
   },
 };

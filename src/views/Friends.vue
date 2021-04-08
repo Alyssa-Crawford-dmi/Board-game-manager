@@ -8,6 +8,8 @@
           v-model="friendToAdd"
           placeholder="Enter a username"
           class="p-inputtext-lg"
+          id="searchInput"
+          @keyup.enter="enterPressed"
         />
         <small
           v-if="invalidFriend || requestSent"
@@ -167,6 +169,10 @@ export default {
     deleteItem() {
       systemInfo.setIsModalOpen(false);
       friendsListState.removeFriend(this.friendToDelete);
+    },
+    enterPressed() {
+      document.getElementById("searchInput").blur();
+      this.addFriend();
     },
   },
 };

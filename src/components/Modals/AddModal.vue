@@ -11,7 +11,8 @@
             placeholder="Ticket to Ride"
             class="search-input-field p-inputtext-lg"
             autofocus
-            @keyup.enter="search"
+            id="searchInput"
+            @keyup.enter="enterPressed"
           />
         </span>
         <div class="p-field-checkbox filter-container">
@@ -79,7 +80,6 @@ import { getGamesByName } from "../../apiInteractions/boardGameAtlas";
 import SearchListItem from "../SearchListItem";
 import StatusMessage from "../UI/StatusMessage";
 import Checkbox from "primevue/checkbox";
-// import mitt from "mitt";
 
 export default {
   name: "AddModal",
@@ -113,17 +113,6 @@ export default {
     this.page = this.lastPage;
     clearTimeout(this.debounce);
     this.search();
-    // console.log("Just print");
-    // const emitter = mitt();
-    // this.$router.beforeEach((to, from, next) => {
-    //   console.log("never naviagate away");
-    //   this.back();
-    //   next(false);
-    // });
-    // emitter.on("hook:destroyed", () => {
-    //   unregisterRouterGuard();
-    // });
-    // emitter.on("*", (type, e) => console.log(type, e));
   },
   beforeUnmount() {
     clearTimeout(this.debounce);
@@ -167,6 +156,10 @@ export default {
     back() {
       console.log("Closing");
       this.$emit("close-modal");
+    },
+    enterPressed() {
+      document.getElementById("searchInput").blur();
+      this.search();
     },
   },
 };

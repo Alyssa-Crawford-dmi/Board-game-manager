@@ -43,7 +43,6 @@ const router = createRouter({
 router.beforeEach((_, from, next) => {
   if (systemInfo.isModalOpen.value) {
     systemInfo.setIsModalOpen(false, true);
-    console.log("Overiding nav", from);
     next(from);
     return;
   }
