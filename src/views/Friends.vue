@@ -180,8 +180,8 @@ export default {
 </script>
 <style scoped>
 .outer-container {
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 h2 {
   color: var(--dark-gray);
@@ -231,6 +231,12 @@ h2 {
   .outer-container {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+  }
+}
+@media screen and (max-width: 700px) {
+  .outer-container {
+    padding-left: 5%;
+    padding-right: 5%;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="card container">
+  <div class="container card">
     <i
       class="pi pi-times custom-btn pointer danger"
       title="Remove friend"
@@ -24,6 +24,8 @@ export default {
 <style scoped>
 .container {
   position: relative;
+  background-color: var(--very-light-gray);
+  margin-bottom: 1rem;
 }
 .custom-btn {
   color: #e56c77;

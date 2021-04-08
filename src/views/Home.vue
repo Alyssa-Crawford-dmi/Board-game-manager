@@ -157,7 +157,7 @@ export default {
         this.smallScreen &&
         this.selectedModalType !== modalTypes.BASIC_CONFIR
       ) {
-        return "98vh";
+        return "95vh";
       }
       return "auto";
     },
