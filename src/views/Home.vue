@@ -170,7 +170,7 @@ export default {
         this.smallScreen &&
         this.selectedModalType !== modalTypes.BASIC_CONFIRM
       ) {
-        return "5rem";
+        return "3rem";
       }
       return "0";
     },
