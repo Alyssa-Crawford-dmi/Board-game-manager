@@ -11,7 +11,11 @@
     :header="header"
     v-model:visible="showModal"
     :modal="true"
-    :style="{ width: modalWidth, minHeight: modalHeight }"
+    :style="{
+      width: modalWidth,
+      minHeight: modalHeight,
+      marginTop: modalMargin,
+    }"
     :contentStyle="{ padding: 0, margin: 0 }"
     :closable="false"
   >
@@ -155,11 +159,20 @@ export default {
     modalHeight() {
       if (
         this.smallScreen &&
-        this.selectedModalType !== modalTypes.BASIC_CONFIR
+        this.selectedModalType !== modalTypes.BASIC_CONFIRM
       ) {
         return "95vh";
       }
       return "auto";
+    },
+    modalMargin() {
+      if (
+        this.smallScreen &&
+        this.selectedModalType !== modalTypes.BASIC_CONFIRM
+      ) {
+        return "10rem";
+      }
+      return "0";
     },
     confirmListName() {
       if (this.action === basicActions.MOVE) {
