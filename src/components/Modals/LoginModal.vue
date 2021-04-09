@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form v-if="!tryingLogin">
     <p class="p-invalid centered">{{ error }}</p>
     <div class="space-below" v-if="signupMode">
       <InputText
@@ -58,12 +58,14 @@
       />
     </div>
   </form>
+  <ProgressSpinner v-else />
 </template>
 <script>
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { loginState } from "../../utils/auth";
 import Checkbox from "primevue/checkbox";
+import ProgressSpinner from "primevue/progressspinner";
 
 export default {
   name: "LoginModal",
@@ -71,6 +73,7 @@ export default {
     InputText,
     Button,
     Checkbox,
+    ProgressSpinner,
   },
   props: {
     signupMode: { type: Boolean, default: false },
@@ -87,6 +90,7 @@ export default {
       error: "",
       staySignedIn: false,
       toggleBtnPos: screen.width > 768 ? "left" : "center",
+      tryingLogin: false,
     };
   },
   watch: {
@@ -106,6 +110,7 @@ export default {
       this.$emit("toggle-mode");
     },
     async loginUser() {
+      this.tryingLogin = true;
       this.resetErrors();
       try {
         this.validateFeilds();
@@ -120,6 +125,7 @@ export default {
           await loginState.login(this.username, this.password);
         }
         loginState.saveLocalUser(this.username, this.staySignedIn);
+        this.tryingLogin = false;
         this.$emit("close-login");
       } catch (error) {
         this.error = error.message;
