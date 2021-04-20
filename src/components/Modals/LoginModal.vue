@@ -128,6 +128,7 @@ export default {
         this.tryingLogin = false;
         this.$emit("close-login");
       } catch (error) {
+        this.tryingLogin = false;
         this.error = error.message;
       }
     },

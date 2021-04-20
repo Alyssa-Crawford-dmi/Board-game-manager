@@ -9,7 +9,7 @@
       <template #header>
         <div class="p-grid p-nogutter p-ai-center vertical-container header">
           <div class="p-col-4 header-content" style="text-align: left">
-            <h2>Games List</h2>
+            <h2>{{ headerMsg }}</h2>
           </div>
           <div
             class="p-col-4 header-content"
@@ -100,14 +100,17 @@ export default {
     };
   },
   computed: {
+    headerMsg() {
+      return activeUserState.isWishList.value ? "Wish List" : "Games List";
+    },
     canAddGames() {
-      if (
-        this.isLoggedIn &&
-        this.isLoggedIn === activeUserState.activeUser.value
-      ) {
-        return true;
-      }
-      return false;
+      return (
+        this.isLoggedIn && this.isLoggedIn === activeUserState.activeUser.value
+      );
+      // ) {
+      //   return true;
+      // }
+      // return false;
     },
     emptyText() {
       if (this.gamesLoading) {

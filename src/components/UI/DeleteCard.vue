@@ -1,9 +1,10 @@
 <template>
   <div class="container card">
     <i
-      class="pi pi-times custom-btn pointer danger"
+      class="pi pi-times-circle custom-btn pointer danger"
       title="Remove friend"
       @click="removeFriend"
+      style="font-size: 1.4rem"
     />
     <div class="slot">
       <slot />

@@ -65,27 +65,27 @@
         :key="friend"
         class="friend-item pointer"
         @remove-friend="() => removeFriend(friend)"
-        @click="() => seeList(friend, true)"
+        @click="(event) => seeList(event, friend, true)"
       >
         <p class="friend-text">
           {{ friend.friendName }}
         </p>
         <Button
           v-if="isSmallScreen"
-          @click="() => seeList(friend, true)"
+          @click="(event) => seeList(event, friend, true)"
           label="Games"
           class="p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
           title="Games"
         />
         <div v-else>
           <Button
-            @click="() => seeList(friend, true)"
+            @click="(event) => seeList(event, friend, true)"
             label="Wishlist"
             class="p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
             title="Wishlist"
           />
           <Button
-            @click="() => seeList(friend, false)"
+            @click="(event) => seeList(event, friend, false)"
             label="Owned games"
             class="space-left p-button-raised p-button-text p-button-lg p-button-rounded word-btn"
             title="Owned games"
@@ -159,7 +159,9 @@ export default {
       friendsListState.addFriend(this.friendToAdd);
       this.friendToAdd = "";
     },
-    seeList(friend, isWishlist) {
+    seeList(event, friend, isWishlist) {
+      event.stopPropagation();
+      console.log("See list", isWishlist);
       activeUserState.setActiveUserAndListMode(friend.friendName, isWishlist);
       this.$router.push("/");
     },

@@ -1,5 +1,5 @@
 <template>
-  <TabMenu :model="navItems" />
+  <TabMenu :model="navItems" :style="{ fontSize: 'larger' }" />
 </template>
 <script>
 import TabMenu from "primevue/tabmenu";
