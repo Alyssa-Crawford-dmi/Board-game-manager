@@ -1,6 +1,12 @@
 <template>
   <div class="pointer outer-container" @click="loadDetails">
     <div class="game-grid-item card">
+      <i
+        class="pi pi-times-circle custom-btn pointer danger"
+        title="Remove game"
+        @click="deleteItem"
+        style="font-size: 1.5rem"
+      />
       <div class="game-grid-centered image-box">
         <img :src="gameData.thumb_url" :alt="gameData.name" />
       </div>
@@ -18,18 +24,18 @@
           <strong>{{ age }}</strong>
         </p>
       </div>
-      <div class="">
-        <GameActionBtns
-          @delete-item="deleteItem"
-          :disabled="disabled"
-          @move-item="moveItem"
-        />
-      </div>
+      <Button
+        @click="moveItem"
+        :class="['p-button-rounded', 'p-button-outlined']"
+        :title="moveBtnText"
+        :label="moveBtnText"
+        :disabled="disabled"
+      />
     </div>
   </div>
 </template>
 <script>
-import GameActionBtns from "./UI/GameActionBtns.vue";
+import Button from "primevue/button";
 import { rangeString, ageString } from "../utils/rangeString";
 import { activeUserState } from "../utils/activeUser";
 
@@ -46,7 +52,7 @@ export default {
   },
   emits: ["delete-item", "item-clicked", "unauthorized-action", "move-item"],
   components: {
-    GameActionBtns,
+    Button,
   },
   computed: {
     playtime() {
@@ -61,20 +67,23 @@ export default {
     age() {
       return ageString(this.gameData.min_age);
     },
+    moveBtnText() {
+      return this.isWishList ? "Move to owned list" : "Move to wish list";
+    },
   },
   methods: {
     deleteItem(event) {
+      event.stopPropagation();
       if (this.disabled) {
         this.$emit("unauthorized-action");
-        event.stopPropagation();
         return;
       }
       this.$emit("delete-item");
     },
     moveItem(event) {
+      event.stopPropagation();
       if (this.disabled) {
         this.$emit("unauthorized-action");
-        event.stopPropagation();
         return;
       }
       this.$emit("move-item");
@@ -88,6 +97,15 @@ export default {
 <style scoped>
 .outer-container {
   width: 16.6%; /*6 across**/
+  position: relative;
+}
+.custom-btn {
+  color: #e56c77;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 .game-grid-item {
   margin: 0.5rem;
