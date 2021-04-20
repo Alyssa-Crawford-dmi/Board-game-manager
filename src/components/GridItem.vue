@@ -1,6 +1,6 @@
 <template>
-  <div class="pointer outer-container" @click="loadDetails">
-    <div class="game-grid-item card">
+  <div class="outer-container" @click="loadDetails">
+    <div class="game-grid-item card pointer">
       <i
         class="pi pi-times-circle custom-btn pointer danger"
         title="Remove game"
@@ -26,7 +26,7 @@
       </div>
       <Button
         @click="moveItem"
-        :class="['p-button-rounded', 'p-button-outlined']"
+        :class="['p-button-rounded', 'p-button-outlined', 'p-button-sm']"
         :title="moveBtnText"
         :label="moveBtnText"
         :disabled="disabled"

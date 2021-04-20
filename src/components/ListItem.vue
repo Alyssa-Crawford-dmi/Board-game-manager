@@ -1,27 +1,44 @@
 <template>
-  <div class="game-list-item pointer" @click="loadDetails">
-    <div class="image-box">
-      <img :src="gameData.thumb_url" :alt="gameData.name" />
-    </div>
-    <div class="game-text">
-      <div class="game-list-details">
-        <div class="header-container">
-          <h3>{{ gameData.name }}</h3>
-        </div>
-        <p>
-          Number of players:
-          <strong>{{ players }} </strong>
-        </p>
-        <p>
-          Time:
-          <strong>{{ playtime }}</strong>
-        </p>
-        <p>
-          Age: <strong>{{ age }}</strong>
-        </p>
+  <div class="container" @click="loadDetails">
+    <i
+      class="pi pi-times-circle custom-btn pointer danger"
+      title="Remove game"
+      @click="deleteItem"
+      style="font-size: 1.5rem"
+    />
+    <div class="game-list-item pointer">
+      <div class="image-box">
+        <img :src="gameData.thumb_url" :alt="gameData.name" />
       </div>
-      <div class="slot-wrapper">
-        <slot></slot>
+      <div class="game-text">
+        <div class="game-list-details">
+          <div class="header-container">
+            <h3>{{ gameData.name }}</h3>
+          </div>
+          <p>
+            Number of players:
+            <strong>{{ players }} </strong>
+          </p>
+          <p>
+            Time:
+            <strong>{{ playtime }}</strong>
+          </p>
+          <p>
+            Age: <strong>{{ age }}</strong>
+          </p>
+        </div>
+        <Button
+          @click="moveItem"
+          :class="[
+            'p-button-rounded',
+            'p-button-outlined',
+            windowWidth < 850 ? 'p-button-sm' : '',
+            'move-btn',
+          ]"
+          :title="moveBtnText"
+          :label="moveBtnText"
+          :disabled="disabled"
+        />
       </div>
     </div>
   </div>
@@ -29,16 +46,24 @@
 <script>
 import { rangeString, ageString } from "../utils/rangeString";
 import { systemInfo } from "../utils/systemInfo";
+import { activeUserState } from "../utils/activeUser";
+import Button from "primevue/button";
 
 export default {
   name: "listItem",
   props: {
     gameData: { required: true, type: Object },
+    disabled: { type: Boolean, default: false },
   },
-  emits: ["item-clicked"],
-  components: {},
+  emits: ["delete-item", "item-clicked", "unauthorized-action", "move-item"],
+  components: {
+    Button,
+  },
   data() {
-    return { windowWidth: systemInfo.windowWidth };
+    return {
+      isWishList: activeUserState.isWishList,
+      windowWidth: systemInfo.windowWidth,
+    };
   },
   computed: {
     playtime() {
@@ -54,8 +79,27 @@ export default {
     age() {
       return ageString(this.gameData.min_age);
     },
+    moveBtnText() {
+      return this.isWishList ? "Move to owned list" : "Move to wish list";
+    },
   },
   methods: {
+    deleteItem(event) {
+      event.stopPropagation();
+      if (this.disabled) {
+        this.$emit("unauthorized-action");
+        return;
+      }
+      this.$emit("delete-item");
+    },
+    moveItem(event) {
+      event.stopPropagation();
+      if (this.disabled) {
+        this.$emit("unauthorized-action");
+        return;
+      }
+      this.$emit("move-item");
+    },
     loadDetails() {
       this.$emit("item-clicked");
     },
@@ -63,9 +107,21 @@ export default {
 };
 </script>
 <style scoped>
+.container {
+  position: relative;
+  width: 100%;
+}
 p {
   font-weight: 300;
   margin: 0;
+}
+.custom-btn {
+  color: #e56c77;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 strong {
   font-weight: 400;
@@ -114,8 +170,10 @@ h3 {
   height: 100%;
   align-items: center;
 }
-.slot-wrapper {
+.move-btn {
   min-width: max-content;
+}
+.slot-wrapper {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
@@ -128,6 +186,23 @@ h3 {
   }
   img {
     width: 7rem;
+  }
+  .custom-btn {
+    top: 5px;
+    right: 5px;
+  }
+}
+@media screen and (max-width: 550px) {
+  .game-list-item {
+    height: 12rem;
+  }
+  .game-text {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 1.5rem;
+  }
+  .move-btn {
+    margin-bottom: 0.5rem;
   }
 }
 @media screen and (max-width: 375px) {

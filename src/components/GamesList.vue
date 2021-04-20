@@ -37,15 +37,21 @@
       <template #list="slotProps">
         <ListItem
           :gameData="slotProps.data"
+          @delete-item="() => deleteItem(slotProps.index)"
+          @move-item="() => moveItem(slotProps.index)"
           @item-clicked="() => detail(slotProps.data)"
-          ><GameActionBtns
+          @unauthorized-action="unauthorizedAction"
+          :disabled="!canAddGames"
+        >
+          <!-- <GameActionBtns
             @delete-item="() => deleteItem(slotProps.index)"
             @move-item="() => moveItem(slotProps.index)"
             :disabled="!canAddGames"
             :showMoveText="showActionBtnMoveText"
             :showRemoveText="showActionBtnDeleteText"
             :centerText="false"
-        /></ListItem>
+        /> -->
+        </ListItem>
       </template>
       <template #grid="slotProps">
         <GridItem
@@ -71,7 +77,6 @@ import { loginState } from "../utils/auth";
 import { systemInfo } from "../utils/systemInfo";
 import { activeUserState } from "../utils/activeUser";
 import { gamesListState } from "../utils/gameListManager";
-import GameActionBtns from "./UI/GameActionBtns.vue";
 
 export default {
   name: "ListHolder",
@@ -81,7 +86,6 @@ export default {
     Button,
     GridItem,
     ListItem,
-    GameActionBtns,
   },
   emits: [
     "add-games",
@@ -107,10 +111,6 @@ export default {
       return (
         this.isLoggedIn && this.isLoggedIn === activeUserState.activeUser.value
       );
-      // ) {
-      //   return true;
-      // }
-      // return false;
     },
     emptyText() {
       if (this.gamesLoading) {

@@ -29,6 +29,10 @@ export const gamesListState = {
             this.isLoading.value = false;
           }
         });
+      } else {
+        if (updateIsLoading) {
+          this.isLoading.value = false;
+        }
       }
     } else {
       list.value = [];
