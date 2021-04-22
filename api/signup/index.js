@@ -8,7 +8,8 @@ module.exports = async function(context, req) {
       if (foundUser) {
         isUsernameUnique = false;
       }
-      context.res = { body: { isUsernameUnique } };
+      console.log(foundUser);
+      context.res = { body: { isUsernameUnique, email: foundUser?.email } };
       context.done();
       return;
 

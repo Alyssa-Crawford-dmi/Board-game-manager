@@ -56,10 +56,22 @@ export const loginState = {
     this.loggedInUser.value = username;
     activeUserState.setActiveUserAndListMode(username);
   },
+  async resetPassword(username) {
+    await axios.get(`${API}/signup/${username}`).then(async (res) => {
+      if (res.data.email) {
+        await axios.get(`${API}/reset/${res.data.email}`);
+        console.log("FOUND email");
+      } else {
+        console.log("Unhappy path comming");
+      }
+    });
+    // .catch((e) => console.error(e));
+  },
   async verifyAvalibleUsername(username) {
     await axios
       .get(API + `/signup/${username}`, options)
       .then((res) => {
+        console.log(res);
         if (!res.data.isUsernameUnique) {
           throw new Error(duplicateUsername);
         }

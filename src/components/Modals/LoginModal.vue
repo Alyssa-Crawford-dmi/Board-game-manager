@@ -1,64 +1,80 @@
 <template>
-  <form v-if="!tryingLogin">
-    <p class="p-invalid centered">{{ error }}</p>
-    <div class="space-below" v-if="signupMode">
-      <InputText
-        id="email"
-        type="email"
-        v-model="email"
-        placeholder="Email"
-        :class="['bounded-width', invalidEmail ? 'p-invalid' : '']"
-      />
-      <small id="email-help" class="p-invalid" v-if="invalidEmail"
-        >Invalid email</small
-      >
-    </div>
-    <div class="space-below">
-      <InputText
-        autofocus
-        id="username"
-        type="text"
-        v-model="username"
-        placeholder="Username"
-        :class="['bounded-width', invalidUsername ? 'p-invalid' : '']"
-        :onBlur="signupMode ? checkUniqueUsername : ''"
-      />
-      <small id="username-help" class="p-invalid" v-if="invalidUsername"
-        >Username can not be empty</small
-      >
-    </div>
-    <div class="space-below">
-      <InputText
-        id="password"
-        type="password"
-        v-model="password"
-        placeholder="Password"
-        :class="['bounded-width', invalidPassword ? 'p-invalid' : '']"
-        @keyup.enter="enterPressed"
-      />
-      <small id="password-help" class="p-invalid" v-if="invalidPassword"
-        >Password can not be empty</small
-      >
-    </div>
+  <Dialog
+    :header="headerText"
+    v-model:visible="showLogin"
+    :modal="true"
+    :style="{ width: modalWidth }"
+  >
+    <form v-if="!tryingLogin">
+      <p class="p-invalid centered">{{ error }}</p>
+      <div class="space-below" v-if="!isLoginModal && !isResetModal">
+        <InputText
+          id="email"
+          type="email"
+          v-model="email"
+          placeholder="Email"
+          :class="['bounded-width', invalidEmail ? 'p-invalid' : '']"
+        />
+        <small id="email-help" class="p-invalid" v-if="invalidEmail"
+          >Invalid email</small
+        >
+      </div>
+      <div class="space-below">
+        <InputText
+          autofocus
+          id="username"
+          type="text"
+          v-model="username"
+          placeholder="Username"
+          :class="['bounded-width', invalidUsername ? 'p-invalid' : '']"
+          :onBlur="isSignupModal ? checkUniqueUsername : ''"
+        />
+        <small id="username-help" class="p-invalid" v-if="invalidUsername"
+          >Username can not be empty</small
+        >
+      </div>
+      <div>
+        <InputText
+          id="password"
+          type="password"
+          v-model="password"
+          placeholder="Password"
+          :class="['bounded-width', invalidPassword ? 'p-invalid' : '']"
+          @keyup.enter="enterPressed"
+          v-if="!isResetModal"
+        />
+        <small id="password-help" class="p-invalid" v-if="invalidPassword"
+          >Password can not be empty</small
+        >
+      </div>
 
-    <div class="p-field-checkbox">
-      <Checkbox id="staySignedIn" v-model="staySignedIn" :binary="true" />
-      <label for="staySignedIn">Stay signed in</label>
-    </div>
-    <div class="action-buttons">
-      <Button
-        :label="signupMode ? 'Switch to login' : 'Switch to signup'"
-        class="p-button-secondary p-button-outlined toggle-action p-button-rounded"
-        @click="toggleMode"
-      />
-      <Button
-        :label="signupMode ? 'Signup' : 'Login'"
-        class="p-button-rounded"
-        @click="loginUser"
-      />
-    </div>
-  </form>
-  <ProgressSpinner v-else />
+      <div class="other-options space-below" v-if="!isResetModal">
+        <div class="p-field-checkbox">
+          <Checkbox id="staySignedIn" v-model="staySignedIn" :binary="true" />
+          <label for="staySignedIn">Stay signed in</label>
+        </div>
+        <Button
+          v-if="isLoginModal"
+          label="Forgot password?"
+          class="p-button-text fogotPassword"
+          @click="forgotPassword"
+        />
+      </div>
+      <div class="action-buttons">
+        <Button
+          :label="secondaryActionLabel"
+          class="p-button-secondary p-button-outlined toggle-action p-button-rounded"
+          @click="toggleMode"
+        />
+        <Button
+          :label="headerText"
+          class="p-button-rounded"
+          @click="loginUser"
+        />
+      </div>
+    </form>
+    <ProgressSpinner v-else />
+  </Dialog>
 </template>
 <script>
 import InputText from "primevue/inputtext";
@@ -66,6 +82,9 @@ import Button from "primevue/button";
 import { loginState } from "../../utils/auth";
 import Checkbox from "primevue/checkbox";
 import ProgressSpinner from "primevue/progressspinner";
+import { systemInfo } from "../../utils/systemInfo";
+import { LoginModalTypes } from "../../utils/modalTypes";
+import Dialog from "primevue/dialog";
 
 export default {
   name: "LoginModal",
@@ -74,11 +93,9 @@ export default {
     Button,
     Checkbox,
     ProgressSpinner,
+    Dialog,
   },
-  props: {
-    signupMode: { type: Boolean, default: false },
-  },
-  emits: ["close-login", "toggle-mode"],
+  emits: ["close-login"],
   data() {
     return {
       email: "",
@@ -91,7 +108,52 @@ export default {
       staySignedIn: false,
       toggleBtnPos: screen.width > 768 ? "left" : "center",
       tryingLogin: false,
+      modalType: LoginModalTypes.LOGIN,
+      showLogin: true,
+      windowWidth: systemInfo.windowWidth,
     };
+  },
+  computed: {
+    modalWidth() {
+      const bigScreen = this.windowWidth > 700;
+      if (bigScreen) {
+        return "50vw";
+      }
+      return "90vw";
+    },
+    headerText() {
+      switch (this.modalType) {
+        case LoginModalTypes.LOGIN:
+          return "Login";
+        case LoginModalTypes.SIGN_UP:
+          return "Sign Up";
+        case LoginModalTypes.RESET_PASSWORD:
+          return "Reset Password";
+        default:
+          return "";
+      }
+    },
+    isSignupModal() {
+      return this.modalType === LoginModalTypes.SIGN_UP;
+    },
+    isLoginModal() {
+      return this.modalType === LoginModalTypes.LOGIN;
+    },
+    isResetModal() {
+      return this.modalType === LoginModalTypes.RESET_PASSWORD;
+    },
+    secondaryActionLabel() {
+      switch (this.modalType) {
+        case LoginModalTypes.LOGIN:
+          return "Switch to sign up";
+        case LoginModalTypes.SIGN_UP:
+          return "Switch to login";
+        case LoginModalTypes.RESET_PASSWORD:
+          return "Return to login";
+        default:
+          return "";
+      }
+    },
   },
   watch: {
     username: function () {
@@ -103,11 +165,30 @@ export default {
     email: function () {
       this.invalidEmail = false;
     },
+    showLogin: function () {
+      if (!this.showLogin) {
+        this.$emit("close-login");
+      }
+    },
   },
+
   methods: {
     toggleMode() {
       this.resetErrors();
-      this.$emit("toggle-mode");
+      switch (this.modalType) {
+        case LoginModalTypes.LOGIN:
+          this.modalType = LoginModalTypes.SIGN_UP;
+          break;
+        case LoginModalTypes.SIGN_UP:
+        case LoginModalTypes.RESET_PASSWORD:
+          this.modalType = LoginModalTypes.LOGIN;
+          break;
+      }
+    },
+    forgotPassword() {
+      this.resetErrors();
+
+      this.modalType = LoginModalTypes.RESET_PASSWORD;
     },
     async loginUser() {
       this.tryingLogin = true;
@@ -115,14 +196,19 @@ export default {
       try {
         this.validateFeilds();
       } catch (error) {
+        this.tryingLogin = false;
         return;
       }
       try {
-        if (this.signupMode) {
+        if (this.modalType === LoginModalTypes.SIGN_UP) {
           await loginState.register(this.email, this.username, this.password);
           this.toggleMode();
-        } else {
+        } else if (this.modalType === LoginModalTypes.LOGIN) {
           await loginState.login(this.username, this.password);
+        } else {
+          await loginState.resetPassword(this.username);
+          this.tryingLogin = false;
+          return;
         }
         loginState.saveLocalUser(this.username, this.staySignedIn);
         this.tryingLogin = false;
@@ -133,21 +219,28 @@ export default {
       }
     },
     validateFeilds() {
-      if (this.isEmailInvalid()) {
-        this.invalidEmail = true;
-      }
-      if (this.username.trim().length === 0) {
-        this.invalidUsername = true;
-      }
-      if (this.password.trim().length === 0) {
-        this.invalidPassword = true;
+      switch (this.modalType) {
+        case LoginModalTypes.LOGIN:
+          this.invalidUsername = !this.isFeildValid(this.username);
+          this.invalidPassword = !this.isFeildValid(this.password);
+          break;
+        case LoginModalTypes.SIGN_UP:
+          this.invalidEmail = !this.isEmailValid();
+          this.invalidUsername = !this.isFeildValid(this.username);
+          this.invalidPassword = !this.isFeildValid(this.password);
+          break;
+        case LoginModalTypes.RESET_PASSWORD:
+          this.invalidUsername = !this.isFeildValid(this.username);
       }
       if (this.invalidEmail || this.invalidUsername || this.invalidPassword) {
         throw new Error("Invalid feild");
       }
     },
-    isEmailInvalid() {
-      return this.signupMode && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+    isEmailValid() {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+    },
+    isFeildValid(fieldToTest) {
+      return fieldToTest.trim().length > 0;
     },
     resetErrors() {
       this.invalidUsername = false;
@@ -157,6 +250,7 @@ export default {
     },
     async checkUniqueUsername() {
       try {
+        console.log("Verifing unique user");
         await loginState.verifyAvalibleUsername(this.username);
       } catch (error) {
         this.error = error.message;
@@ -180,6 +274,17 @@ export default {
 .action-buttons {
   display: flex;
   justify-content: space-between;
+}
+.other-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+}
+.fogotPassword {
+  padding: 0;
+  margin: 0;
 }
 @media screen and (max-width: 500px) {
   .action-buttons {

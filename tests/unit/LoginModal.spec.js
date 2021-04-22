@@ -1,7 +1,7 @@
-import { mount } from "@vue/test-utils";
 import LoginModal from "@/components/Modals/LoginModal.vue";
-import InputText from "primevue/inputtext";
+import { mount } from "@vue/test-utils";
 import Button from "primevue/button";
+import InputText from "primevue/inputtext";
 import { loginState } from "../../src/utils/auth";
 
 describe("LoginModal.vue", () => {
@@ -27,23 +27,23 @@ describe("LoginModal.vue", () => {
   });
   it("Set invalid username to true if the username is empty and the button is pressed", async () => {
     wrapper.vm.username = "";
-    await wrapper.findAllComponents(Button)[1].trigger("click");
+    await wrapper.findAllComponents(Button)[2].trigger("click");
     expect(wrapper.vm.invalidUsername).toBe(true);
   });
   it("Set invalid password to true if the password is empty and the button is pressed", async () => {
     wrapper.vm.username = "NotEmpty";
     wrapper.vm.password = "";
-    await wrapper.findAllComponents(Button)[1].trigger("click");
+    await wrapper.findAllComponents(Button)[2].trigger("click");
     expect(wrapper.vm.invalidPassword).toBe(true);
   });
   it("Calls login in the auth service when login is clicked", async () => {
     wrapper.vm.username = "NotEmpty";
     wrapper.vm.password = "NotEmpty";
-    await wrapper.findAllComponents(Button)[1].trigger("click");
+    await wrapper.findAllComponents(Button)[2].trigger("click");
     expect(loginState.login).toHaveBeenCalled();
   });
-  it("Emits toggle-mode when the signup button is clicked", async () => {
-    await wrapper.findComponent(Button).trigger("click");
-    expect(wrapper.emitted("toggle-mode")).toBeTruthy();
+  it("Changes the modal type to signup when the switch button is clicked", async () => {
+    await wrapper.findAllComponents(Button)[1].trigger("click");
+    expect(wrapper.vm.modalType).toEqual("SIGN_UP");
   });
 });
