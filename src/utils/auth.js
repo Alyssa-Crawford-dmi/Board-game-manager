@@ -11,6 +11,7 @@ const HEADERS = {
 };
 const options = { headers: HEADERS };
 const duplicateUsername = "Username already exists";
+const noSuchUser = "There is no user with that username. Please try again";
 const badLogin = "Invalid username or password. Please try again";
 const genericError = "Something went wrong. Please try again later";
 
@@ -56,22 +57,38 @@ export const loginState = {
     this.loggedInUser.value = username;
     activeUserState.setActiveUserAndListMode(username);
   },
-  async resetPassword(username) {
-    await axios.get(`${API}/signup/${username}`).then(async (res) => {
-      if (res.data.email) {
-        await axios.get(`${API}/reset/${res.data.email}`);
-        console.log("FOUND email");
-      } else {
-        console.log("Unhappy path comming");
-      }
-    });
-    // .catch((e) => console.error(e));
+  async resetPasswordSendEmail(username) {
+    await axios
+      .get(`${API}/signup/${username}`)
+      .then(async (res) => {
+        if (res.data.email) {
+          await axios.get(`${API}/reset/${res.data.email}`);
+        } else {
+          throw new Error(noSuchUser);
+        }
+      })
+      .catch((e) => {
+        if (e.message === noSuchUser) {
+          throw new Error(noSuchUser);
+        }
+        throw new Error(genericError);
+      });
+  },
+  async updatePassword(username, newPassword) {
+    var hashedPassword = bcrypt.hashSync(newPassword, 8);
+    await axios
+      .put(
+        `${API}/signup/${username}`,
+        JSON.stringify({ password: hashedPassword }, options)
+      )
+      .catch(() => {
+        throw new Error(genericError);
+      });
   },
   async verifyAvalibleUsername(username) {
     await axios
       .get(API + `/signup/${username}`, options)
       .then((res) => {
-        console.log(res);
         if (!res.data.isUsernameUnique) {
           throw new Error(duplicateUsername);
         }

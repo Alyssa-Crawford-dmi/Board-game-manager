@@ -1,3 +1,5 @@
+var azure = require("azure-storage");
+
 module.exports = async function(context, req) {
   const method = req.method.toLowerCase();
   const foundUser = context.bindings.userEntity;
@@ -8,7 +10,6 @@ module.exports = async function(context, req) {
       if (foundUser) {
         isUsernameUnique = false;
       }
-      console.log(foundUser);
       context.res = { body: { isUsernameUnique, email: foundUser?.email } };
       context.done();
       return;
@@ -24,7 +25,18 @@ module.exports = async function(context, req) {
         RowKey: context.bindingData.rowKey,
         ...req.body,
       });
-      addedUser = true;
       context.done();
+
+    case "put":
+      if (!foundUser) {
+        context.res = { status: 400 };
+        context.done();
+      }
+      const tableService = azure.createTableService(
+        process.env.TableConnection
+      );
+
+      const updatedUser = { ...foundUser, password: req.body.password };
+      tableService.replaceEntity("users", updatedUser, () => {});
   }
 };

@@ -7,7 +7,8 @@ export const modalTypes = {
 export const LoginModalTypes = {
   LOGIN: "LOGIN",
   SIGN_UP: "SIGN_UP",
-  RESET_PASSWORD: "RESET_PASSWORD",
+  RESET_PASSWORD_SEND_EMAIL: "RESET_PASSWORD_SEND_EMAIL",
+  RESET_PASSWORD_NEW_PASS: "RESET_PASSWORD_NEW_PASS",
 };
 
 export const basicActions = {

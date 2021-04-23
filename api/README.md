@@ -4,6 +4,11 @@
 
 GET - verifies username available
 POST - creates a new user with the given info
+PUT - Updates the given user's password
+
+### /api/reset/{email}
+
+GET - Sends a password reset email to the given email
 
 ### /api/login/{username}
 

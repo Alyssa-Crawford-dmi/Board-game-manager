@@ -159,7 +159,6 @@ export default {
       document.getElementById("scroll-marker").scrollIntoView();
     },
     back() {
-      console.log("Closing");
       this.$emit("close-modal");
     },
     enterPressed() {

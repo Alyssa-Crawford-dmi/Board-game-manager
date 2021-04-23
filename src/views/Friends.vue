@@ -161,7 +161,6 @@ export default {
     },
     seeList(event, friend, isWishlist) {
       event.stopPropagation();
-      console.log("See list", isWishlist);
       activeUserState.setActiveUserAndListMode(friend.friendName, isWishlist);
       this.$router.push("/");
     },

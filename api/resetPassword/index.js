@@ -1,27 +1,19 @@
 var util = require("util");
+const bcrypt = require("bcryptjs");
 
-// The 'From' and 'To' fields are automatically populated with the values specified by the binding settings.
-//
-// You can also optionally configure the default From/To addresses globally via host.config, e.g.:
-//
-// {
-//   "sendGrid": {
-//      "to": "user@host.com",
-//      "from": "Azure Functions <samples@functions.com>"
-//   }
-// }
 module.exports = async function(context, order) {
-  context.log(
-    "JavaScript queue trigger function processed order",
-    order.orderId
-  );
-
+  link = `http://localhost:8080//reset/user/${bcrypt.hashSync(
+    context.bindings.req.params.email,
+    7
+  )}`;
   context.bindings.message = {
-    subject: util.format("HELLO world"),
+    subject: util.format("Password reset for board game manager"),
     content: [
       {
         type: "text/plain",
-        value: util.format("First message"),
+        value: util.format(
+          `Hello, Please use this link to reset your password: ${link}`
+        ),
       },
     ],
   };

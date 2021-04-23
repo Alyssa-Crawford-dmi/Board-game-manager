@@ -7,15 +7,16 @@
       "name": "req",
       "methods": [
         "get",
-        "post"
+        "post",
+        "put"
       ],
       "route": "signup/{rowKey}"
     },
     {
-            "type": "http",
-            "direction": "out",
-            "name": "res"
-        },
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
     {
       "name": "userEntity",
       "type": "table",

@@ -5,75 +5,100 @@
     :modal="true"
     :style="{ width: modalWidth }"
   >
-    <form v-if="!tryingLogin">
-      <p class="p-invalid centered">{{ error }}</p>
-      <div class="space-below" v-if="!isLoginModal && !isResetModal">
-        <InputText
-          id="email"
-          type="email"
-          v-model="email"
-          placeholder="Email"
-          :class="['bounded-width', invalidEmail ? 'p-invalid' : '']"
-        />
-        <small id="email-help" class="p-invalid" v-if="invalidEmail"
-          >Invalid email</small
-        >
-      </div>
-      <div class="space-below">
-        <InputText
-          autofocus
-          id="username"
-          type="text"
-          v-model="username"
-          placeholder="Username"
-          :class="['bounded-width', invalidUsername ? 'p-invalid' : '']"
-          :onBlur="isSignupModal ? checkUniqueUsername : ''"
-        />
-        <small id="username-help" class="p-invalid" v-if="invalidUsername"
-          >Username can not be empty</small
-        >
-      </div>
-      <div>
-        <InputText
-          id="password"
-          type="password"
-          v-model="password"
-          placeholder="Password"
-          :class="['bounded-width', invalidPassword ? 'p-invalid' : '']"
-          @keyup.enter="enterPressed"
-          v-if="!isResetModal"
-        />
-        <small id="password-help" class="p-invalid" v-if="invalidPassword"
-          >Password can not be empty</small
-        >
-      </div>
-
-      <div class="other-options space-below" v-if="!isResetModal">
-        <div class="p-field-checkbox">
-          <Checkbox id="staySignedIn" v-model="staySignedIn" :binary="true" />
-          <label for="staySignedIn">Stay signed in</label>
-        </div>
+    <template v-if="showConfirmText">
+      <p v-if="isResetModal">
+        A password reset link was sent to your email account.
+        <strong>Please check your spam folder,</strong> since there is no domain
+        associated with this project it most likely went there.
+      </p>
+      <p v-else>Password reset successfully</p>
+      <div class="confirm-button-container">
         <Button
-          v-if="isLoginModal"
-          label="Forgot password?"
-          class="p-button-text fogotPassword"
-          @click="forgotPassword"
-        />
-      </div>
-      <div class="action-buttons">
-        <Button
-          :label="secondaryActionLabel"
-          class="p-button-secondary p-button-outlined toggle-action p-button-rounded"
-          @click="toggleMode"
-        />
-        <Button
-          :label="headerText"
+          label="Return to login"
           class="p-button-rounded"
-          @click="loginUser"
+          @click="closeConfirm"
         />
       </div>
-    </form>
-    <ProgressSpinner v-else />
+    </template>
+    <template v-else>
+      <form v-if="!tryingLogin">
+        <p class="p-invalid centered">{{ error }}</p>
+        <div class="space-below" v-if="isSignupModal">
+          <InputText
+            id="email"
+            type="email"
+            v-model="email"
+            placeholder="Email"
+            :class="['bounded-width', invalidEmail ? 'p-invalid' : '']"
+          />
+          <small id="email-help" class="p-invalid" v-if="invalidEmail"
+            >Invalid email</small
+          >
+        </div>
+        <div class="space-below">
+          <InputText
+            v-if="!isResetNewPassModal"
+            autofocus
+            id="username"
+            type="text"
+            v-model="username"
+            placeholder="Username"
+            :class="['bounded-width', invalidUsername ? 'p-invalid' : '']"
+            :onBlur="isSignupModal ? checkUniqueUsername : ''"
+          />
+          <small id="username-help" class="p-invalid" v-if="invalidUsername"
+            >Username can not be empty</small
+          >
+        </div>
+        <div>
+          <InputText
+            id="password"
+            type="password"
+            v-model="password"
+            :placeholder="isResetNewPassModal ? 'New password' : 'Password'"
+            :class="[
+              'bounded-width',
+              invalidPassword ? 'p-invalid' : '',
+              isResetNewPassModal ? 'space-below' : '',
+            ]"
+            @keyup.enter="enterPressed"
+            v-if="!isResetModal"
+          />
+          <small id="password-help" class="p-invalid" v-if="invalidPassword"
+            >Password can not be empty</small
+          >
+        </div>
+
+        <div
+          class="other-options space-below"
+          v-if="isLoginModal || isSignupModal"
+        >
+          <div class="p-field-checkbox">
+            <Checkbox id="staySignedIn" v-model="staySignedIn" :binary="true" />
+            <label for="staySignedIn">Stay signed in</label>
+          </div>
+          <Button
+            v-if="isLoginModal"
+            label="Forgot password?"
+            class="p-button-text fogotPassword"
+            @click="forgotPassword"
+          />
+        </div>
+        <div class="action-buttons">
+          <Button
+            :label="secondaryActionLabel"
+            class="p-button-secondary p-button-outlined toggle-action p-button-rounded"
+            @click="toggleMode"
+          />
+          <Button
+            :label="headerText"
+            class="p-button-rounded"
+            @click="loginUser"
+          />
+        </div>
+      </form>
+      <ProgressSpinner v-else />
+    </template>
   </Dialog>
 </template>
 <script>
@@ -111,6 +136,7 @@ export default {
       modalType: LoginModalTypes.LOGIN,
       showLogin: true,
       windowWidth: systemInfo.windowWidth,
+      showConfirmText: false,
     };
   },
   computed: {
@@ -127,7 +153,8 @@ export default {
           return "Login";
         case LoginModalTypes.SIGN_UP:
           return "Sign Up";
-        case LoginModalTypes.RESET_PASSWORD:
+        case LoginModalTypes.RESET_PASSWORD_SEND_EMAIL:
+        case LoginModalTypes.RESET_PASSWORD_NEW_PASS:
           return "Reset Password";
         default:
           return "";
@@ -140,7 +167,10 @@ export default {
       return this.modalType === LoginModalTypes.LOGIN;
     },
     isResetModal() {
-      return this.modalType === LoginModalTypes.RESET_PASSWORD;
+      return this.modalType === LoginModalTypes.RESET_PASSWORD_SEND_EMAIL;
+    },
+    isResetNewPassModal() {
+      return this.modalType === LoginModalTypes.RESET_PASSWORD_NEW_PASS;
     },
     secondaryActionLabel() {
       switch (this.modalType) {
@@ -148,7 +178,8 @@ export default {
           return "Switch to sign up";
         case LoginModalTypes.SIGN_UP:
           return "Switch to login";
-        case LoginModalTypes.RESET_PASSWORD:
+        case LoginModalTypes.RESET_PASSWORD_SEND_EMAIL:
+        case LoginModalTypes.RESET_PASSWORD_NEW_PASS:
           return "Return to login";
         default:
           return "";
@@ -180,15 +211,20 @@ export default {
           this.modalType = LoginModalTypes.SIGN_UP;
           break;
         case LoginModalTypes.SIGN_UP:
-        case LoginModalTypes.RESET_PASSWORD:
+        case LoginModalTypes.RESET_PASSWORD_SEND_EMAIL:
+        case LoginModalTypes.RESET_PASSWORD_NEW_PASS:
           this.modalType = LoginModalTypes.LOGIN;
           break;
       }
     },
+    closeConfirm() {
+      this.showConfirmText = false;
+      this.password = "";
+      this.modalType = LoginModalTypes.LOGIN;
+    },
     forgotPassword() {
       this.resetErrors();
-
-      this.modalType = LoginModalTypes.RESET_PASSWORD;
+      this.modalType = LoginModalTypes.RESET_PASSWORD_SEND_EMAIL;
     },
     async loginUser() {
       this.tryingLogin = true;
@@ -200,16 +236,27 @@ export default {
         return;
       }
       try {
-        if (this.modalType === LoginModalTypes.SIGN_UP) {
-          await loginState.register(this.email, this.username, this.password);
-          this.toggleMode();
-        } else if (this.modalType === LoginModalTypes.LOGIN) {
-          await loginState.login(this.username, this.password);
-        } else {
-          await loginState.resetPassword(this.username);
-          this.tryingLogin = false;
-          return;
+        let user = "Other"; // TODO read from url
+        switch (this.modalType) {
+          case LoginModalTypes.SIGN_UP:
+            await loginState.register(this.email, this.username, this.password);
+            this.toggleMode();
+            break;
+          case LoginModalTypes.LOGIN:
+            await loginState.login(this.username, this.password);
+            break;
+          case LoginModalTypes.RESET_PASSWORD_SEND_EMAIL:
+            await loginState.resetPasswordSendEmail(this.username);
+            this.tryingLogin = false;
+            this.showConfirmText = true;
+            return;
+          case LoginModalTypes.RESET_PASSWORD_NEW_PASS:
+            await loginState.updatePassword(user, this.password);
+            this.tryingLogin = false;
+            this.showConfirmText = true;
+            return;
         }
+
         loginState.saveLocalUser(this.username, this.staySignedIn);
         this.tryingLogin = false;
         this.$emit("close-login");
@@ -229,8 +276,11 @@ export default {
           this.invalidUsername = !this.isFeildValid(this.username);
           this.invalidPassword = !this.isFeildValid(this.password);
           break;
-        case LoginModalTypes.RESET_PASSWORD:
+        case LoginModalTypes.RESET_PASSWORD_SEND_EMAIL:
           this.invalidUsername = !this.isFeildValid(this.username);
+          break;
+        case LoginModalTypes.RESET_PASSWORD_NEW_PASS:
+          this.invalidPassword = !this.isFeildValid(this.password);
       }
       if (this.invalidEmail || this.invalidUsername || this.invalidPassword) {
         throw new Error("Invalid feild");
@@ -250,7 +300,6 @@ export default {
     },
     async checkUniqueUsername() {
       try {
-        console.log("Verifing unique user");
         await loginState.verifyAvalibleUsername(this.username);
       } catch (error) {
         this.error = error.message;
@@ -266,6 +315,11 @@ export default {
 <style scoped>
 .space-below {
   margin: 0 0 1rem 0;
+}
+.confirm-button-container {
+  display: flex;
+  height: min-content;
+  justify-content: center;
 }
 .centered {
   margin: 0rem auto 1rem auto;
