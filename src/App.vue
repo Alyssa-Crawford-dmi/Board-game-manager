@@ -27,6 +27,11 @@ export default {
   },
 
   mounted() {
+    this.resetUsername = this.$route.query.user;
+    if (this.resetUsername) {
+      loginState.logout();
+      this.showLogin = true;
+    }
     loginState.signInLocalUser();
     if (!loginState.loggedInUser.value) {
       this.showLogin = true;
@@ -41,7 +46,7 @@ export default {
   },
   watch: {
     $route(to) {
-      this.resetUsername = to.params.resetUsername;
+      this.resetUsername = to.query.user;
       if (this.resetUsername) {
         loginState.logout();
         this.showLogin = true;

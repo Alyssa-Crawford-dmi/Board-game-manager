@@ -239,7 +239,6 @@ export default {
         return;
       }
       try {
-        let user = this.resetUsername; // TODO decrypt
         switch (this.modalType) {
           case LoginModalTypes.SIGN_UP:
             await loginState.register(this.email, this.username, this.password);
@@ -254,7 +253,7 @@ export default {
             this.showConfirmText = true;
             return;
           case LoginModalTypes.RESET_PASSWORD_NEW_PASS:
-            await loginState.updatePassword(user, this.password);
+            await loginState.updatePassword(this.resetUsername, this.password);
             this.tryingLogin = false;
             this.showConfirmText = true;
             this.$router.push("/");

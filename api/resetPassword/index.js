@@ -1,16 +1,20 @@
 var util = require("util");
-const bcrypt = require("bcryptjs");
+var CryptoJS = require("crypto-js");
 
 module.exports = async function(context, order) {
-  link = `http://localhost:8080/reset/${context.bindings.req.params.username}`;
+  encryptedUserName = encodeURIComponent(
+    CryptoJS.AES.encrypt(
+      context.bindings.req.params.username,
+      "resetBoardGamePass"
+    )
+  );
+  link = `http://localhost:8080/reset?user=${encryptedUserName}`;
   context.bindings.message = {
     subject: util.format("Password reset for board game manager"),
     content: [
       {
         type: "text/plain",
-        value: util.format(
-          `Hello, Please use this link to reset your password: ${link}`
-        ),
+        value: `Hello, Please use this link to reset your password: ${link}`,
       },
     ],
   };

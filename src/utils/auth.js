@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { activeUserState } from "./activeUser";
 
 const bcrypt = require("bcryptjs");
+var CryptoJS = require("crypto-js");
 
 const API = "/api";
 const HEADERS = {
@@ -77,10 +78,14 @@ export const loginState = {
       });
   },
   async updatePassword(username, newPassword) {
+    var decryptedUser = CryptoJS.AES.decrypt(
+      username,
+      "resetBoardGamePass"
+    ).toString(CryptoJS.enc.Utf8);
     var hashedPassword = bcrypt.hashSync(newPassword, 8);
     await axios
       .put(
-        `${API}/signup/${username}`,
+        `${API}/signup/${decryptedUser}`,
         JSON.stringify({ password: hashedPassword }, options)
       )
       .catch(() => {
