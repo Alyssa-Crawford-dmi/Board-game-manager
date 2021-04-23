@@ -62,7 +62,9 @@ export const loginState = {
       .get(`${API}/signup/${username}`)
       .then(async (res) => {
         if (res.data.email) {
-          await axios.get(`${API}/reset/${res.data.email}`);
+          await axios.get(
+            `${API}/reset/${res.data.email}/${res.data.username}`
+          );
         } else {
           throw new Error(noSuchUser);
         }

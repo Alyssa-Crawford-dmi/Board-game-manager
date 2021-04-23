@@ -8,7 +8,7 @@
       "methods": [
         "get"
       ],
-      "route": "reset/{email}"
+      "route": "reset/{email}/{username}"
     },
     {
       "type": "sendGrid",

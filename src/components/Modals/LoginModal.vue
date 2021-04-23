@@ -50,17 +50,13 @@
             >Username can not be empty</small
           >
         </div>
-        <div>
+        <div :class="[isResetNewPassModal ? 'space-below' : '']">
           <InputText
             id="password"
             type="password"
             v-model="password"
             :placeholder="isResetNewPassModal ? 'New password' : 'Password'"
-            :class="[
-              'bounded-width',
-              invalidPassword ? 'p-invalid' : '',
-              isResetNewPassModal ? 'space-below' : '',
-            ]"
+            :class="['bounded-width', invalidPassword ? 'p-invalid' : '']"
             @keyup.enter="enterPressed"
             v-if="!isResetModal"
           />
@@ -121,6 +117,7 @@ export default {
     Dialog,
   },
   emits: ["close-login"],
+  props: { resetUsername: { type: String } },
   data() {
     return {
       email: "",
@@ -201,6 +198,11 @@ export default {
         this.$emit("close-login");
       }
     },
+    resetUsername: function () {
+      if (this.resetUsername) {
+        this.modalType = LoginModalTypes.RESET_PASSWORD_NEW_PASS;
+      }
+    },
   },
 
   methods: {
@@ -214,6 +216,7 @@ export default {
         case LoginModalTypes.RESET_PASSWORD_SEND_EMAIL:
         case LoginModalTypes.RESET_PASSWORD_NEW_PASS:
           this.modalType = LoginModalTypes.LOGIN;
+          this.$router.push("/");
           break;
       }
     },
@@ -236,7 +239,7 @@ export default {
         return;
       }
       try {
-        let user = "Other"; // TODO read from url
+        let user = this.resetUsername; // TODO decrypt
         switch (this.modalType) {
           case LoginModalTypes.SIGN_UP:
             await loginState.register(this.email, this.username, this.password);
@@ -254,6 +257,7 @@ export default {
             await loginState.updatePassword(user, this.password);
             this.tryingLogin = false;
             this.showConfirmText = true;
+            this.$router.push("/");
             return;
         }
 

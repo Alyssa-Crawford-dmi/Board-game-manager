@@ -10,7 +10,13 @@ module.exports = async function(context, req) {
       if (foundUser) {
         isUsernameUnique = false;
       }
-      context.res = { body: { isUsernameUnique, email: foundUser?.email } };
+      context.res = {
+        body: {
+          isUsernameUnique,
+          email: foundUser?.email,
+          username: foundUser?.username,
+        },
+      };
       context.done();
       return;
 

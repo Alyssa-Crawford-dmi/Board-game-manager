@@ -1,7 +1,11 @@
 <template>
   <Header @login-change="showLogin = true" />
   <router-view />
-  <LoginModal v-if="showLogin" @close-login="showLogin = false" />
+  <LoginModal
+    v-if="showLogin"
+    @close-login="showLogin = false"
+    :resetUsername="resetUsername"
+  />
 </template>
 <script>
 import Header from "@/components/Header.vue";
@@ -18,6 +22,7 @@ export default {
   data() {
     return {
       showLogin: false,
+      resetUsername: "",
     };
   },
 
@@ -33,6 +38,15 @@ export default {
   },
   unmounted() {
     window.removeEventListener("resize", systemInfo.updateWindowSize);
+  },
+  watch: {
+    $route(to) {
+      this.resetUsername = to.params.resetUsername;
+      if (this.resetUsername) {
+        loginState.logout();
+        this.showLogin = true;
+      }
+    },
   },
 };
 </script>
