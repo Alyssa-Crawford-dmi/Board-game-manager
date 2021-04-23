@@ -186,6 +186,7 @@ export default {
   watch: {
     username: function () {
       this.invalidUsername = false;
+      this.password = "";
     },
     password: function () {
       this.invalidPassword = false;

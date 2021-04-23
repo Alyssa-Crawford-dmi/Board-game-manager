@@ -1,6 +1,9 @@
 <template>
   <div class="game-list-item">
-    <ListItem :gameData="gameData" @item-clicked="loadDetails"
+    <ListItem
+      :gameData="gameData"
+      @item-clicked="loadDetails"
+      :isGamesList="false"
       ><div class="button-box">
         <slot></slot>
       </div>

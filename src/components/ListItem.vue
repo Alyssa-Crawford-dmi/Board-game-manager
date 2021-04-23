@@ -1,6 +1,7 @@
 <template>
   <div class="container" @click="loadDetails">
     <i
+      v-if="isGamesList"
       class="pi pi-times-circle custom-btn pointer danger"
       title="Remove game"
       @click="deleteItem"
@@ -28,6 +29,7 @@
           </p>
         </div>
         <Button
+          v-if="isGamesList"
           @click="moveItem"
           :class="[
             'p-button-rounded',
@@ -39,6 +41,7 @@
           :label="moveBtnText"
           :disabled="disabled"
         />
+        <slot v-else></slot>
       </div>
     </div>
   </div>
@@ -54,6 +57,7 @@ export default {
   props: {
     gameData: { required: true, type: Object },
     disabled: { type: Boolean, default: false },
+    isGamesList: { type: Boolean, default: true },
   },
   emits: ["delete-item", "item-clicked", "unauthorized-action", "move-item"],
   components: {
