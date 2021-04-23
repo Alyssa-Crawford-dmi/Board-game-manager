@@ -8,7 +8,8 @@ module.exports = async function(context, order) {
       "resetBoardGamePass"
     )
   );
-  link = `http://localhost:8080/reset?user=${encryptedUserName}`;
+  link = `${process.env.baseUrl}/reset?user=${encryptedUserName}`;
+  console.log(link);
   context.bindings.message = {
     subject: util.format("Password reset for board game manager"),
     content: [
