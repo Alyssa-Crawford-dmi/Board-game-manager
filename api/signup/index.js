@@ -32,6 +32,7 @@ module.exports = async function(context, req) {
         ...req.body,
       });
       context.done();
+      return;
 
     case "put":
       if (!foundUser) {
@@ -44,5 +45,6 @@ module.exports = async function(context, req) {
 
       const updatedUser = { ...foundUser, password: req.body.password };
       tableService.replaceEntity("users", updatedUser, () => {});
+      return;
   }
 };
