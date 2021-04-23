@@ -9,7 +9,6 @@ module.exports = async function(context, order) {
     )
   );
   link = `${process.env.baseUrl}/reset?user=${encryptedUserName}`;
-  console.log(link);
   context.bindings.message = {
     subject: util.format("Password reset for board game manager"),
     content: [

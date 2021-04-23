@@ -60,11 +60,12 @@ export const loginState = {
   },
   async resetPasswordSendEmail(username) {
     await axios
-      .get(`${API}/signup/${username}`)
+      .get(`${API}/signup/${username}`, options)
       .then(async (res) => {
         if (res.data.email) {
           await axios.get(
-            `${API}/reset/${res.data.email}/${res.data.username}`
+            `${API}/reset/${res.data.email}/${res.data.username}`,
+            options
           );
         } else {
           throw new Error(noSuchUser);
