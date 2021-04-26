@@ -1,24 +1,26 @@
 var azure = require("azure-storage");
 
 module.exports = async function(context, req) {
-  console.log("Inside /signup");
   const method = req.method.toLowerCase();
   const foundUser = context.bindings.userEntity;
-  console.log("Found user", foundUser);
-  var isUsernameUnique = true;
   switch (method) {
     case "get":
       if (foundUser) {
-        isUsernameUnique = false;
+        context.res = {
+          body: {
+            isUsernameUnique: false,
+            email: foundUser.email,
+            username: foundUser.username,
+          },
+        };
+      } else {
+        context.res = {
+          body: {
+            isUsernameUnique: true,
+          },
+        };
       }
-      context.res = {
-        body: {
-          isUsernameUnique,
-          email: foundUser?.email,
-          username: foundUser?.username,
-        },
-      };
-      console.log("Inside get,about to return ", context.res);
+
       context.done();
       return;
 
